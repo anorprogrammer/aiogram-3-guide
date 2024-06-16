@@ -1,6 +1,6 @@
 # Project information
-site_name: Пишем Telegram-ботов с aiogram 3.x
-site_description: Учебник по разработке ботов для Telegram на языке Python при помощи фреймворка aiogram 3.x
+site_name: Telegram botlarini aiogram 3.x bilan yozish
+site_description: Python tilida aiogram 3.x frameworkidan foydalanib Telegram botlarini ishlab chiqish bo'yicha qo'llanma
 site_author: MasterGroosha
 site_url: https://mastergroosha.github.io/aiogram-3-guide
 docs_dir: book_src
@@ -18,7 +18,7 @@ copyright: Copyright &copy; 2020-2024 Groosha
 theme:
   name: material
   custom_dir: book_src/overrides
-  language: ru
+  language: uz
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -65,19 +65,19 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 nav:
-  - 'Введение': index.md
-  - 'Знакомство с aiogram': quickstart.md
-  - 'Работа с сообщениями': messages.md
-  - 'Кнопки': buttons.md
-  - 'Роутеры. Структура': routers.md
-  - 'Фильтры и мидлвари': filters-and-middlewares.md
-  - 'Особые апдейты': special-updates.md
-  - 'Конечные автоматы': fsm.md
-  - 'Инлайн-режим': inline-mode.md
-  - 'Платежи': payments.md
-  - '🔒 Продвинутый уровень': advanced-teaser.md
-#  - 'Дополнительное чтение':
-#    - 'Тест': extra/test.md
+  - 'Kirish': index.md
+  - 'Aiogram bilan tanishish': quickstart.md
+  - 'Xabarlar bilan ishlash': messages.md
+  - 'Tugmalar': buttons.md
+  - 'Routerlar. Tuzilma': routers.md
+  - 'Filtrlar va middlewarelar': filters-and-middlewares.md
+  - 'Maxsus yangilanishlar': special-updates.md
+  - 'Holat mashinalari': fsm.md
+  - 'Inline-rejim': inline-mode.md
+  - 'To‘lovlar': payments.md
+  - '🔒 Yuqori daraja': advanced-teaser.md
+#  - 'Qo‘shimcha o‘qish':
+#    - 'Test': extra/test.md
 
 
 plugins:
@@ -95,4 +95,4 @@ plugins:
 
 
 # Custom
-nav_name: "Оглавление"
+nav_name: "Mundarija"

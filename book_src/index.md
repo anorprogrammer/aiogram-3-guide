@@ -1,41 +1,41 @@
 ---
-title: Введение
+title: Kirish
 ---
 
-# **Добро пожаловать!**  
+# **Xush kelibsiz!**
 
-Перед вами то, что я, [Groosha](https://mastergroosha.github.io/), называю книгой по созданию Telegram-ботов на языке Python с помощью 
-фреймворка [aiogram](https://github.com/aiogram/aiogram). Её \[книгу\] можно воспринимать как учебный материал, 
-обращаясь к отдельным главам по необходимости, но для первого прочтения рекомендую это делать в том порядке, в котором 
-указаны главы слева от этого текста.
+Sizning oldingizda men, [Groosha](https://mastergroosha.github.io/), 
+Telegram botlarini Python tilida [aiogram](https://github.com/aiogram/aiogram) frameworkidan foydalangan holda yaratish bo'yicha kitob
+deb ataydigan narsani ko'rmoqdasiz. Bu  \[kitob\]ni o'quv material sifatida qabul qilish mumkin, 
+kerak bo'lganda alohida bo'limlarga murojaat qilish mumkin, 
+ammo birinchi marta o'qiyotganingizda bu matnning chap tomonida ko'rsatilgan bo'limlar tartibida o'qishni tavsiya qilaman.
 
-Это третья версия гайда, [первая](https://mastergroosha.github.io/telegram-tutorial/) была написана в 2015-2017 
-годах для библиотеки [pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI), а 
-[вторая](https://mastergroosha.github.io/aiogram-2-guide/) появилась в 2019 для aiogram 2.x. 
-В этой, обновлённой версии книги, мы будем использовать aiogram версии 3, полноценный релиз которого состоялся 
-1 сентября 2023 года.
+Bu qo'llanmaning uchinchi versiyasidir, [birinchi](https://mastergroosha.github.io/telegram-tutorial/) versiya 2015-2017 
+yillarda [pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI) kutubxonasi uchun yozilgan, [ikkinchi](https://mastergroosha.github.io/aiogram-2-guide/) versiya esa 2019 yilda aiogram 2.x uchun paydo bo'ldi. 
+Bu yangilangan kitob versiyasida biz 2023 yil 1 sentyabrda to'liq chiqarilgan aiogram 3 versiyasidan foydalanamiz.
 
-**Для кого эта книга?**  
-Предполагается, что вы знакомы с программированием в целом и языком Python в частности, знаете, что такое "venv" и "pip", 
-а также способны понять и исправить "детские" ошибки вроде _SyntaxError_ и _IndentationError_. Найдите в интернете пару
-курсов по Python, пройдите их, а лишь затем принимайтесь за написание ботов, сэкономите себе время и нервные клетки.
+**Bu kitob kimlar uchun?**  
+Ushbu kitob umumiy dasturlashni va xususan Python tilini yaxshi biladiganlar uchun mo'ljallangan, 
+"venv" va "pip" tushunchalaridan xabardor, shuningdek, _SyntaxError_ va _IndentationError_ kabi "oddiy" xatolarini tushunib va 
+tuzatishga qodir bo'lganlar uchun. Internetda bir nechta Python kurslarini toping, ularni o'rganing va 
+faqat shundan keyingina botlarni yozishga kirishing, bu sizga vaqt va asab hujayralarini tejashga yordam beradi.
 
-Во всех главах в качестве операционной системы мы будем использовать что-нибудь семейства GNU/Linux, 
-например, [Ubuntu](https://ubuntu.com/), Python 3.11 (в Virtual Environment) и среду разработки 
-[PyCharm](https://www.jetbrains.com/ru-ru/pycharm/download/), впрочем, не возбраняется и [Visual Studio Code](https://code.visualstudio.com/).
-При этом пользователи Windows не в пролёте: всё, что касается кода, будет спокойно работать и у вас, а для специфичных вещей
-вроде systemd вы можете использовать Ubuntu в [VirtualBox](https://www.virtualbox.org).
+Barcha bo'limlarda operatsion tizim sifatida GNU/Linux oilasidan birortasini, masalan, [Ubuntu](https://ubuntu.com/), 
+Python 3.11 (Virtual Environmentda) va dasturlash muhiti sifatida [PyCharm](https://www.jetbrains.com/pycharm/download/)dan foydalanamiz. 
+Ammo, [Visual Studio Code](https://code.visualstudio.com/)dan foydalanish ham mumkin. Shu bilan birga, 
+Windows foydalanuvchilari ham chetda qolmaydi: kodga tegishli hamma narsa sizda ham bemalol ishlaydi, 
+systemd kabi maxsus narsalar uchun siz [VirtualBox](https://www.virtualbox.org)da Ubuntu’dan foydalanishingiz mumkin.
 
-Текст книги и исходные тексты в [соответствующем репозитории](https://github.com/MasterGroosha/aiogram-3-guide) 
-полностью бесплатны, издаются под лицензией MIT и доступны любому для скачивания, модификации и использования в любых целях. 
+Kitob matni va tegishli kodlar [mos repo](https://github.com/MasterGroosha/aiogram-3-guide)da to'liq bepul, 
+MIT litsenziyasi ostida nashr etilgan va har kimga yuklab olish, o'zgartirish va har qanday maqsadda foydalanish uchun mavjud.
 
-**Донаты**  
-На написание и актуализацию книги я потратил очень много времени и сил. Если вы из России и хотите 
-отблагодарить автора материально, можете сделать это через [Ю.Money](https://yoomoney.ru/to/41001515922197) 
-(пожалуйста, указывайте в комментариях, что это за книгу).  
-На всякий случай уточню, что любое пожертвование является **добровольным и не даёт никаких преимуществ**, кроме плюсика в карму.
+**Donatlar**  
+Ushbu kitobni yozish va yangilash uchun juda ko'p vaqt va kuch sarfladim. Agar siz Rossiyadan bo'lsangiz va 
+muallifni moddiy jihatdan rag'batlantirmoqchi bo'lsangiz, [Yoo.Money](https://yoomoney.ru/to/41001515922197) orqali buni amalga oshirishingiz mumkin 
+(iltimos, izohlarda bu kitob uchun ekanligini ko'rsating).
+Shuni aniqlik kiritib o'taman, har qanday xayriya **ixtiyoriydir va hech qanday imtiyoz bermaydi**, faqat menga bu kitobni mukkammallashtirishda yordam berishi mumkin.
 
-**Благодарности**  
-За то, что эта книга в её текущем виде возникла и существует по сей день, спасибо создателю aiogram 
-[Alex JRootJunior](https://github.com/JrooTJunior), контрибуторам в сам [aiogram](https://github.com/aiogram/aiogram) 
-и [репозиторий книги](https://github.com/MasterGroosha/aiogram-3-guide), а также вам, дорогие читатели!
+**Minnatdorchiliklar**  
+Ushbu kitobning hozirgi ko'rinishda paydo bo'lishi va mavjudligi uchun aiogram yaratuvchisi [Alex JRootJunior](https://github.com/JrooTJunior), 
+[aiogram](https://github.com/aiogram/aiogram) va kitobning [repo](https://github.com/MasterGroosha/aiogram-3-guide)dagi kontirbutorlarga va 
+siz, aziz o'quvchilarga minnatdorchilik bildiraman!

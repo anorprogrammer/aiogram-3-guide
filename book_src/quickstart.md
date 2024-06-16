@@ -1,54 +1,49 @@
 ---
-title: Знакомство с aiogram
-description: Знакомство с aiogram
+title: Aiogram bilan tanishish
+description: Aiogram bilan tanishish
 ---
 
-# Знакомство с aiogram
+# Aiogram bilan tanishish
 
 !!! info ""
-    Используемая версия aiogram: 3.7.0
+    Foydalanilayotgan aiogram versiyasi: 3.7.0
 
-!!! warning "Некоторые детали сознательно упрощены!"
-    Автор этой книги убеждён, что помимо теории должна быть и практика. Чтобы максимально упростить повторение 
-    приведённого далее кода, пришлось пойти на использование подходов, пригодных только для локальной разработки 
-    и обучения.
+!!! warning "Ba'zi tafsilotlar ataylab soddalashtirilgan!"
+    Ushbu kitob muallifi, nazariyadan tashqari amaliyot ham bo'lishi kerak deb hisoblaydi.
+    Keyingi keltirilgan kodni maksimal darajada sodda qilib qayta yaratish uchun, 
+    faqat mahalliy rivojlantirish va o'qitishga mos keladigan yondashuvlardan foydalanishga to'g'ri keldi.
 
-    Так, например, во всех или почти во всех главах токен бота будет указываться прямо в исходных текстах. 
-    Это **плохой** подход, поскольку может привести к раскрытию токена, если вы забудете его удалить перед заливкой 
-    кода в публичный репозиторий (например, GitHub).
+    Shunday qilib, masalan, barcha yoki deyarli barcha bo'limlarda bot tokeni dastur kodida ko'rsatiladi. 
+    Bu **yomon** yondashuv, chunki agar kodni ommaviy repozitoriyga (masalan, GitHub) yuklashdan oldin uni o'chirishni unutib qo'ysangiz, 
+    tokenning oshkor bo'lishiga olib kelishi mumkin.
 
-    Или иногда в качестве хранилищ данных будут использоваться структуры, расположенные исключительно в 
-    оперативной памяти (словари, списки...). В действительности такие объекты нежелательны, поскольку остановка 
-    бота приведёт безвозвратной потере данных.
+    Yoki ba'zida ma'lumotlar ombori sifatida faqat operativ xotirada joylashgan tuzilmalar (lug'atlar, ro'yxatlar ...) ishlatiladi. 
+    Aslida bunday qilish to'g'ri hisoblanmaydi, chunki bot to'xtatilganda ma'lumotlar tiklanmaydi va yo'qolishiga olib keladi.
 
-    Также механизмом получения апдейтов от Telegram выбран поллинг, поскольку он гарантированно работает 
-    в подавляющем большинстве окружений и подходит практически всем разработчикам. 
+    Shuningdek, Telegramdan yangilanishlarni olish mexanizmi sifatida polling tanlangan, 
+    chunki u deyarli barcha muhitlarda ishonchli ishlaydi va deyarli barcha ishlab chiquvchilarga mos keladi.
+    
+    **Muhim esda tuting, muallifning maqsadi aiogram yordamida aynan Telegram Bot API bilan ishlashni tushuntirish, 
+    va umuman olganda butun kompyuter fanlarini tushuntirish emas.**
 
-    **Важно помнить, что автор ставит перед собой цель объяснить именно работу с Telegram Bot API при помощи 
-    aiogram, а не вообще весь Computer Science во всём его многообразии.**
+## Terminologiya {: id="glossary" }
 
-## Терминология {: id="glossary" }
+Bir xil terminlardan foydalanish uchun ularni kelishib olamiz va bu keyinchalik chalkashishning oldini oladi:
 
-Чтобы разговаривать в одних и тех же понятиях, введём некоторые термины, дабы в дальнейшем не путаться:
+ * Shaxsiy — shaxsiy xabarlar, bot holatida bu foydalanuvchi bilan botning birga-yakka muloqoti, guruh/kanal emas.
+* Chat — shaxsiy, guruhlar, superguruhlar va kanallarning umumiy nomi.
+* Update — [ushbu](https://core.telegram.org/bots/api#update) ro'yxatdagi har qanday hodisa: xabar, xabarni tahrirlash, callback, inline-so'rov, to'lov, botni guruhga qo'shish va h.k.
+* Handler — dispatcherdan/routerdan navbatdagi update-ni qabul qilib, uni qayta ishlaydigan asinxron funksiya.
+* Dispatcher — Telegramdan yangilanishlarni qabul qilish va keyingi qayta ishlash uchun mos handlerga uzatish bilan shug'ullanadigan ob'ekt.
+* Router — dispatcherga o'xshash, lekin handlerlar to'plamining kichik to'plamiga javob beradi. Dispatcherni asos router deb atash mumkin.
+* Filter — odatda True yoki False qaytaradigan va handler chaqirilishi yoki chaqirilmasligiga ta'sir qiladigan ifoda.
+* Middleware — updatelardan kelgan ma'lumotlarni qabul qilish va handlerga yetmasdan qayta ishlash uchun qo'shiladigan 'qatlam'.
 
-* ЛС — личные сообщения, в контексте бота это диалог один-на-один с пользователем, а не группа/канал.
-* Чат — общее название для ЛС, групп, супергрупп и каналов.
-* Апдейт — любое событие из [этого списка](https://core.telegram.org/bots/api#update): 
-сообщение, редактирование сообщения, колбэк, инлайн-запрос, платёж, добавление бота в группу и т.д. 
-* Хэндлер — асинхронная функция, которая получает от диспетчера/роутера очередной апдейт 
-и обрабатывает его.
-* Диспетчер — объект, занимающийся получением апдейтов от Telegram с последующим выбором хэндлера 
-для обработки принятого апдейта.
-* Роутер — аналогично диспетчеру, но отвечает за подмножество множества хэндлеров. 
-**Можно сказать, что диспетчер — это корневой роутер**.
-* Фильтр — выражение, которое обычно возвращает True или False и влияет на то, будет вызван хэндлер или нет.
-* Мидлварь — прослойка, которая вклинивается в обработку апдейтов. 
+## O'rnatish {: id="installation" }
 
-## Установка {: id="installation" }
-
-Для начала давайте создадим каталог для бота, организуем там virtual environment (далее venv) и
-установим библиотеку [aiogram](https://github.com/aiogram/aiogram).  
-Проверим, что установлен Python версии 3.9 (если вы знаете, что установлен 3.9 и выше, можете пропустить этот раздел):
+Avvalo bot uchun papka ochamiz, u yerda virtual environment (venv)'ni yaratamiz va 
+[aiogram](https://github.com/aiogram/aiogram) kutubxonasini o‘rnatamiz.
+Python 3.9 versiyasi o‘rnatilganligini tekshiramiz (agar sizda 3.9 va undan yuqori versiya o‘rnatilgan bo'lsa, ushbu bo‘limni o‘tkazib yuborishingiz mumkin):
 
 ```plain
 [groosha@main lesson_01]$ python3.9
@@ -59,12 +54,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 [groosha@main lesson_01]$ 
 ```
 
-Теперь создадим файл `requirements.txt`, в котором укажем используемую нами версию aiogram. Также нам понадобится 
-библиотека pydantic-settings для файлов конфигурации.
-!!! important "О версиях aiogram"
-    В этой главе используется aiogram **3.x**, перед началом работы рекомендую заглянуть в 
-    [канал релизов](https://t.me/aiogram_live) библиотеки и проверить наличие более новой версии. Подойдёт любая 
-    более новая, начинающаяся с цифры 3, поскольку aiogram 2.x более рассматриваться не будет и считается устаревшим.
+Endi `requirements.txt` faylini yaratamiz, unda biz foydalanadigan aiogram versiyasini ko'rsatamiz. 
+Shuningdek, konfiguratsiya fayllari uchun pydantic-settings kutubxonasi ham kerak bo'ladi.
+!!! important "Aiogram versiyalari haqida"
+    Ushbu bo'limda aiogram **3.x** ishlatiladi, ishni boshlashdan oldin kutubxonaning 
+    [yangiliklar kanali](https://t.me/aiogram_live)ga kirib, yangi versiyaning mavjudligini tekshirishni tavsiya qilaman. 
+    3 raqami bilan boshlanadigan har qanday yangi versiya bilan ishlashinggiz mumkin, chunki aiogram 2.x versiyasi yangilanmaydi va eskirgan deb hisoblanadi.
 
 ```plain
 [groosha@main 01_quickstart]$ python3.11 -m venv venv
@@ -72,13 +67,16 @@ Type "help", "copyright", "credits" or "license" for more information.
 [groosha@main 01_quickstart]$ echo "pydantic-settings" >> requirements.txt
 [groosha@main 01_quickstart]$ source venv/bin/activate
 (venv) [groosha@main 01_quickstart]$ pip install -r requirements.txt 
-# ...здесь куча строк про установку...
-Successfully installed ...тут длинный список...
+# ...bu yerda o'rnatish haqida ko'plab yozuvlar chiqadi...
+Successfully installed ...shunga o'xshash...
 [groosha@main 01_quickstart]$
 ```
 
 Обратите внимание на префикс "venv" в терминале. Он указывает, что мы находимся в виртуальном окружении с именем "venv".
-Проверим, что внутри venv вызов команды `python` указывает на всё тот же Python 3.11:  
+Проверим, что внутри venv вызов команды `python` указывает на всё тот же Python 3.11: 
+
+Terminaldagi "venv" boshmatniga e'tibor bering. Bu bizning "venv" deb nomlangan virtual muhit ichida ekanligimizni bildiradi.
+Keling, venv ichida "python" buyrug'iga yozib uning ishga tushishini tekshirib ko'ramiz:
 ```plain
 (venv) [groosha@main 01_quickstart]$ python
 Python 3.11.9 (main, Jan 11 2024, 16:35:07) 
@@ -89,35 +87,35 @@ Type "help", "copyright", "credits" or "license" for more information.
 [groosha@main 01_quickstart]$ 
 ```
 
-Последней командой `deactivate` мы вышли из venv, чтобы он нам не мешал. 
+Muhit bizga xalaqit bermasligi uchun `deactivate` buyrug'ini bilan venv'dan chiqishimiz mumkin.
 
 !!! info ""
-    Если для написания ботов вы используете PyCharm, рекомендую также установить сторонний плагин 
-    [Pydantic](https://plugins.jetbrains.com/plugin/12861-pydantic) для поддержки автодополнения кода 
-    в телеграмных объектах.
+    Agar siz botlarni yozish uchun PyCharm'dan foydalanayotgan bo'lsangiz, 
+    Telegram ob'ektlarida kodni avtomatik to‘ldirishni qo‘llash uchun 
+    [Pydantic](https://plugins.jetbrains.com/plugin/12861-pydantic)'ning uchinchi tomon plaginini o'rnatishni ham tavsiya qilaman.
 
-## Первый бот {: id="hello-world" }
+## Birinchi bot {: id="hello-world" }
 
-Давайте создадим файл `bot.py` с базовым шаблоном бота на aiogram:
+Keling, aiogram asosiy shabloniga ega bot.py faylini yarataylik:
 ```python title="bot.py"
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 
-# Включаем логирование, чтобы не пропустить важные сообщения
+# Muhim xabarlarni o'tkazib yubormaslik uchun loglashni yoqamiz
 logging.basicConfig(level=logging.INFO)
-# Объект бота
+# Bot obyektini yaratamiz
 bot = Bot(token="12345678:AaBbCcDdEeFfGgHh")
-# Диспетчер
+# Dispatcher obyektini yaratamiz
 dp = Dispatcher()
 
-# Хэндлер на команду /start
+# /start buyrug'iga uchun handler
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     await message.answer("Hello!")
 
-# Запуск процесса поллинга новых апдейтов
+# Yangi update'larni olish uchun polling jarayonini boshlaymiz
 async def main():
     await dp.start_polling(bot)
 
@@ -125,42 +123,41 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Первое, на что нужно обратить внимание: aiogram — асинхронная библиотека, поэтому ваши хэндлеры тоже должны быть асинхронными, 
-а перед вызовами методов API нужно ставить ключевое слово **await**, т.к. эти вызовы возвращают [корутины](https://docs.python.org/3/library/asyncio-task.html#coroutines).
+Birinchi navbatda e'tibor qaratishingiz kerak bo'lgan narsa: aiogram asinxron kutubxona hisoblanadi, 
+shuning uchun handlerlaringiz ham asinxron bo'lishi kerak. API metodlarini chaqirishdan oldin **await** kalit so'zini qo'yish kerak, chunki bu chaqiriqlar [korutin](https://docs.python.org/3/library/asyncio-task.html#coroutines)larni qaytaradi.
 
-!!! info "Асинхронное программирование в Python"
-    Не стоит пренебрегать официальной документацией!  
-    Прекрасный туториал по asyncio доступен [на сайте Python](https://docs.python.org/3/library/asyncio-task.html).
+!!! info "Python’da asinxron dasturlash"
+    Rasmiy hujjatlarni e'tiborsiz qoldirmang!
+    [Python saytida](https://docs.python.org/3/library/asyncio-task.html) ajoyib asyncio qo'llanmasi mavjud.
 
-Если вы в прошлом работали с какой-то другой библиотекой для Telegram, например, pyTelegramBotAPI, то концепция
-хэндлеров (обработчиков событий) вам сразу станет понятна, разница лишь в том, что в aiogram хэндлерами управляет диспетчер.  
-Диспетчер регистрирует функции-обработчики, дополнительно ограничивая перечень вызывающих их событий через фильтры. 
-После получения очередного апдейта (события от Telegram), диспетчер выберет нужную функцию обработки, подходящую по всем 
-фильтрам, например, «обработка сообщений, являющихся изображениями, в чате с ID икс и с длиной подписи игрек». Если две 
-функции имеют одинаковые по логике фильтры, то будет вызвана та, что зарегистрирована раньше.
+Agar siz ilgari Telegram uchun boshqa biror boshqa kutubxona, masalan pyTelegramBotAPI bilan ishlagan bo'lsangiz, 
+handler'larni tushuningizda qiyinlik tug'ilmaydi. Farqi shundaki, aiogramda handlerlarni dispatcher boshqaradi.
+Dispatcher funksiya-handlerlarni ro'yxatdan o'tkazadi va ularni chaqiruvchi hodisalar ro'yxatini filtrlardan foydalanib qo'shimcha cheklaydi. 
+Telegramdan navbatdagi yangilanish (update) qabul qilingandan so'ng, dispatcher barcha filtrlar bo'yicha mos keladigan kerakli qayta ishlash funksiyasini tanlaydi. 
+Agar ikki funksiya mantiqiy jihatdan bir xil filtrlarga ega bo'lsa, avvalroq ro'yxatdan o'tkazilgan funksiya chaqiriladi.
 
-Чтобы зарегистрировать функцию как обработчик сообщений, нужно сделать одно из двух действий:  
-1. Навесить на неё [декоратор](https://devpractice.ru/python-lesson-19-decorators/), как в примере выше. 
-С различными типами декораторов мы познакомимся позднее.  
-2. Напрямую вызвать метод регистрации у диспетчера или роутера.
+Funksiyani xabarlarni qayta ishlovchi sifatida ro'yxatdan o'tkazish uchun quyidagi ikki amaldan birini bajarish kerak:  
+1. Uni yuqoridagi misoldagi kabi [dekorator](https://telegra.ph/Pythonda-decoratorlar-03-29) bilan yozish. 
+Turli xil dekoratorlar bilan keyinchalik tanishamiz.  
+2. Dispatcher yoki routerda ro'yxatdan o'tkazish(register) metodini to'g'ridan-to'g'ri chaqirish.
 
-Рассмотрим следующий код: 
+Quyidagi kodni ko'rib chiqamiz:
 ```python
-# Хэндлер на команду /test1
+# /test1 buyrug'iga uchun handler
 @dp.message(Command("test1"))
 async def cmd_test1(message: types.Message):
     await message.reply("Test 1")
 
-# Хэндлер на команду /test2
+# /test2 buyrug'iga uchun handler
 async def cmd_test2(message: types.Message):
     await message.reply("Test 2")
 ```
 
-Давайте запустим с ним бота:  
+Keling, botning ushbu kodini ishga tushiramiz:
 ![Команда /test2 не работает](images/quickstart/l01_1.jpg)
 
-Хэндлер `cmd_test2` не сработает, т.к. диспетчер о нём не знает. Исправим эту ошибку 
-и отдельно зарегистрируем функцию:
+`cmd_test2` handleri ishlamaydi, chunki dispatcher undan xabardor emas. 
+Bu xatoni to'g'rilaymiz va funksiyani alohida ro'yxatdan o'tkazamiz:
 ```python
 # Хэндлер на команду /test2
 async def cmd_test2(message: types.Message):
@@ -170,53 +167,53 @@ async def cmd_test2(message: types.Message):
 dp.message.register(cmd_test2, Command("test2"))
 ```
 
-Снова запустим бота:  
+Botni yangidan ishga tushiramiz:  
 ![Обе команды работают](images/quickstart/l01_2.jpg)
 
-## Синтаксический сахар {: id="sugar" }
+## Sintaktik shakar (syntactic sugar) {: id="sugar" }
 
-Для того чтобы сделать код чище и читабельнее, aiogram расширяет возможности стандартных объектов Telegram.
-Например, вместо `bot.send_message(...)` можно написать `message.answer(...)` или `message.reply(...)`. В последних
-двух случаях не нужно подставлять `chat_id`, подразумевается, что он такой же, как и в исходном сообщении.  
-Разница между `answer` и `reply` простая: первый метод просто отправляет сообщение в тот же чат, второй делает "ответ" на 
-сообщение из `message`:
+Kodni toza va o'qilishi osonroq qilish uchun aiogram Telegramning standart obyektlarining imkoniyatlarini kengaytiradi. 
+Masalan, `bot.send_message(...)` o'rniga `message.answer(...)` yoki `message.reply(...)` deb yozish mumkin. 
+Oxirgi ikki holatda `chat_id`ni ko'rsatish shart emas, chunki u dastlabki xabardagi kabi bo'ladi.
+`answer` va `reply` orasidagi farq oddiy: birinchi metod shunchaki xabarni shu chatga yuboradi, 
+ikkinchisi esa `message`dan xabariga "javob" qiladi (bu holatda bot jo'natgan habar sizning habaringgizga bog'langan bo'ladi):
 ```python
 @dp.message(Command("answer"))
 async def cmd_answer(message: types.Message):
-    await message.answer("Это простой ответ")
+    await message.answer("Bu oddiy xabar")
 
 
 @dp.message(Command("reply"))
 async def cmd_reply(message: types.Message):
-    await message.reply('Это ответ с "ответом"')
+    await message.reply('Bu "javob" xabari')
 ```
-![Разница между message.answer() и message.reply()](images/quickstart/l01_3.jpg)
+![message.answer() va message.reply() orasidagi farq](images/quickstart/l01_3.jpg)
 
-Более того, для большинства типов сообщений есть вспомогательные методы вида 
-"answer_{type}" или "reply_{type}", например:
+Bundan tashqari, xabarlarning ko'p turlari uchun 
+"answer_{type}" yoki "reply_{type}" shaklidagi yordamchi metodlar mavjud, masalan:
 ```python
 @dp.message(Command("dice"))
 async def cmd_dice(message: types.Message):
     await message.answer_dice(emoji="🎲")
 ```
 
-!!! info "что значит 'message: types.Message' ?"
-    Python является интерпретируемым языком с [сильной, но динамической типизацией](https://habr.com/ru/post/161205/),
-    поэтому встроенная проверка типов, как, например, в C++ или Java, отсутствует. Однако начиная с версии 3.5 
-    в языке появилась поддержка [подсказок типов](https://docs.python.org/3/library/typing.html), благодаря которой
-    различные чекеры и IDE вроде PyCharm анализируют типы используемых значений и подсказывают
-    программисту, если он передаёт что-то не то. В данном случае подсказка `types.Message` сообщает
-    PyCharm-у, что переменная `message` имеет тип `Message`, описанный в модуле `types` библиотеки
-    aiogram (см. импорты в начале кода). Благодаря этому IDE может на лету подсказывать атрибуты и функции.
+!!! info "`message: types.Message` qanday ma'noni bildiradi?"
+    Python [kuchli dinamik tiplashgan](https://realpython.com/lessons/dynamic-vs-static/) interpretatsiyalanuvchi til bo'lib, 
+    C++ yoki Java kabi ichki tip tekshiruvi mavjud emas. Biroq, 3.5-versiyasidan boshlab, 
+    tilga tip ko'rsatmalarini qo'llab-quvvatlash qo'shildi, bu esa turli tekshiruvlar va PyCharm kabi IDE’lar ishlatilayotgan 
+    qiymatlarning turlarini tahlil qilib, dasturchiga noto'g'ri narsa uzatilsa xabar berish imkonini beradi. 
+    Bu holatda `types.Message` matni PyCharm'ga `message` o'zgaruvchisi aiogram kutubxonasining `types` modulida tavsiflangan 
+    `Message` turiga ega ekanligini bildiradi (kodingiz boshidagi importlarga qarang). 
+    Bu orqali IDE atributlar va funksiyalarni ko'rsatib turishi mumkin.
 
-При вызове команды `/dice` бот отправит в тот же чат игральный кубик. Разумеется, если его надо отправить в какой-то
-другой чат, то придётся по старинке вызывать `await bot.send_dice(...)`. Но объект `bot` (экземпляр класса Bot) может быть 
-недоступен в области видимости конкретной функции. В aiogram 3.x объект бота, которому пришёл апдейт, неявно 
-прокидывается в хэндлер и его можно достать как аргумент `bot`. Предположим, вы хотите по команде `/dice` 
-отправлять кубик не в тот же чат, а в канал с ID -100123456789. Перепишем предыдущую функцию:
+`/dice` buyrug'i yuborilganda, bot shu chatga o'yin kubigini yuboradi. Albatta, agar uni boshqa chatga yuborish kerak bo'lsa, 
+odatdagidek await `bot.send_dice(...)`ni chaqirishga to'g'ri keladi. Lekin `bot` obyekti (`Bot` sinfining nusxasi) ma'lum bir 
+funksiyaning ko'rinishida mavjud bo'lmasligi mumkin. aiogram 3.x da yangilanish kelganda kutubxona bot obyekti aniq bo'lmagan holda 
+handlerga uzatiladi va uni bot argumenti sifatida olish mumkin. Faraz qilaylik, siz `/dice` buyrug'i bilan kubikni shu 
+chatga emas, balki ID -100123456789 bo'lgan kanalga yubormoqchisiz. Oldingi funksiyani quyidagicha qayta yozamiz:
 
 ```python
-# не забудьте про импорт
+# import qilishni unutmang
 from aiogram.enums.dice_emoji import DiceEmoji
 
 @dp.message(Command("dice"))
@@ -224,21 +221,21 @@ async def cmd_dice(message: types.Message, bot: Bot):
     await bot.send_dice(-100123456789, emoji=DiceEmoji.DICE)
 ```
 
-## Передача доп. параметров {: id="pass-extras" }
+## Qo'shimcha parametrlarni uzatish {: id="pass-extras" }
 
-Иногда при запуске бота может потребоваться передать одно или несколько дополнительных значений. 
-Это может быть какая-нибудь переменная, объект конфигурации, список чего-то, отметка времени и что угодно ещё. 
-Для этого достаточно передать эти данные как именованные (kwargs) аргументы в диспетчер, либо присвоить значения, как 
-если бы вы работали со словарём.
+Ba'zida botni ishga tushirganda bir yoki bir nechta qo'shimcha qiymatlarni uzatish kerak bo'lishi mumkin. 
+Bu qandaydir o'zgaruvchi, konfiguratsiya obyekti, biror narsalar ro'yxati va boshqa narsalar bo'lishi mumkin. 
+Buning uchun bu ma'lumotlarni (kwargs) argumentlar sifatida dispatcherga uzatish yoki lug'at bilan ishlayotgandek 
+qiymatlarni belgilash kifoya.
 
-Такая возможность лучше всего подходит для передачи объектов, которые должны жить в единственном экземпляре и не меняться 
-в ходе работы бота (т.е. быть только для чтения). Если предполагается, что значение должно изменяться со временем, то помните, что 
-это сработает только с [мутабельными объектами](https://mathspp.com/blog/pydonts/pass-by-value-reference-and-assignment). 
-Чтобы получить значения в хэндлерах, просто укажите их как аргументы. Рассмотрим на примере:
+Bunday imkoniyat yagona nusxada bo'lishi va bot ishlayotgan paytda o'zgarmasligi kerak bo'lgan obyektlarni uzatish uchun 
+eng mos keladi (ya'ni, faqat o'qish uchun). Agar qiymat vaqt o'tishi bilan o'zgarishi kerak bo'lsa, 
+bu faqat [o'zgaruvchan obyektlar](https://mathspp.com/blog/pydonts/pass-by-value-reference-and-assignmen) bilan ishlaydi. 
+Handlerlarda qiymatlarni olish uchun ularni oddiygina argumentlar sifatida ko'rsating. Misol orqali ko'rib chiqamiz:
 
 ```python
-# Где-то в другом месте
-# Например, в точке входа в приложение
+# Boshqa joyda
+# Masalan, ilovaning kirish nuqtasida
 from datetime import datetime
 
 # bot = ...
@@ -250,33 +247,33 @@ await dp.start_polling(bot, mylist=[1, 2, 3])
 @dp.message(Command("add_to_list"))
 async def cmd_add_to_list(message: types.Message, mylist: list[int]):
     mylist.append(7)
-    await message.answer("Добавлено число 7")
+    await message.answer("7 raqa qo'shildi")
 
 
 @dp.message(Command("show_list"))
 async def cmd_show_list(message: types.Message, mylist: list[int]):
-    await message.answer(f"Ваш список: {mylist}")
+    await message.answer(f"Sizning ro'yxatinggiz: {mylist}")
 
     
 @dp.message(Command("info"))
 async def cmd_info(message: types.Message, started_at: str):
-    await message.answer(f"Бот запущен {started_at}")
+    await message.answer(f"Bot ishga tushirildi {started_at}")
 ```
 
-Теперь переменную `started_at` и список `mylist` можно читать и писать в разных хэндлерах. А если вам нужно пробрасывать 
-уникальные для каждого апдейта значения (например, объект сессии СУБД), 
-то ознакомьтесь с [мидлварями](filters-and-middlewares.md#middlewares).
+Endi started_at o'zgaruvchisi va mylist ro'yxatini turli handlerlarda o'qish va yozish mumkin. Agar har bir yangilanish 
+uchun noyob qiymatlarni (masalan, DBMS sessiya obyektini) uzatishingiz kerak bo'lsa, 
+[middleware](filters-and-middlewares.md#middlewares)lar bilan tanishing.
 
-![Аргумент mylist может быть изменён между вызовами](images/quickstart/extra-args.png)
+![mylist argumenti chaqiruvlar orasida o'zgartirilishi mumkin](images/quickstart/extra-args.png)
 
-## Файлы конфигурации
+## Konfiguratsiya fayllari
 
-Чтобы не хранить токен прямо в коде (вдруг вы захотите залить своего бота в публичный репозиторий?) можно вынести 
-подобные данные в отдельный конфигурационный файл. Существует [хорошее и адекватное мнение](https://t.me/advice17/26), 
-что для прода достаточно переменных окружения, однако в рамках этой книги мы будем пользоваться отдельными файлами `.env`, 
-чтобы немного упростить себе жизнь и сэкономить читателям время на разворачивание демонстрационного проекта.
+Tokenni to'g'ridan-to'g'ri kodda saqlamaslik uchun (agar siz botingizni ommaviy repozitoriyga yuklamoqchi bo'lsangiz?) 
+bunday ma'lumotlarni alohida konfiguratsiya fayliga chiqarishingiz mumkin. Bu haqida rus tilidagi [maqola](https://t.me/advice17/26) majud, 
+Kod yozayotganinggizda environment o'zgaruvchilarini o'zgartirishnggiz kifoya, ammo ushbu kitob doirasida biz `.env` fayllaridan foydalanamiz,
+bu kodlarimizni biroz soddalashtiradi va bu kitob foydalanuvchilariga loyihani ko'rsatishda yordam beradi.
 
-Итак, создадим рядом с `bot.py` отдельный файл `config_reader.py` со следующим содержимым
+Shunday qilib, `bot.py` yonida quyidagi ko'rinishdagi `config_reader.py` nomli alohida fayl yaratamiz:
 
 ```python title="config_reader.py"
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -284,42 +281,41 @@ from pydantic import SecretStr
 
 
 class Settings(BaseSettings):
-    # Желательно вместо str использовать SecretStr 
-    # для конфиденциальных данных, например, токена бота
+    # Maxfiy ma'lumotlar uchun, masalan, bot tokeni uchun 
+    # str o'rniga SecretStr ishlatish tavsiya etiladi
     bot_token: SecretStr
 
-    # Начиная со второй версии pydantic, настройки класса настроек задаются
-    # через model_config
-    # В данном случае будет использоваться файла .env, который будет прочитан
-    # с кодировкой UTF-8
+    # Pydanticning ikkinchi versiyasidan boshlab, sozlamalar klassining sozlamalari 
+    # model_config orqali belgilanadi
+    # Bu holda UTF-8 kodlash bilan o'qiladigan .env fayli ishlatiladi
+
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
 
 
-# При импорте файла сразу создастся 
-# и провалидируется объект конфига, 
-# который можно далее импортировать из разных мест
+# Fayl import qilinganda darhol 
+# konfiguratsiya obyekti yaratiladi va tasdiqlanadi,
+# keyinchalik uni turli joylardan import qilish mumkin
 config = Settings()
 ```
 
-Теперь немного отредактируем наш `bot.py`:
+Endi `bot.py` faylimizni biroz tahrir qilamiz:
 
 ```python title="bot.py"
-# импорты
+# import
 from config_reader import config
 
-# Для записей с типом Secret* необходимо 
-# вызывать метод get_secret_value(), 
-# чтобы получить настоящее содержимое вместо '*******'
+# Secret* turi bo'lgan yozuvlar uchun 
+# haqiqiy mazmunni olish uchun get_secret_value() metodini chaqirish kerak, 
+# aks holda '*******' ko'rsatiladi
 bot = Bot(token=config.bot_token.get_secret_value())
 ```
 
-Наконец, создадим файл `.env` (с точкой в начале), где опишем токен бота:
-
+Oxirida, `.env` (boshida nuqta bilan) faylini yaratamiz va unda bot tokenini yozamiz:
 ```title=".env"
 BOT_TOKEN = 0000000000:AaBbCcDdEeFfGgHhIiJjKkLlMmNn
 ```
 
-Если всё сделано правильно, то при запуске python-dotenv подгрузит переменные из файла `.env`, pydantic 
-их провалидирует и объект бота успешно создастся с нужным токеном.
+Agar hammasi to'g'ri qilingan bo'lsa, python-dotenv `.env` faylidagi o'zgaruvchilarni yuklaydi, pydantic 
+ularni tasdiqlaydi va bot obyekti kerakli token bilan muvaffaqiyatli yaratiladi.
 
-На этом мы закончим знакомство с библиотекой, а в следующих главах рассмотрим другие "фишки" aiogram и Telegram Bot API.
+Shu bilan biz kutubxona bilan tanishishni yakunlaymiz, keyingi bo'limlarda aiogram va Telegram Bot API ning boshqa "foydali funksiyalar"ini ko'rib chiqamiz.
