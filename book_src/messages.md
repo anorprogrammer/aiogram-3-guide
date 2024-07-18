@@ -1,56 +1,56 @@
 ---
-title: Работа с сообщениями
-description: Работа с сообщениями
+title: Xabarlar bilan ishlash
+description: Xabarlar bilan ishlash
 ---
 
-# Работа с сообщениями
+# Xabarlar bilan ishlash
 
 !!! info ""
-    Используемая версия aiogram: 3.7.0
+    Foydalanilayotgan aiogram versiyasi: 3.7.0
 
-В этой главе мы разберёмся, как применять различные типы форматирования к сообщениям и работать с медиафайлами.
+Ushbu bo'limda biz xabarlarga turli formatlash turlarini qanday qo'llashni va media fayllar bilan ishlashni o'rganamiz.
 
-## Текст {: id="text" }
-Обработка текстовых сообщений — это, пожалуй, одно из важнейших действий у большинства ботов. Текстом можно выразить 
-практически что угодно и при этом подавать информацию хочется _красиво_. В распоряжении у разработчика имеется три способа 
-разметки текста: HTML, Markdown и MarkdownV2. Наиболее продвинутыми из них считаются HTML и MarkdownV2, «классический» 
-Markdown поддерживает меньше возможностей и более не используется в aiogram.
+## Matn {: id="text" }
+Matnli xabarlarni qayta ishlash ko'pchilik botlar uchun eng muhim vazifalaridan biridir. Matn yordamida deyarli hamma 
+narsani ifodalash mumkin va  bazan ma'lumotni _chiroyli_ tarzda taqdim etish zarur bo'ladi. Dasturchida ixtiyorida matnni belgilashning 
+uchta usuli mavjud: HTML, Markdown va MarkdownV2. Ulardan eng rivojlanganlari HTML va MarkdownV2 bo'lib, "klassik" 
+Markdown usuli kamroq imkoniyatlarni ega va u aiogramda endi ishlatilmaydi.
 
-Прежде, чем мы рассмотрим способы работы с текстом в aiogram, необходимо упомянуть 
-важное отличие aiogram 3.x от 2.x: в «двойке» по умолчанию обрабатывались только 
-текстовые сообщения, а в «тройке» — любого типа. Если точнее, вот как теперь надо 
-принимать исключительно текстовые сообщения:
+Matn bilan ishlash usullarini ko'rib chiqishdan oldin, aiogram 3.x ning 2.x dan muhim farqini eslatib o'tish kerak: 
+ikkinchi veersiyada standart bo'yicha faqat matnli xabarlar qayta ishlanar edi, 
+uchda esa har qanday turdagi xabarlar qayta ishlanadi. 
+Aniqroq qilib aytganda, endi faqat matnli xabarlarni qanday tutib qolish kerakligi quyida ko'rsatilgan:
 
 ```python
-# было (декоратором)
+# dekorator bilan eski usul
 @dp.message_handler()
 async def func_name(...)
 
-# было (функцией-регистратором)
+# funksiya registrator bilan eski usul
 dp.register_message_handler(func_name)
 
-# стало (декоратором)
+# dekorator bilan yangi usul
 from aiogram import F
 @dp.message(F.text)
 async def func_name(...)
 
-# стало (функцией-регистратором)
+# funksiya registrator bilan yangi usul
 dp.message.register(func_name, F.text)
 ```
 
-Про «магический фильтр» **F** мы поговорим в [другой главе](filters-and-middlewares.md).
+"Sehrli filtr" **F** haqida [boshqa bo'limda](filters-and-middlewares.md) gaplashamiz.
 
-### Форматированный вывод {: id="formatting-options" }
+### Formatlangan chiqish {: id="formatting-options" }
 
-За выбор форматирования при отправке сообщений отвечает аргумент `parse_mode`, например:
+Xabarlarni yuborishda formatlashni tanlash uchun `parse_mode` argumenti javob beradi, masalan:
 ```python
 from aiogram import F
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.enums import ParseMode
 
-# Если не указать фильтр F.text, 
-# то хэндлер сработает даже на картинку с подписью /test
+# Agar F.text filtrini ko'rsatmasangiz,
+# handler hatto /test yozuvi bilan rasmga ham ishlaydi
 @dp.message(F.text, Command("test"))
 async def any_message(message: Message):
     await message.answer(
@@ -63,11 +63,11 @@ async def any_message(message: Message):
     )
 ```
 
-![Hello world с разным форматированием](images/messages/l02_1.png)
+![Turli formatlash bilan Hello world:](images/messages/l02_1.png)
 
-Если в боте повсеместно используется определённое форматирование, то каждый раз указывать аргумент `parse_mode` довольно 
-накладно. К счастью, в aiogram можно задать параметры бота по умолчанию. Для этого создайте объект `DefaultBotProperties` 
-и передайте туда нужные настройки:
+Agar botda doimiy ravishda ma'lum bir formatlash ishlatilsa, har safar `parse_mode` argumentini ko'rsatish noqulay 
+bo'lishi mumkin. Yaxshiyamki, aiogramda botning standart sozlamalarini belgilash mumkin. Buning uchun `DefaultBotProperties` 
+obyektini yarating va kerakli sozlamalarni unga o'tkazing:
 
 ```python
 from aiogram.client.default import DefaultBotProperties
@@ -76,29 +76,29 @@ bot = Bot(
     token="123:abcxyz",
     default=DefaultBotProperties(
         parse_mode=ParseMode.HTML
-        # тут ещё много других интересных настроек
+        # bu yerda yana boshqa qiziqarli sozlamalar ham bor
     )
 )
 bot = Bot(token="123:abcxyz", parse_mode="HTML")
 
-# где-то в функции...
-await message.answer("Сообщение с <u>HTML-разметкой</u>")
-# чтобы явно отключить форматирование в конкретном запросе, 
-# передайте parse_mode=None
+# qandaydir funksiyada...
+await message.answer("HTML-belgilanishi bilan <u>xabar</u>")
+# formatlashni aniq o'chirish uchun,
+# parse_mode=None ni ko'rsating
 await message.answer(
-    "Сообщение без <s>какой-либо разметки</s>", 
+    "Hech qanday <s>belgilanishsiz xabar</s>", 
     parse_mode=None
 )
 ```
 
-![Настройка типа разметки по умолчанию](images/messages/l02_2.png)
+![Standart belgilar turini sozlash](images/messages/l02_2.png)
 
-### Экранирование ввода {: id="input-escaping" }
+### Kiritishni ekranga chiqarish {: id="input-escaping" }
 
-Нередко бывают ситуации, когда окончательный текст сообщения бота заранее неизвестен 
-и формируется исходя из каких-то внешних данных: имя пользователя, его ввод и т.д. 
-Напишем хэндлер на команду `/hello`, который будет приветствовать пользователя по его полному имени
-(`first_name + last_name`), например: «Hello, Иван Иванов»:
+Ko'pincha botda xabarining yakuniy matni oldindan ma'lum bo'lmaydi va bot uni qandaydir tashqi 
+ma'lumotlar asosida shakllantiriladi: foydalanuvchining ismi, uning kiritgan ma'lumotlari va hokazo. 
+Keling, foydalanuvchini uning to'liq ismi bilan (`first_name + last_name`) salomlashadigan 
+`/hello` komandasi uchun handler yozamiz, masalan: «Hello, Ivan Ivanov»:
 
 ```python
 from aiogram.filters import Command
@@ -111,16 +111,16 @@ async def cmd_hello(message: Message):
     )
 ```
 
-И вроде всё хорошо, бот приветствует пользователей:
+Hammasi yaxshi ishladi natijani quyidagi tasvirda ko'rish mumkin:
 
-![Работа команды /hello](images/messages/cmd_hello_before.png)
+![/hello buyrug'i](images/messages/cmd_hello_before.png)
 
-Но тут приходит юзер с именем &lt;Cлавик777&gt; и бот молчит! А в логах видно следующее:
+Ammo bu yerda &lt;Cлавик777&gt; ismli foydalanuvchi botga habar yzosa va bot javob qaytarmaydi! Loglarda quyidagilarni ko'rishimiz mumkin: 
 `aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: can't parse entities: 
 Unsupported start tag "Славик777" at byte offset 7`
 
-Упс, у нас стоит режим форматирования HTML, и Telegram пытается распарсить &lt;Cлавик777&gt; как HTML-тег. Непорядок. 
-Но у этой проблемы есть несколько решений. Первое: экранировать передаваемые значения.
+Obbo, bizda HTML formatlash rejimi yoqilganku va Telegram &lt;Cлавик777&gt; ni HTML teg sifatida qabul qilishga harakat qilmoqda. 
+Bu muammo. Ammo bu muammoni hal qilishning bir necha yo'li bor. Birinchi usul: uzatiladigan qiymatlarni ekranga chiqarish.
 
 ```python
 from aiogram import html
@@ -134,8 +134,8 @@ async def cmd_hello(message: Message):
     )
 ```
 
-Второе чуть сложнее, но более продвинутое: воспользоваться специальным инструментом, который будет 
-собирать отдельно текст и отдельно информацию о том, какие его куски должны быть отформатированы.
+Ikkinchi usul biroz murakkabroq, lekin yanada yaxsh usul hisoblanadi: matnni alohida va qaysi qismlar 
+formatlanishi kerakligi haqidagi ma'lumotni alohida yig'adigan maxsus klassdan foydalanish.
 
 ```python
 from aiogram.filters import Command
@@ -152,14 +152,14 @@ async def cmd_hello(message: Message):
     )
 ```
 
-В примере выше конструкция `**content.as_kwargs()` вернёт аргументы `text`, `entities`, `parse_mode` и 
-подставит их в вызов `answer()`.
+Yuqoridagi misolda `**content.as_kwargs()` konstruktsiyasi `text`, `entities`, `parse_mode` argumentlarini qaytaradi 
+va ularni `answer()` funksiyasiga lug'at ko'rinishida uzatadi.
 
-![Работа команды /hello после фиксов](images/messages/cmd_hello_after.png)
+![/hello buyrug'ining tuzatilgandan keyingi ishlashi](images/messages/cmd_hello_after.png)
 
-Упомянутый инструмент форматирования довольно комплексный, 
-[официальная документация](https://docs.aiogram.dev/en/latest/utils/formatting.html) демонстрирует удобное отображение 
-сложных конструкций, например:
+Ushbu formatlash vositasi juda keng qamrovli bo'lib, 
+[rasmiy hujjatlar](https://docs.aiogram.dev/en/latest/utils/formatting.html)da murakkab tuzilmalarni qanday qulay
+ko'rsatishni mumkinligini ko'rishinggiz mumkin, masalan:
 
 ```python
 from aiogram.filters import Command
@@ -195,56 +195,55 @@ async def cmd_advanced_example(message: Message):
     await message.answer(**content.as_kwargs())
 ```
 
-![Продвинутый пример](images/messages/advanced_example.png)
+![Murakkab misol](images/messages/advanced_example.png)
 
 !!! info ""
-    Подробнее о различных способах форматирования и поддерживаемых тегах можно узнать 
-    [в документации Bot API](https://core.telegram.org/bots/api#formatting-options).
+    Turli formatlash usullari va qo'llab-quvvatlanadigan teglar haqida batafsil 
+    [Bot API hujjatlari](https://core.telegram.org/bots/api#formatting-options)da bilib olishingiz mumkin.
 
-### Сохранение форматирования {: id="keep-formatting" }
+### Formatlashni saqlash {: id="keep-formatting" }
 
-Представим, что бот должен получить форматированный текст от пользователя и добавить туда что-то 
-своё, например, отметку времени. Напишем простой код:
+Tasavvur qiling, bot foydalanuvchidan formatlangan matn olishi va unga o'zidan biror narsani, masalan, 
+vaqt belgisini qo'shishi holatini ko'rib chiqamiz:
 
 ```python
-# новый импорт!
+# yangi import
 from datetime import datetime
 
 @dp.message(F.text)
 async def echo_with_time(message: Message):
-    # Получаем текущее время в часовом поясе ПК
+    # Hozirgi vaqtni kompyuterning vaqt zonasida olamiz
     time_now = datetime.now().strftime('%H:%M')
-    # Создаём подчёркнутый текст
+    # Qo'shimcha matnni qo'shib qo'yamiz
     added_text = html.underline(f"Создано в {time_now}")
-    # Отправляем новое сообщение с добавленным текстом
+    # Qo'shilgan matnni o'z ichiga olgan yangi xabar yuboramiz
     await message.answer(f"{message.text}\n\n{added_text}", parse_mode="HTML")
 ```
 
-![Добавленный текст (неудачная попытка)](images/messages/keep_formatting_bad.png)
+![Qo'shilgan matn (muvaffaqiyatsiz urinish)](images/messages/keep_formatting_bad.png)
 
-Мда, что-то пошло не так, почему сбилось форматирование исходного сообщения? 
-Это происходит из-за того, что `message.text` возвращает просто текст, без каких-либо оформлений. 
-Чтобы получить текст в нужном форматировании, воспользуемся альтернативными свойствами: 
-`message.html_text` или `message.md_text`. Сейчас нам нужен первый вариант. Заменяем в примере 
-выше `message.text` на `message.html_text` и получаем корректный результат:
+Hooop, nimadir noto'g'ri ketdi to'g'rimi, nima uchun asl xabar formatlangan qiya va qalin holatda chiqmadi?
+Bu `message.text` hech qanday formatlashlarsiz shunchaki matnni qaytarishi tufaylidir.
+Kerakli formatda matn olish uchun alternativ xususiyatlardan foydalanishimiz mumkin:
+`message.html_text` yoki `message.md_text`. Hozir bizga birinchi variant kerak.
+Yuqoridagi misolda `message.text` ni `message.html_text`ga almashtiramiz va to'g'ri natijani olamiz:
 
-![Добавленный текст (успех)](images/messages/keep_formatting_good.png)
+![Qo'shilgan matn (muvaffaqiyatli urinish)](images/messages/keep_formatting_good.png)
 
-### Работа с entities {: id="message-entities" }
+### Entities bilan ishlash {: id="message-entities" }
 
-Telegram сильно упрощает жизнь разработчикам, выполняя предобработку сообщений пользователей на своей стороне. 
-Например, некоторые сущности, типа e-mail, номера телефона, юзернейма и др. можно не доставать 
-[регулярными выражениями](https://ru.wikipedia.org/wiki/Регулярные_выражения), а извлечь 
-напрямую из объекта [Message](https://core.telegram.org/bots/api#message) и поля 
-`entities`, содержащего массив объектов типа 
-[MessageEntity](https://core.telegram.org/bots/api#messageentity). В качестве примера напишем 
-хэндлер, который извлекает ссылку, e-mail и моноширинный текст из сообщения (по одной штуке).  
-Здесь кроется важный подвох. **Telegram возвращает не сами значения, а их начало в тексте и длину**. 
-Более того, текст считается в символах UTF-8, а entities работают с UTF-16, из-за этого, если просто взять 
-позицию и длину, то при наличии UTF-16 символов (например, эмодзи) ваш обработанный текст просто съедет. 
+Telegram dasturchilarga foydalanuvchi xabarlarini o'zi tarafidan oldindan qayta ishlash orqali dasturchilar ishini ancha yengillashtiradi. 
+Masalan, ba'zi ob'ektlar elektron pochta, telefon raqami, foydalanuvchi nomi va boshqalar.
+Biz bularni [Muntazam ifodalar (Regular_expression)](https://en.wikipedia.org/wiki/Regular_expression) bilan olishimiz shart emas, 
+balki to'g'ridan-to'g'ri [Message](https://core.telegram.org/bots/api#message) obyekti va `entities` maydonidan olinishi mumkin, 
+bular esa [MessageEntity](https://core.telegram.org/bots/api#messageentity) turidagi ob'ektlarning ro'yxatini o'z ichiga oladi. 
+Misol tariqasida, xabardan havola, elektron pochta va qalin va qiya matnini chiqaradigan handler yozamiz.
+Bu yerda e'tibor qilishimiz kerak bo'lgan bir narsa bor. **Telegram pochta, havola, qiya, qalin matnlarning o'zini emas, balki matndagi boshlanishini va uzunligini qaytaradi.**
+Bundan tashqari, matn _UTF-8_ belgilarida hisoblanadi, lekin `entities` _UTF-16_ bilan ishlaydi, shuning uchun UTF-16 belgilar 
+(masalan emoji) mavjud bo'lsa, faqat pozitsiya va uzunlikni olish orqali foydalanishinggiz sizning qayta ishlangan matningizda hatoliklarga olib kelishi mumkin.
 
-Лучше всего это демонстрирует пример ниже. На скриншоте первый ответ бота есть результат парсинга «в лоб», 
-а второй — результат применения аиограмного метода `extract_from()` над entity. На вход ему передаётся весь исходный текст:
+Buni eng yaxshi quyidagi misol namoyish etadi. Skrinshotda botning birinchi javobi "to'g'ridan-to'g'ri" tahlil natijasidir, 
+ikkinchi javob esa aiogramning `extract_from()` metodini entity ustida qo'llash natijasidir. Unga kirish uchun barcha asl matn uzatiladi:
 
 ```python
 @dp.message(F.text)
@@ -257,9 +256,9 @@ async def extract_data(message: Message):
     entities = message.entities or []
     for item in entities:
         if item.type in data.keys():
-            # Неправильно
+            # Xato
             # data[item.type] = message.text[item.offset : item.offset+item.length]
-            # Правильно
+            # To'g'ri
             data[item.type] = item.extract_from(message.text)
     await message.reply(
         "Вот что я нашёл:\n"
@@ -269,15 +268,15 @@ async def extract_data(message: Message):
     )
 ```
 
-![Парсинг entities](images/messages/parse_entities.png)
+![Parsing entities](images/messages/parse_entities.png)
 
-### Команды и их аргументы {: id="commands-args" }
+### Buyruqlar va ularning argumentlari {: id="commands-args" }
 
-Telegram [предоставляет](https://core.telegram.org/bots/features#inputs) пользователям множество способов ввода 
-информации. Одним из них являются команды: ключевые слова, начинающиеся со слэша, например, `/new` или `/ban`. 
-Иногда бот может быть спроектирован так, чтобы ожидать после самой команды какие-то _аргументы_, вроде `/ban 2d` или 
-`/settimer 20h This is delayed message`. В составе aiogram есть фильтр `Command()`, упрощающий жизнь разработчика. 
-Реализуем последний пример в коде:
+Telegram foydalanuvchilarga ma'lumot kiritishning ko'plab [usullarini taqdim etadi](https://core.telegram.org/bots/features#inputs). 
+Ulardan biri buyruqlar yani slesh bilan boshlanadigan kalit so'zlar, masalan, `/new` yoki `/ban` kabi. 
+Lekin bazan bot shunday dasturlanishi mumkinki, buyruqdan keyin qandaydir argumentlar kutiladi, masalan, 
+`/ban 2d` yoki `/settimer 20h This is delayed message`. Aiogram tarkibida dasturchilarning ishini osonlashtiradigan 
+`Command()` filtri mavjud. So'nggi misolni quydagi kodda amalga oshirib ko'ramiz:
 
 ```python
 @dp.message(Command("settimer"))
@@ -285,17 +284,17 @@ async def cmd_settimer(
         message: Message,
         command: CommandObject
 ):
-    # Если не переданы никакие аргументы, то
-    # command.args будет None
+    # Agar hech qanday argument kiritilmasa,
+    # command.args None bo'ladi
     if command.args is None:
         await message.answer(
             "Ошибка: не переданы аргументы"
         )
         return
-    # Пробуем разделить аргументы на две части по первому встречному пробелу
+    # Argumentlarni birinchi uchragan bo'sh joy bo'yicha ikki qismga ajratishga harakat qilamiz
     try:
         delay_time, text_to_send = command.args.split(" ", maxsplit=1)
-    # Если получилось меньше двух частей, вылетит ValueError
+    # Agar ikki qismdan kam bo'lsa, ValueError yuzaga keladi
     except ValueError:
         await message.answer(
             "Ошибка: неправильный формат команды. Пример:\n"
@@ -309,17 +308,17 @@ async def cmd_settimer(
     )
 ```
 
-Попробуем передать команду с разными аргументами (или вообще без них) и проверить реакцию:
+Buyruqni turli argumentlar bilan (yoki umuman argumentsiz) uzatishga harakat qilib, natijalarini tekshirib ko'ramiz:
 
-![Аргументы команд](images/messages/command_args.png)
+![Buyruq argumentlari](images/messages/command_args.png)
 
-С командами может возникнуть небольшая проблема в группах: Telegram автоматически подсвечивает команды, начинающиеся 
-со слэша, из-за чего порой случается вот такое (спасибо моим дорогим подписчикам за помощь в создании скриншота):
+Guruhlarda buyruqlar bilan kichik muammo yuzaga kelishi mumkin. Telegram avtomatik ravishda slesh bilan boshlanadigan buyruqlarni boshqa rangda yorqin qilib ko'rsatadi, 
+buning natijasida ba'zan guruh a'zolari uni bosib ko'rishi mumkin va shunday holatlar yuzaga keladi (skrinshotni yaratishda yordam bergan aziz obunachilarimga rahmat):
 
 ![Флуд командами](images/messages/commands_flood.png)
 
-Чтобы этого избежать, можно заставить бота реагировать на команды с другими префиксами. Они не будут подсвечиваться и 
-потребуют полностью ручной ввод, так что сами оценивайте пользу такого подхода.
+Buni oldini olish uchun `Command()` klasida `prefix` nomli maydoni mavjud. Bu bilan siz buyruqlar qanaqa belgi bilan boshlanganda ishlashini belgilab qo'yishinggiz mumkin. 
+Ular oddiy matn bilan bir xil rangda bo'ladi va yozish uchun to'liq qo'lda kiritishni talab qiladi, shuning uchun bunday yondashuvning foydasini o'zingiz baholashingiz mumkin.
 
 ```python
 @dp.message(Command("custom1", prefix="%"))
@@ -327,25 +326,25 @@ async def cmd_custom1(message: Message):
     await message.answer("Вижу команду!")
 
 
-# Можно указать несколько префиксов....vv...
+# Bir nechta prefikslarni ko'rsatish mumkin
 @dp.message(Command("custom2", prefix="/!"))
 async def cmd_custom2(message: Message):
     await message.answer("И эту тоже вижу!")
 ```
 
-![Кастомные префиксы](images/messages/command_custom_prefix.png)
+![Maxsus prefikslar](images/messages/command_custom_prefix.png)
 
-Проблема кастомных префиксов в группах только в том, что боты не-админы со включенным Privacy Mode (по умолчанию) могут 
-не увидеть такие команды из-за [особенностей](https://core.telegram.org/bots/faq#what-messages-will-my-bot-get) 
-логики сервера. Самый частый use-case — боты-модераторы групп, которые уже являются администраторами.
+Maxsus prefikslarning guruhlardagi muammosi shundaki [Privacy Mode](https://core.telegram.org/bots/features#privacy-mode) yoqilgan (birlamchi holatda), 
+admin bo'lmagan botlar bunday buyruqlarni [telegram mantig'i](https://core.telegram.org/bots/faq#what-messages-will-my-bot-get) tufayli ko'rmasligi mumkin.
+Eng keng tarqalgan foydalanish holati bu guruh moderator botlari bo'lib, ular allaqachon administrator hisoblanadi.
 
-### Диплинки {: id="deeplinks" }
+### Diplinklar {: id="deeplinks" }
 
-Существует одна команда в Telegram, у которой есть чуть больше возможностей. Это `/start`. Дело в том, что можно 
-сформировать ссылку вида `t.me/bot?start=xxx` и пре переходе по такой ссылке пользователю покажут кнопку «Начать», при 
-нажатии которой бот получит сообщение `/start xxx`. Т.е. в ссылке зашивается некий дополнительный параметр, не требующий 
-ручного ввода. Это называется диплинк (не путать с дикпиком) и может использоваться для кучи разных вещей: шорткаты для 
-активации различных команд, реферальная система, быстрая конфигурация бота и т.д. Напишем два примера:
+Telegramda bir oz ko'proq imkoniyatlarga ega bo'lgan bitta buyruq mavjud. Bu `/start`. Gap shundaki, `t.me/bot?start=xxx` 
+kabi havolani yasash mumkin va bunday havolaga o'tganda foydalanuvchiga "Boshlash" tugmasi ko'rsatiladi, u bosilganda bot 
+`/start xxx` xabarini oladi. Ya'ni, havolada qo'shimcha parametr joylashtiriladi, bu qo'lda kiritishni talab qilmaydi. 
+Bu "deep link" deb ataladi va turli narsalar uchun ishlatilishi mumkin: turli buyruqlarni 
+faollashtirish uchun shartliklar, referal tizim, botni tezkor sozlash va h.k. Keling, ikki misol yozamiz:
 
 ```python
 import re
@@ -358,7 +357,7 @@ from aiogram.filters import Command, CommandObject, CommandStart
     deep_link=True, magic=F.args == "help"
 ))
 async def cmd_start_help(message: Message):
-    await message.answer("Это сообщение со справкой")
+    await message.answer("Bu yordam xabari")
 
 
 @dp.message(CommandStart(
@@ -373,26 +372,25 @@ async def cmd_start_book(
     await message.answer(f"Sending book №{book_number}")
 ```
 
-![Примеры диплинков](images/messages/deeplinks.png)
+![Diplink namunasi](images/messages/deeplinks.png)
 
-Учтите, что диплинки через `start` отправляют пользователя в личку с ботом. Чтобы выбрать группу и отправить диплинк туда, 
-замените `start` на `startgroup`. Также у aiogram существует удобная 
-[функция](https://github.com/aiogram/aiogram/blob/228a86afdc3c594dd9db9e82d8d6d445adb5ede1/aiogram/utils/deep_linking.py#L126-L158) 
-для создания диплинков прямо из вашего кода.
+E'tibor bering, `start` orqali deep link foydalanuvchini bot bilan shaxsiy suhbatga yuboradi. Agar guruhni tanlash va deep linkni 
+u yerga yuborish kerak bo'lsa, `start`ni `startgroup` bilan almashtiring. Shuningdek, aiogramda deep linklarni to'g'ridan-to'g'ri
+koddan yaratish uchun qulay [funktsiya](https://github.com/aiogram/aiogram/blob/228a86afdc3c594dd9db9e82d8d6d445adb5ede1/aiogram/utils/deep_linking.py#L126-L158) mavjud.
 
-!!! tip "Больше диплинков, но не для ботов"
-    В документации Telegram есть подробное описание всевозможных диплинков для клиентских приложений: 
+!!! tip "Botlar uchun bo'lmagan ko'proq diplinklar"
+    Telegram hujjatlarida foydalanuvchi ilovalari uchun barcha turdagi diplinklarning batafsil tavsifi mavjud:
     [https://core.telegram.org/api/links](https://core.telegram.org/api/links)
 
 
-### Предпросмотр ссылок {: id="link-previews" }
+### Havolalar oldindan ko'rish {: id="link-previews" }
 
-Обычно при отправке текстового сообщения со ссылками Telegram пытается найти и показать предпросмотр первой по порядку ссылки. 
-Это поведение можно настроить по своему желанию, передав в качестве аргумента `link_preview_options` метода `send_message()` 
-объект `LinkPreviewOptions`:
+Odatda matnli xabarlarni havolalar bilan yuborishda Telegram birinchi havolani topib, uning **oldindan ko‘ruv** (Preview) ko‘rinishini 
+ko‘rsatishga harakat qiladi. Bu xatti-harakatni `send_message()` metodining `link_preview_options` argumenti sifatida 
+`LinkPreviewOptions` obyektini berib o'zingiz xohlagan tarzda sozlashingiz mumkin
 
 ```python
-# Новый импорт
+# Yangi import
 from aiogram.types import LinkPreviewOptions
 
 @dp.message(Command("links"))
@@ -402,7 +400,7 @@ async def cmd_links(message: Message):
         "\n"
         "https://t.me/telegram"
     )
-    # Ссылка отключена
+    # Havola o'chirilgan
     options_1 = LinkPreviewOptions(is_disabled=True)
     await message.answer(
         f"Нет превью ссылок\n{links_text}",
@@ -411,8 +409,7 @@ async def cmd_links(message: Message):
 
     # -------------------- #
 
-    # Маленькое превью
-    # Для использования prefer_small_media обязательно указывать ещё и url
+    # Kichik oldindan ko'ruv uchun prefer_small_media'ni True qilish kerak
     options_2 = LinkPreviewOptions(
         url="https://nplus1.ru/news/2024/05/23/voyager-1-science-data",
         prefer_small_media=True
@@ -424,8 +421,7 @@ async def cmd_links(message: Message):
 
     # -------------------- #
 
-    # Большое превью
-    # Для использования prefer_large_media обязательно указывать ещё и url
+    # Katta oldindan ko'ruv uchun prefer_large_media'ni True qilish kerak
     options_3 = LinkPreviewOptions(
         url="https://nplus1.ru/news/2024/05/23/voyager-1-science-data",
         prefer_large_media=True
@@ -437,7 +433,7 @@ async def cmd_links(message: Message):
 
     # -------------------- #
 
-    # Можно сочетать: маленькое превью и расположение над текстом
+    # Kichik oldindan ko'ruv va matnning ustiga joylashni bir vaqtda ishlatishimiz mumkin
     options_4 = LinkPreviewOptions(
         url="https://nplus1.ru/news/2024/05/23/voyager-1-science-data",
         prefer_small_media=True,
@@ -450,7 +446,7 @@ async def cmd_links(message: Message):
 
     # -------------------- #
 
-    # Можно выбрать, какая ссылка будет использоваться для предпосмотра,
+    # Oldindan ko'ruv uchun qaysi havolani ishlatishni tanlashingiz mumkin
     options_5 = LinkPreviewOptions(
         url="https://t.me/telegram"
     )
@@ -460,21 +456,21 @@ async def cmd_links(message: Message):
     )
 ```
 
-Результат: 
-![Примеры предпросмотров ссылок](images/messages/link_preview_options.png)
+Natija:
+![Havolani oldindan ko'ruv namunasi](images/messages/link_preview_options.png)
 
-Также некоторые параметры предпросмотра можно указать по умолчанию в `DefaultBotProperties`, о чём рассказывалось 
-в начале главы.
+Shuningdek, ba'zi oldindan ko'ruv parametrlarini `DefaultBotProperties`da birlamchi holat sifatida belgilash mumkin, 
+bu haqida bob boshida aytilgan edi.
 
-## Медиафайлы {: id="media" }
+## Mediafayllar {: id="media" }
 
-### Отправка файлов {: id="uploading-media" }
+### Fayllarni telegramga yuklash {: id="uploading-media" }
 
-Помимо обычных текстовых сообщений Telegram позволяет обмениваться медиафайлами различных типов: фото, видео, гифки, 
-геолокации, стикеры и т.д. У большинства медиафайлов есть свойства `file_id` и `file_unique_id`. Первый можно использовать 
-для повторной отправки одного и того же файла много раз, причём отправка будет мгновенной, т.к. сам файл уже лежит 
-на серверах Telegram. Это самый предпочтительный способ.  
-К примеру, следующий код заставит бота моментально ответить пользователю той же гифкой, что была прислана: 
+Telegram oddiy matnli xabarlardan tashqari turli xil media fayllarni almashishga imkon beradi: rasm, video, giflar, 
+geolokatsiyalar, stikerlar va h.k. Ko'pchilik media fayllarda `file_id` va `file_unique_id` xususiyatlari mavjud.
+Birinchisini bir xil faylni qayta-qayta yuborish uchun ishlatish mumkin, chunki fayl allaqachon Telegram serverlarida 
+saqlanadi. Bu eng afzal usuldir. 
+Masalan, quyidagi kod botni foydalanuvchiga yuborilgan gifni darhol o'ziga qayta yuborishga misol bo'la oladi:
 
 ```python
 @dp.message(F.animation)
@@ -482,41 +478,39 @@ async def echo_gif(message: Message):
     await message.reply_animation(message.animation.file_id)
 ```
 
-!!! warning "Всегда используйте правильные file_id!"
-    Бот должен использовать для отправки **только** те `file_id`, которые получил напрямую сам, 
-    например, в личке от пользователя или «увидев» медиафайл в группе/канале. При этом, 
-    если попытаться использовать `file_id` от другого бота, то это _может сработать_, но 
-    через какое-то время вы получите ошибку **wrong url/file_id specified**. Поэтому — 
-    только свои `file_id`!
+!!! warning "Har doim to'g'ri file_id dan foydalaning!"
+    Bot yuborish uchun faqat o'zi bevosita olgan `file_id` dan foydalanishi kerak, 
+    masalan foydalanuvchidan shaxsiy xabarlar orqali yoki guruh/kanaldagi media faylni **ko'rgan** holda. 
+    Shu bilan birga, agar boshqa botdan olingan `file_id` dan foydalanishga harakat qilinsa _ishlashi mumkin_, 
+    Ammo bir muncha vaqt o'tgach **wrong url/file_id specified** xatosi olinadi. 
+    Shuning uchun faqat o'z botingizning `file_id` sidan foydalaning!
 
-В отличие от `file_id`, идентификатор `file_unique_id` нельзя использовать для повторной отправки 
-или скачивания медиафайла, но зато он одинаковый у всех ботов для конкретного медиа. 
-Нужен `file_unique_id` обычно тогда, когда нескольким ботам требуется знать, что их собственные `file_id` односятся 
-к одному и тому же файлу.
+`file_id` dan farqli ravishda, `file_unique_id` identifikatoridan media faylni qayta yuborish yoki 
+yuklab olish uchun foydalanish mumkin emas, lekin u muayyan media uchun barcha botlarda bir xil bo'ladi. 
+Odatda `file_unique_id` bir nechta botlar o'zlarining `file_id` lari bir xil faylga tegishli ekanligini bilishi kerak bo'lganda kerak bo'ladi.
 
-Если файл ещё не существует на сервере Telegram, бот может загрузить его тремя различными 
-способами: как файл в файловой системе, по ссылке и напрямую набор байтов. 
-Для ускорения отправки и в целом для более бережного отношения к серверам мессенджера,
-загрузку (upload) файлов Telegram правильнее производить один раз, а в дальнейшем использовать `file_id`, 
-который будет доступен после первой загрузки медиа. 
+Agar fayl hali Telegram serverida mavjud bo'lmasa, bot uni uch xil usulda Telegramga yuklashi mumkin: 
+Oddiy fayl sifatida, havola orqali va to'g'ridan-to'g'ri baytlar to'plami sifatida. 
+Yuborishni tezlashtirish va umuman olganda serverlarga nisbatan ehtiyotkorlik bilan munosabatda bo'lish uchun, 
+Telegram fayllarini yuklashni (upload) bir marta amalga oshirish va keyinchalik birinchi yuklashdan keyin mavjud 
+bo'lgan `file_id` dan foydalanish to'g'riroq bo'ladi.
 
-В aiogram 3.x присутствуют 3 класса для отправки файлов и медиа - `FSInputFile`, `BufferedInputFile`, 
-`URLInputFile`, с ними можно ознакомиться 
-в [документации](https://docs.aiogram.dev/en/dev-3.x/api/upload_file.html).
+Aiogram 3.x da fayllar va media yuborish uchun 3 ta klass mavjud - `FSInputFile`, `BufferedInputFile`, 
+`URLInputFile`, ular bilan [aiogram hujjatlarida](https://docs.aiogram.dev/en/dev-3.x/api/upload_file.html) 
+tanishishingiz mumkin.
 
-Рассмотрим простой пример отправки изображений всеми различными способами:
+Keling, rasmlarni turli usullar bilan yuborishning oddiy misolini ko'rib chiqaylik:
 ```python
 from aiogram.types import FSInputFile, URLInputFile, BufferedInputFile
 
 @dp.message(Command('images'))
 async def upload_photo(message: Message):
-    # Сюда будем помещать file_id отправленных файлов, чтобы потом ими воспользоваться
+    # Bu yerda yuborilgan fayllar file_id sini keyin ulardan foydalanish uchun saqlaymiz
     file_ids = []
 
-    # Чтобы продемонстрировать BufferedInputFile, воспользуемся "классическим"
-    # открытием файла через `open()`. Но, вообще говоря, этот способ
-    # лучше всего подходит для отправки байтов из оперативной памяти
-    # после проведения каких-либо манипуляций, например, редактированием через Pillow
+    # BufferedInputFile ni qo'llash uchun `open()` kabi "odatiy" fayl ochilish usulidan foydalanamiz. 
+    # Ammo ushbu usul masalan Pillow orqali rasm tahrirlash amalga oshirilgandan so'ng, 
+    # RAMdan baytlarni yuborish uchun eng mos usul hisoblanadi
     with open("buffer_emulation.jpg", "rb") as image_from_buffer:
         result = await message.answer_photo(
             BufferedInputFile(
@@ -527,7 +521,7 @@ async def upload_photo(message: Message):
         )
         file_ids.append(result.photo[-1].file_id)
 
-    # Отправка файла из файловой системы
+    # Fayl tizimi orqali faylni yuborish
     image_from_pc = FSInputFile("image_from_pc.jpg")
     result = await message.answer_photo(
         image_from_pc,
@@ -535,7 +529,7 @@ async def upload_photo(message: Message):
     )
     file_ids.append(result.photo[-1].file_id)
 
-    # Отправка файла по ссылке
+    # Havola orqali fayl yuborish
     image_from_url = URLInputFile("https://picsum.photos/seed/groosha/400/300")
     result = await message.answer_photo(
         image_from_url,
@@ -545,26 +539,25 @@ async def upload_photo(message: Message):
     await message.answer("Отправленные файлы:\n"+"\n".join(file_ids))
 ```
 
-Подпись у фото, видео и GIF можно перенести наверх: 
+Rasmlar, videolar va GIF'lar uchun sarlavhani yuqoriga ko'chirishingiz mumkin:
 
 ```python
 @dp.message(Command("gif"))
 async def send_gif(message: Message):
     await message.answer_animation(
-        animation="<file_id гифки>",
+        animation="<GIF file_id'si>",
         caption="Я сегодня:",
         show_caption_above_media=True
     )
 ```
 
-![подпись над анимацией](images/messages/caption_above_media.jpg)
+![animatsiya ustidagi sarlavha](images/messages/caption_above_media.jpg)
 
-### Скачивание файлов {: id="downloading-media" }
+### Fayllarni telegramdan yuklab olish {: id="downloading-media" }
 
-Помимо переиспользования для отправки, бот может скачать медиа к себе на компьютер/сервер. Для этого у объекта типа `Bot` 
-есть метод `download()`. В примерах ниже файлы скачиваются сразу в файловую систему, но никто не мешает 
-вместо этого сохранить в объект BytesIO в памяти, чтобы передать в какое-то приложение дальше 
-(например, pillow). 
+Faylni foydalanuvchiga qaytarib yuborishdan tashqari bot mediani o'z kompyuteriga/serveriga yuklab olishi mumkin. Buning uchun `Bot` 
+klasidagi ob'ektda `download()` usuli mavjud. Quyidagi misollarda fayllar to'g'ridan-to'g'ri fayl tizimiga yuklab olinadi,
+Ammo buning o'rniga, keyinchalik ba'zi kodlar (masalan Pillow) da foydalanish uchun uni BytesIO ob'ektida xotirada saqlashinggiz ham mumkin.
 
 ```python
 @dp.message(F.photo)
@@ -579,34 +572,35 @@ async def download_photo(message: Message, bot: Bot):
 async def download_sticker(message: Message, bot: Bot):
     await bot.download(
         message.sticker,
-        # для Windows пути надо подправить
+        # Windows uchun path'ni tuzatishimiz kerak
         destination=f"/tmp/{message.sticker.file_id}.webp"
     )
 ```
 
-В случае с изображениями мы использовали не `message.photo`, а `message.photo[-1]`, почему? 
-Фотографии в Telegram в сообщении приходят сразу в нескольких экземплярах; это одно и то же 
-изображение с разным размером. Соответственно, если мы берём последний элемент (индекс -1), 
-то работаем с максимально доступным размером фото.
+Nega biz rasmlar uchun `message.photo` emas, balki `message.photo[-1]` dan foydalandik ?
+Chunki Telegram'dagi rasmlar bir vaqtning o'zida bir nechta nusxada yuboriladi. Barchasi bir xil ammo
+turli o'lchamda, bunda rasmlar list ko'rinishida sifatsizdan sifatligacha tartiblangan bo'ladi.
+Shunga ko'ra eng sifatli rasmni olish uchun `photo[-1]` dan foydalanamiz va biz eng sifatli rasm hajmi bilan ishlashimiz mumkin.
 
-!!! info "Скачивание больших файлов"
-    Боты, использующие Telegram Bot API, могут скачивать файлы размером не более [20 мегабайт](https://core.telegram.org/bots/api#getfile). 
-    Если вы планируете скачивать/заливать большие файлы, лучше рассмотрите библиотеки, взаимодействующие с 
-    Telegram Client API, а не с Telegram Bot API, например, [Telethon](https://docs.telethon.dev/en/latest/index.html) 
-    или [Pyrogram](https://docs.pyrogram.org/).  
-    Немногие знают, но Client API могут использовать не только обычные аккаунты, но ещё и 
-    [боты](https://docs.telethon.dev/en/latest/concepts/botapi-vs-mtproto.html).
-    
-    А начиная с Bot API версии 5.0, можно использовать 
-    [собственный сервер Bot API](https://core.telegram.org/bots/api#using-a-local-bot-api-server) для работы с 
-    большими файлами.
+!!! info "Katta hajmdagi fayllarni yuklab olish"
+    Telegram Bot API'dan foydalanadigan botlar [20 megabayt](https://core.telegram.org/bots/api#getfile)dan 
+    oshmaydigan fayllarni yuklashi mumkin. Agar siz katta hajmdagi fayllarni yuklab olishni/yuklashni 
+    rejalashtirmoqchi bo'lsangiz, Telegram Bot API bilan emas, Telegram Client API bilan o'zaro aloqada bo'lgan 
+    kutubxonalardan foydalanishinggiz yaxshiroq, masalan, [Telethon](https://docs.telethon.dev/en/latest/index.html) yoki
+    [Pyrogram](https://docs.pyrogram.org/). Ko'pchilik bilishmaydi lekin Telegram Client API dan nafaqat oddiy hisoblar, 
+    balki [botlar](https://docs.telethon.dev/en/latest/concepts/botapi-vs-mtproto.html) ham foydalanishi mumkin
+     
 
-### Альбомы {: id="albums" }
+    Bot API 5.0 versiyasidan boshlab siz katta fayllar bilan ishlash uchun o'zingizning 
+    [Bot API server](https://core.telegram.org/bots/api#using-a-local-bot-api-server)ingizdan foydalanishingiz mumkin.
 
-То, что мы называем «альбомами» (медиагруппами) в Telegram, на самом деле отдельные сообщения с медиа, у которых есть общий 
-`media_group_id` и которые визуально «склеиваются» на клиентах. Начиная с версии 3.1, в aiogram есть 
-[«сборщик» альбомов](https://docs.aiogram.dev/en/latest/utils/media_group.html), работу с которым мы сейчас рассмотрим. 
-Но прежде стоит упомянуть несколько особенностей медиагрупп:
+### Albomlar {: id="albums" }
+
+
+Biz Telegram'da albomlar (yani media guruh) deb ataydigan narsa, aslida umumiy `media_group_id` ga ega bo‘lgan va 
+foydalanuvchilariga vizual tarzda "bitta" habar ko'rinishida ko'rinadigan bir nechta habarlardir. 
+Aiogramda 3.1 versiyasidan boshlab  ["jamlagich" albomi](https://docs.aiogram.dev/en/latest/utils/media_group.html) mavjud bo'lib, 
+Quyida biz uning ishlashini ko'rib chiqamiz. Ammo avvalo media guruhlarning bir nechta xususiyatlarini sanab o'tishimiz kerak:
 
 * К ним нельзя прицепить инлайн-клавиатуру или отправить реплай-клавиатуру вместе с ними. Никак. Вообще никак.
 * У каждого медиафайла в альбоме может быть своя подпись (caption). Если подпись есть только у одного медиа, 
