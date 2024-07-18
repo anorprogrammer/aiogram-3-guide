@@ -602,14 +602,14 @@ foydalanuvchilariga vizual tarzda "bitta" habar ko'rinishida ko'rinadigan bir ne
 Aiogramda 3.1 versiyasidan boshlab  ["jamlagich" albomi](https://docs.aiogram.dev/en/latest/utils/media_group.html) mavjud bo'lib, 
 Quyida biz uning ishlashini ko'rib chiqamiz. Ammo avvalo media guruhlarning bir nechta xususiyatlarini sanab o'tishimiz kerak:
 
-* К ним нельзя прицепить инлайн-клавиатуру или отправить реплай-клавиатуру вместе с ними. Никак. Вообще никак.
-* У каждого медиафайла в альбоме может быть своя подпись (caption). Если подпись есть только у одного медиа, 
-то она будет выводиться как общая подпись ко всему альбому.
-* Фотографии можно отправлять вперемешку с видео в одном альбоме, файлы (Document) и музыку (Audio) нельзя ни с чем 
-смешивать, только с медиа того же типа.
-* В альбоме может быть не больше 10 (десяти) медиафайлов.
+* Hech qanday usul bilan ularga inline klaviatura qo'shish yoki repyl klaviaturani birga yuborish mumkin emas.
+* Albomdagi har bir media fayl o'ziga xos izohga (caption) ega bo'lishi mumkin. Agar faqat bitta media izohga ega bo'lsa, 
+u butun albom uchun umumiy izoh sifatida chiqariladi.
+* Suratlarni bir albomda videolar bilan aralashtirib yuborish mumkin, ammo fayllar (Document) va musiqa (Audio) hech narsaga aralashtirilmaydi, 
+faqat shu turdagi media bilan.
+* Albomda 10 tadan ko'p media fayl bo'lishi mumkin emas.
 
-Теперь посмотрим, как это сделать в aiogram:
+Keling buni aiogramda qanday qilinishini ko'rib chiqaylik:
 
 ```python
 from aiogram.filters import Command
@@ -627,88 +627,86 @@ async def cmd_album(message: Message):
         # caption="Подпись к конкретному медиа"
 
     )
-    # Если мы сразу знаем тип, то вместо общего add
-    # можно сразу вызывать add_<тип>
+    # Agar biz medianing turini bilsak
+    # add_<media tipi> ko'rinishida foydalanishimiz mumkin
     album_builder.add_photo(
-        # Для ссылок или file_id достаточно сразу указать значение
+        # Havolalar yoki file_id uchun darhol qiymatni ko'rsatish kifoya
         media="https://picsum.photos/seed/groosha/400/300"
     )
     album_builder.add_photo(
-        media="<ваш file_id>"
+        media="<sizdagi file_id>"
     )
     await message.answer_media_group(
-        # Не забудьте вызвать build()
+        # build() metodini chaqirishni unutmang
         media=album_builder.build()
     )
 ```
 
-Результат: 
+Natija: 
 
-![Результат работы билдера](images/messages/media_group_builder.png)
+![Builder bilan ishlash natijasi](images/messages/media_group_builder.png)
 
-А вот со скачиванием альбомов всё сильно хуже... Как уже было сказано выше, альбомы — это просто сгруппированные 
-отдельные сообщения, а это значит, что боту они прилетают тоже в разных апдейтах. Вряд ли существует 100% надёжный 
-способ принять весь альбом одним куском, но можно попытаться сделать это с минимальными потерями. Обычно это делается 
-через мидлвари, мою собственную реализацию приёма медиагрупп можно найти 
-[по этой ссылке](https://github.com/MasterGroosha/telegram-feedback-bot-topics/blob/master/bot/middlewares/albums_collector.py).
+Ammo albomlarni yuklab olishda hammasi ancha rasvo... Yuqorida aytilganidek, albomlar - bu shunchaki guruhlangan alohida xabarlardir, 
+demak ular botga ham turli xil yangilanish (Update) larda keladi. Butun albomni bittada qabul qilish uchun 100% ishonchli usul mavjud emas, 
+lekin buni minimal yo'qotishlar bilan amalga oshirishga harakat qilish mumkin. Odatda, bu middleware orqali amalga oshiriladi, 
+media guruhlarni qabul qilish bo'yicha mening shaxsiy yechimimni 
+[ushbu havola orqali](https://github.com/MasterGroosha/telegram-feedback-bot-topics/blob/master/bot/middlewares/albums_collector.py) topishingiz mumkin.
 
-## Сервисные (служебные) сообщения {: id="service" }
+## Xizmat (servis) xabarlari {: id="service" }
 
-Сообщения в Telegram делятся на текстовые, медиафайлы и служебные (они же — сервисные). 
-Настало время поговорить о последних.
+Telegramdagi xabarlar matnli, media fayllar va xizmat (ya'ni, servis) xabarlarga bo'linadi. 
+Keling ularning oxirgisi haqida gaplashishamiz.
 
-![Сервисные сообщения](images/messages/service_messages.png)
+![Xizmat xabarlari](images/messages/service_messages.png)
 
-Несмотря на то, что они выглядят необычно и взаимодействие с ними ограничено, это всё ещё 
-сообщения, у которых есть свои айдишники и даже владелец. Стоит отметить, что спектр применения 
-сервисных сообщений с годами менялся и сейчас, скорее всего, ваш бот с ними работать не будет, 
-либо только удалять.
+Ular g‘alati ko‘rinishga ega va ular bilan o‘zaro aloqalar cheklangan bo‘lishiga qaramay, 
+ular o‘zining ID raqamlari bor va hatto ularning egasi mavjud bo‘lgan xabarlardir. 
+Shuni ta’kidlash kerak-ki, xizmat xabarlarining qo‘llanilish doirasi yillar davomida o‘zgarib bordi va 
+hozirda sizning botingiz ular bilan ishlamasligi yoki faqat o‘chirish bilan shug‘ullanishi mumkin.
 
-Не будем сильно углубляться в детали и рассмотрим один конкретный пример: отправка 
-приветственного сообщения вошедшему участнику. У такого служебного сообщения будет content_type 
-равный "new_chat_members", но вообще это объект Message, у которого заполнено одноимённое поле. 
+Batafsil ma’lumotga to'xtalmasdan, aniq bir misolni ko‘rib chiqamiz: Guruhga yangi 
+kirgan a'zoga "xush kelibsiz" xabarini yuborib ko'ramiz. Bunday xizmat xabarida content_type "new_chat_members"ga teng 
+bo‘ladi, ammo bu aslida bir xil nomdagi maydonga ega bo‘lgan Message obyekti hisoblanadi."
 
 ```python
 @dp.message(F.new_chat_members)
 async def somebody_added(message: Message):
     for user in message.new_chat_members:
-        # проперти full_name берёт сразу имя И фамилию 
-        # (на скриншоте выше у юзеров нет фамилии)
+        # full_name maydoni ism va familiyani olib beradi
+        # (screenshotda foydalanuvchilarning familiyasi yo'q)
         await message.reply(f"Привет, {user.full_name}")
 ```
 
-![Добавлены несколько юзеров](images/messages/multiple_add.png)
+![Bir nechta foydalanuvchilarni qo'shish](images/messages/multiple_add.png)
 
-Важно помнить, что `message.new_chat_members` является списком, потому что один пользователь может 
-добавить сразу нескольких участников. Также не надо путать поля `message.from_user` и 
-`message.new_chat_members`. Первое — это субъект, т.е. тот, кто совершил действие. Второе — 
-это объекты действия. Т.е. если вы видите сообщение вида «Анна добавила Бориса и Виктора», то 
-`message.from_user` — это информация об Анне, а список `message.new_chat_members` содержит 
-информацию о Борисе с Виктором.
+Shuni esda tutingki `message.new_chat_members` ro'yxatdir, chunki bitta foydalanuvchi bir vaqtning o'zida 
+bir nechta ishtirokchilarni qo'shishi mumkin. Shuningdek, `message.from_user` va `message.new_chat_members` maydonlarini 
+adashtirmaslik kerak. Birinchisi - bu subyekt, ya'ni harakatni amalga oshirgan shaxs. Ikkinchisi - bu harakat ob'yektlari. 
+Ya'ni agar siz «Anna Boris va Viktorni qo'shdi» ko'rinishidagi xabarni ko'rsangiz, `message.from_user` - bu Anna haqidagi 
+ma'lumot, va `message.new_chat_members` ro'yxati Boris va Viktor haqidagi ma'lumotni o'z ichiga oladi.
 
-!!! warning "Не стоит целиком полагаться на сервисные сообщения!"
-    У служебных сообщений о добавлении (new_chat_members) и выходе (left_chat_member) есть
-    одна неприятная особенность: они ненадёжны, т.е. они могут не создаваться вообще.  
-    К примеру, сообщение о new_chat_members перестаёт создаваться при ~10k участников в группе, 
-    а left_chat_member уже при 50 (но при написании этой главы я столкнулся с тем, что в одной 
-    из групп left_chat_member не появился и при 9 участниках. А через полчаса там же появился 
-    при выходе другого человека).
+!!! warning "Xizmat xabarlariga to'liq ishonmang!"
+    Yangi a'zolar qo'shilishi (new_chat_members) va chiqib ketishi (left_chat_member) haqida xizmat xabarlarida 
+    bitta noxush holat mavjud: ular ishonchsiz, ya'ni umuman xabar yaratilmasligi mumkin.
+    Masalan, new_chat_members haqidagi xabar, bu habar 10k (10 ming) ishtirokchiga yaqin bo'lgan guruhda yaratilmaydi, 
+    left_chat_member esa 50 ta ishtirokchida (lekin bu bobni yozishda men 9 ishtirokchili guruhda left_chat_member xabari 
+    yaratilmaganiga duch keldim. Yarim soat o'tgach, boshqa odam chiqib ketganda shu guruhda xabar paydo bo'ldi).
 
-    С выходом Bot API 5.0 у разработчиков появился гораздо более надёжный способ видеть входы/выходы 
-    участников в группах любого размера, **а также в каналах**. Но об этом поговорим 
-    [в другой раз](special-updates.md).
+    Bot API 5.0 chiqarilishi bilan dasturchilar istalgan o'lchamdagi guruhlarda va **shuningdek kanallarda** 
+    a'zolarning kirishi/chiqishini ko'rishning ancha ishonchli usuliga ega bo'ldilar. 
+    Ammo bu haqda [boshqa safar](special-updates.md) gaplashamiz.
 
-## Бонус: прячем ссылку в тексте {: id="bonus" }
+## Bonus: matnda havolani yashirish {: id="bonus" }
 
-Бывают ситуации, когда хочется отправить длинное сообщение с картинкой, но лимит на подписи к медиафайлам составляет 
-всего 1024 символа против 4096 у обычного текстового, а вставлять внизу ссылку на медиа — выглядит некрасиво.  
-Для решения этой проблемы ещё много лет назад придумали подход со «скрытыми ссылками» в HTML-разметке. Суть в том, что 
-можно поместить ссылку в [пробел нулевой ширины](http://www.fileformat.info/info/unicode/char/200b/index.htm) и вставить 
-всю эту конструкцию в начало сообщения. Для наблюдателя в сообщении нет ничего лишнего, а сервер Telegram всё видит и честно 
-добавляет предпросмотр.  
-Разработчики aiogram для этого даже сделали специальный вспомогательный метод `hide_link()`:
+Ba'zi holatlarda rasm bilan uzun xabar yuborish kerak bo'lib qolishi mumkin, lekin media fayllarga qo'yiladigan izohlar 
+limiti 1024 ta belgi, oddiy matnli xabarlarda esa bu 4096 ta belgini tashkil etadi. Media havolasini pastda matnga qo'shish
+esa chiroyli ko'rinmaydi. Bu muammoni hal qilish uchun bir necha yil avval HTML-belgilashda "yashirin havolalar" usuli o'ylab topilgan. 
+Asosi shundaki, havolani [nol kenglikdagi bo'shliqqa](http://www.fileformat.info/info/unicode/char/200b/index.htm) joylashtirib, 
+butun konstruktsiyani xabar boshiga qo'yish mumkin. Kuzatuvchi uchun xabarda ortiqcha narsa ko'rinmaydi 
+lekin Telegram serveri barchasini ko'radi va **oldindan ko'ruv**(preview)ni qo'shadi.   
+Aiogram ishlab chiquvchilari buning uchun hatto `hide_link()` nomli maxsus yordamchi metodini yaratishgan:
 ```python
-# новый импорт!
+# yangi import
 from aiogram.utils.markdown import hide_link
 
 @dp.message(Command("hidden_link"))
@@ -721,9 +719,9 @@ async def cmd_hidden_link(message: Message):
     )
 ```
 
-![Изображение со скрытой ссылкой](images/messages/hidden_link.png)
+![Yashirin havola bilan rasm](images/messages/hidden_link.png)
 
-А при помощи LinkPreviewOptions (см. выше) можно сделать медиафайл сверху с длинной подписью в 4096 символов ниже.
+Yuqorida ko'rsatilgan LinkPreviewOptions yordamida yuqorida uzun 4096 belgilik izoh bilan media faylni qo'yishingiz mumkin.
 
-На этом всё. До следующих глав!  
-<s><small>Ставьте лайки, подписывайтесь, прожимайте колокольчик</small></s>
+Hozircha shu. Keyingi boblarda ko'rishguncha!
+<s><small>Layk bosing, obuna bo'ling, qo'ng'iroq tugmasini bosishni unutmang!</small></s>
