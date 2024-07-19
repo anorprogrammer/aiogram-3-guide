@@ -1,27 +1,28 @@
 ---
-title: Кнопки
-description: Кнопки
+title: Tugmalar
+description: Tugmalar
 ---
 
-# Кнопки
+# Tugmalar
 
 !!! info ""
-    Используемая версия aiogram: 3.7.0
+    Foydalanilayotgan aiogram versiyasi: 3.7.0
 
-В этой главе мы познакомимся с такой замечательной фичей Telegram-ботов как кнопки. Прежде всего, чтобы избежать 
-путаницы, определимся с названиями. То, что цепляется к низу экрана вашего устройства, будем называть **обычными** 
-кнопками, а то, что цепляется непосредственно к сообщениям, назовём **инлайн**-кнопками. Ещё раз картинкой:  
+Ushbu bobda biz Telegram botlarining ajoyib xususiyati bo'lgan tugmalar bilan tanishamiz. Avvalo chalkashliklarning
+oldini olish uchun ularni farqlab olaylik. Qurilmangiz ekranining pastki qismiga biriktiriladigan, matn kiritish qismining pastida joylashganlarini **oddiy** 
+tugmalar deb ataymiz, xabarlarga bevosita biriktiriladiganlari esa **inline**-tugmalar hisoblanadi. Buni quydagi rasmda ham ko'rishimiz mumkin: 
 
-![Два вида кнопок](images/buttons/l03_1.png)
+![Ikki turdagi tugmalar](images/buttons/l03_1.png)
 
-## Обычные кнопки {: id="reply-buttons" }
-### Кнопки как шаблоны {: id="reply-as-text" }
+## Oddiy tugmalar {: id="reply-buttons" }
+### Tugmalar matn shabloni sifatida {: id="reply-as-text" }
 
-Этот вид кнопок появился вместе с Bot API в далёком 2015 году и представляет собой не что иное, как шаблоны сообщений 
-(за исключением нескольких особых случаев, но о них позже). Принцип простой: что написано на кнопке, то и будет отправлено 
-в текущий чат. Соответственно, чтобы обработать нажатие такой кнопки, бот должен распознавать входящие текстовые сообщения. 
+Ushbu turdagi tugmalar 2015 yilda Bot API bilan birga paydo bo'lgan (Contact, Location va boshqa bir nechta alohida holatlar bundan mustasno 
+ular haqida keyinroq gaplashamiz) va  ular xabar shablonlari hisoblanadi. Ishlash usuli oddiy: tugmada nima yozilgan bo'lsa, 
+aynan o'sha narsa joriy chatga yuboriladi (siz bunday holatda tugma bosish o'rniga aynan tugmadagi matnni chatga yuborish orqali bir xil natija olishinggiz mumkin). 
+Shuning uchun bunday tugma bosilishini qayta ishlash uchun bot kiruvchi matnli xabarlarni oldindan bilishi kerak.
 
-Напишем хэндлер, который будет при нажатии на команду `/start` отправлять сообщение с двумя кнопками:
+Keling `/start` buyrug'ini bosganingizda ikkita tugma bilan xabar yuboradigan handler'ni yozamiz:
 
 ```python
 @dp.message(Command("start"))
@@ -35,24 +36,21 @@ async def cmd_start(message: types.Message):
 ```
 
 !!! info ""
-    Несмотря на то, что Telegram Bot API [допускает](https://core.telegram.org/bots/api#keyboardbutton) указывать 
-    просто строки вместо объектов `KeyboardButton`, при попытке использовать строку aiogram 3.x выкинет ошибку 
-    валидации и это не баг, а [фича](https://t.me/aiogram_ru/920453).  
-    Живите теперь с этим 🤷‍♂️
+    Telegram Bot API sizga `KeyboardButton` ob'ekti o'rniga faqat satrlarni belgilash imkonini [berishi](https://core.telegram.org/bots/api#keyboardbutton)ga qaramay, 
+    stringdan foydalanmoqchi bo'lganingizda, aiogram 3.x ValidationError xatosini chiqaradi va bu xato emas, balki xususiyatdir.
+    Hozircha undan foydalanishga majbursiz 🤷‍♂️
 
-Что ж, запустим бота и обалдеем от громадных кнопок:
+Botni ishga tushiramiz va unda "ulkan" tugmalarni ko'rishimiz mumkin:
 
-![Очень большие обычные кнопки](images/buttons/l03_2.png)
+![Juda katta oddiy tugmalar](images/buttons/l03_2.png)
 
-Как-то некрасиво. Во-первых, хочется сделать кнопки поменьше, а во-вторых, расположить их горизонтально.  
-Почему вообще они такие большие? Дело в том, что по умолчанию «кнопочная» клавиатура должна занимать на смартфонах столько 
-же места, сколько и обычная буквенная. Для уменьшения кнопок к объекту клавиатуры надо указать дополнительный 
-параметр `resize_keyboard=True`.  
-Но как заменить вертикальные кнопки на горизонтальные? С точки зрения Bot API, клавиатура — это 
-[массив массивов](https://core.telegram.org/bots/api#replykeyboardmarkup) кнопок, а если говорить проще, массив рядов. 
-Перепишем наш код, чтобы было красиво, а для 
-пущей важности добавим параметр `input_field_placeholder`, который заменит текст в пустой строке ввода, 
-когда активна обычная клавиатура:
+Qandaydir xunuk ko'rinib qoldi shunday emasmi. Avvalo tugmalarni kichikroq qilishni, ikkinchidan ularni gorizontal 
+joylashtirishni xohlaymiz. Nega ular bunday ko'rinishga ega? Gap shundaki, birlamchi holatda bunday tugmalar ilovaning standard tugmalari o'lchamida bo'ladi. 
+Tugmalarni kichraytirish uchun klaviatura obyektiga qo'shimcha `resize_keyboard=True` parametrini ko'rsatishimiz kerak.    
+Ammo vertikal tugmalarni gorizontal tugmalarga qanday almashtirish mumkin? 
+Bot API nuqtai nazaridan klaviatura — [ichma ich massiv](https://core.telegram.org/bots/api#replykeyboardmarkup) bu esa tugmalarni tashkil qiladi, 
+ya'ni oddiy qilib aytganda, qatorlar massivi. Kodimizni chiroyli bo'lishi uchun uni qayta yozamiz va foydalanuvchiga nima kiritishni ko'rsatish uchun 
+`input_field_placeholder` parametrini qo'shamiz, bu bizga klaviatura faol bo'lgan paytda matn kiritish maydoni fonida xira ko'rinishda biz belgilagan matnni ko'rsatadi:
 
 ```python
 @dp.message(Command("start"))
@@ -71,16 +69,16 @@ async def cmd_start(message: types.Message):
     await message.answer("Как подавать котлеты?", reply_markup=keyboard)
 ```
 
-Смотрим — действительно красиво:
+Qarang - haqiqatan ham chiroyli:
 
-![Кнопки в один ряд](images/buttons/l03_3.png)
+![Bir qatorda tugmalar](images/buttons/l03_3.png)
 
-Осталось научить бота реагировать на нажатие таких кнопок. Как уже было сказано выше, необходимо делать проверку 
-на полное совпадение текста. Сделаем это при помощи _магического фильтра_ F, подробнее о котором 
-поговорим в [другой главе](filters-and-middlewares.md#magic-filters):
+Endi bunday tugmalar bosilishini qayta ishlashni botga o'rgatish qoldi. Yuqorida aytib o'tilganidek,
+matnning to'liq mos kelishini tekshirish kerak. Buni _magic-filter_ F yordamida qilamiz, bu haqida esa
+batafsil [boshqa bobda](filters-and-middlewares.md#magic-filters) gaplashamiz:
 
 ```python
-# новый импорт!
+# yangi import
 from aiogram import F
 
 @dp.message(F.text.lower() == "с пюрешкой")
@@ -92,25 +90,25 @@ async def without_puree(message: types.Message):
     await message.reply("Так невкусно!")
 ```
 
-![Реакция на нажатие кнопок](images/buttons/l03_4.png)
+![Tugmani bosishga javob](images/buttons/l03_4.png)
 
-Чтобы удалить кнопки, необходимо отправить новое сообщение со специальной «удаляющей» клавиатурой типа 
-`ReplyKeyboardRemove`. Например: `await message.reply("Отличный выбор!", reply_markup=types.ReplyKeyboardRemove())`
+Tugmalarni olib tashlash uchun `ReplyKeyboardRemove` kabi maxsus "o'chirish" klaviaturasi bilan yangi xabar yuborishingiz kerak. 
+Masalan: `await message.reply("Ajoyib tanlov!", reply_markup=types.ReplyKeyboardRemove())`
 
 ### Keyboard Builder {: id="reply-builder" }
 
-Для более динамической генерации кнопок можно воспользоваться сборщиком клавиатур. Нам пригодятся 
-следующие методы:
+Tugmalarni dinamikroq yaratish uchun klaviatura yasagich (keyboard builder) dan foydalanish mumkin. 
+Bizga quyidagi metodlar kerak bo'ladi:
 
-- `add(<KeyboardButton>)` — добавляет кнопку в память сборщика;
-- `adjust(int1, int2, int3...)` — делает строки по `int1, int2, int3...` кнопок;
-- `as_markup()` — возвращает готовый объект клавиатуры;
-- `button(<params>)` — добавляет кнопку с заданными параметрами, тип кнопки (Reply или Inline) определяется автоматически.
+- `add(<KeyboardButton>)` — tugmani yasagich (Builder) xotirasiga qo'shadi;
+- `adjust(int1, int2, int3...)` — `int1, int2, int3...` tugmalardan iborat qatorlarni yaratadi;
+- `as_markup()` — tayyor klaviatura obyektini qaytaradi;
+- `button(<params>)` — berilgan parametrlar bilan tugmani qo'shadi, tugma turi (Reply yoki Inline) avtomatik ravishda aniqlanadi.
 
-Создадим пронумерованную клавиатуру размером 4×4:
+Keling, 4×4 o'lchamdagi raqamlardan iborat klaviatura yaratamiz:
 
 ```python
-# новый импорт!
+# yangi import
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 @dp.message(Command("reply_builder"))
@@ -125,25 +123,26 @@ async def reply_builder(message: types.Message):
     )
 ```
 
-![Результат работы сборщика кнопок](images/buttons/reply_builder.png)
+![Tugma yasagichning natijasi](images/buttons/reply_builder.png)
 
 
 !!! info ""
-    У [объекта обычной клавиатуры](https://core.telegram.org/bots/api#replykeyboardmarkup) есть ещё две полезных опции: 
-    `one_time_keyboard` для автоматического скрытия кнопок после нажатия и `selective` для показа клавиатуры 
-    лишь некоторым участникам группы. Их использование остаётся для самостоятельного изучения.
+    [Oddiy klaviatura obyektida](https://core.telegram.org/bots/api#replykeyboardmarkup) yana ikki foydali parametr mavjud: 
+    biri `one_time_keyboard` - tugmani bosilgandan keyin avtomatik ravishda yashirish uchun va ikkinchisi `selective` - klaviaturani 
+    faqat guruhning ayrim ishtirokchilariga ko'rsatish uchun. Ularni ishlatishni mustaqil o'rganishingiz mumkin.
 
-### Специальные обычные кнопки {: id="reply-special" }
 
-На момент написания этой главы в Telegram существует шесть специальных видов обычных кнопок, не являющихся 
-обычными шаблонами сообщений. Они предназначены для:
+### Maxsus oddiy tugmalar {: id="reply-special" }
 
-- отправки текущей геолокации; 
-- отправки своего контакта с номером телефона; 
-- создания опроса/викторины; 
-- выбора и отправки боту данных пользователя с нужными критериями;
-- выбора и отправки боту данных (супер)группы или канала с нужными критериями;
-- запуска веб-приложения (WebApp).
+Hozirda (Ushbu bobni yozish vaqtida) Telegramda oddiy xabar shablonlari bo'lmagan olti xil maxsus oddiy tugma mavjud. 
+Ular quyidagilar uchun mo'ljallangan:
+
+- joriy joylashuvni yuborish;
+- telefon raqami bilan o'z kontaktini yuborish;
+- so'rovnoma/viktorina yaratish;
+- kerakli mezonlarga ega foydalanuvchi ma'lumotlarini tanlash va botga yuborish;
+- kerakli mezonlarga ega (super)guruh yoki kanal ma'lumotlarini tanlash va botga yuborish;
+- veb-ilovani (WebApp) ishga tushirish.
 
 Поговорим про них подробнее.
 
