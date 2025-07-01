@@ -1,0 +1,1634 @@
+
+<!doctype html>
+<html lang="uz" class="no-js">
+  <head>
+    
+  <script src="https://telegram.org/js/telegram-web-app.js?35"></script>
+    <script type="text/javascript">
+      const webapp = window.Telegram.WebApp;
+      webapp.ready();
+      webapp.expand();
+      const initData = webapp.initDataUnsafe;
+      if (window.location.pathname === "/aiogram-3-guide/" && Object.hasOwn(initData, 'auth_date')) {
+        if (initData.start_param) {
+          let additionalParam = '';
+          switch (initData.start_param) {
+            case 'quickstart':
+            case 'messages':
+            case 'buttons':
+            case 'routers':
+            case 'special-updates':
+            case 'fsm':
+            case 'inline-mode':
+              additionalParam = initData.start_param;
+              break;
+            case 'filters':
+              additionalParam = 'filters-and-middlewares/#filters';
+              break
+            case 'middlewares':
+              additionalParam = 'filters-and-middlewares/#middlewares';
+              break
+            case 'magic-filter':
+            case 'magic':
+              additionalParam = 'filters-and-middlewares/#magic-filters';
+              break
+            case 'entities':
+              additionalParam = 'messages/#message-entities';
+              break;
+            case 'escaping':
+              additionalParam = 'messages/#input-escaping';
+              break;
+            case 'keep-formatting':
+              additionalParam = 'messages/#keep-formatting';
+              break
+            case 'send-files':
+            case 'upload':
+              additionalParam = 'messages/#uploading-media';
+              break;
+            case 'download-files':
+            case 'download':
+              additionalParam = 'messages/#downloading-media';
+              break;
+            case 'hide-image':
+              additionalParam = 'messages/#bonus';
+              break
+            case 'callback-factory':
+              additionalParam = 'buttons/#callback-factory';
+              break
+            case 'my-chat-member':
+              additionalParam = 'special-updates/#my-chat-member';
+              break
+            case 'chat-member':
+              additionalParam = 'special-updates/#chat-member';
+              break
+            default:
+              additionalParam = '/';
+          }
+          window.location.href = (`${window.location.origin}${window.location.pathname}${additionalParam}`);
+        }
+      }
+  </script>
+
+  
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Xabarlar bilan ishlash">
+      
+      
+        <meta name="author" content="MasterGroosha">
+      
+      
+        <link rel="canonical" href="https://mastergroosha.github.io/aiogram-3-guide/messages/">
+      
+      
+        <link rel="prev" href="../quickstart/">
+      
+      
+        <link rel="next" href="../buttons/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.25">
+    
+
+    
+      
+        <title>Xabarlar bilan ishlash - Telegram botlarini aiogram 3.x bilan yozish</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  
+    
+  
+
+  
+  
+    
+  
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Telegram botlarini aiogram 3.x bilan yozish" />
+  <meta property="og:description" content="Xabarlar bilan ishlash" />
+  <meta property="og:url" content="https://mastergroosha.github.io/aiogram-3-guide/messages/" />
+  <meta property="og:image" content="https://mastergroosha.github.io/aiogram-3-guide/images/social.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://mastergroosha.github.io/aiogram-3-guide/messages/">
+  <meta name="twitter:title" content="Telegram botlarini aiogram 3.x bilan yozish">
+  <meta name="twitter:description" content="Xabarlar bilan ishlash">
+  <meta name="twitter:image" content="https://mastergroosha.github.io/aiogram-3-guide/images/social.png">
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xabarlar-bilan-ishlash" class="md-skip">
+          Tarkibga o'tish
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Sarlavha">
+    <a href=".." title="Telegram botlarini aiogram 3.x bilan yozish" class="md-header__button md-logo" aria-label="Telegram botlarini aiogram 3.x bilan yozish" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Telegram botlarini aiogram 3.x bilan yozish
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Xabarlar bilan ishlash
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Qidirish" placeholder="Qidirish" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Qidirish">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Tozalash" aria-label="Tozalash" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Qidiruv ishga tushirilmoqda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/MasterGroosha/aiogram-3-guide" title="Repozitoriyga o'tish" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    MasterGroosha/aiogram-3-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<!-- Determine classes -->
+
+
+
+
+<!-- Navigation -->
+<nav
+  class="md-nav md-nav--primary"
+  aria-label="Navigatsiya"
+  data-md-level="0"
+>
+
+  <!-- Site title -->
+  <label class="md-nav__title" for="__drawer">
+    <a
+      href=".."
+      title="Telegram botlarini aiogram 3.x bilan yozish"
+      class="md-nav__button md-logo"
+      aria-label="Telegram botlarini aiogram 3.x bilan yozish"
+      data-md-component="logo"
+    >
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5Z"/></svg>
+
+    </a>
+    Mundarija
+  </label>
+
+  <!-- Repository information -->
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/MasterGroosha/aiogram-3-guide" title="Repozitoriyga o'tish" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    MasterGroosha/aiogram-3-guide
+  </div>
+</a>
+    </div>
+  
+
+  <!-- Navigation list -->
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kirish
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Aiogram bilan tanishish
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Xabarlar bilan ishlash
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Xabarlar bilan ishlash
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mundarija">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mundarija
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Matn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formatting-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formatlangan chiqish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-escaping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kiritishni ekranga chiqarish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formatlashni saqlash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-entities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entities bilan ishlash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-args" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buyruqlar va ularning argumentlari
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deeplinks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diplinklar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#link-previews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Havolalar oldindan ko'rish
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mediafayllar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mediafayllar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uploading-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fayllarni telegramga yuklash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloading-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fayllarni telegramdan yuklab olish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#albums" class="md-nav__link">
+    <span class="md-ellipsis">
+      Albomlar
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Xizmat (servis) xabarlari
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonus: matnda havolani yashirish
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../buttons/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tugmalar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Routerlar. Tuzilma
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters-and-middlewares/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Filtrlar va middlewarelar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../special-updates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maxsus yangilanishlar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fsm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Holat mashinalari
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inline-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inline-rejim
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    To‘lovlar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-teaser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    🔒 Yuqori daraja
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mundarija">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mundarija
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Matn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formatting-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formatlangan chiqish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-escaping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kiritishni ekranga chiqarish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formatlashni saqlash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-entities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entities bilan ishlash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-args" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buyruqlar va ularning argumentlari
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deeplinks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diplinklar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#link-previews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Havolalar oldindan ko'rish
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mediafayllar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mediafayllar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uploading-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fayllarni telegramga yuklash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloading-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fayllarni telegramdan yuklab olish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#albums" class="md-nav__link">
+    <span class="md-ellipsis">
+      Albomlar
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Xizmat (servis) xabarlari
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonus: matnda havolani yashirish
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="xabarlar-bilan-ishlash">Xabarlar bilan ishlash<a class="headerlink" href="#xabarlar-bilan-ishlash" title="Permanent link">¶</a></h1>
+<div class="admonition info">
+<p>Foydalanilayotgan aiogram versiyasi: 3.7.0</p>
+</div>
+<p>Ushbu bo'limda biz xabarlarga turli formatlash turlarini qanday qo'llashni va media fayllar bilan ishlashni o'rganamiz.</p>
+<h2 id="text">Matn<a class="headerlink" href="#text" title="Permanent link">¶</a></h2>
+<p>Matnli xabarlarni qayta ishlash ko'pchilik botlar uchun eng muhim vazifalaridan biridir. Matn yordamida deyarli hamma 
+narsani ifodalash mumkin va  bazan ma'lumotni <em>chiroyli</em> tarzda taqdim etish zarur bo'ladi. Dasturchida ixtiyorida matnni belgilashning 
+uchta usuli mavjud: HTML, Markdown va MarkdownV2. Ulardan eng rivojlanganlari HTML va MarkdownV2 bo'lib, "klassik" 
+Markdown usuli kamroq imkoniyatlarni ega va u aiogramda endi ishlatilmaydi.</p>
+<p>Matn bilan ishlash usullarini ko'rib chiqishdan oldin, aiogram 3.x ning 2.x dan muhim farqini eslatib o'tish kerak: 
+ikkinchi veersiyada standart bo'yicha faqat matnli xabarlar qayta ishlanar edi, 
+uchda esa har qanday turdagi xabarlar qayta ishlanadi. 
+Aniqroq qilib aytganda, endi faqat matnli xabarlarni qanday tutib qolish kerakligi quyida ko'rsatilgan:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># dekorator bilan eski usul</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message_handler</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">func_name</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="c1"># funksiya registrator bilan eski usul</span>
+<span class="n">dp</span><span class="o">.</span><span class="n">register_message_handler</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span>
+
+<span class="c1"># dekorator bilan yangi usul</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">F</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">func_name</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="c1"># funksiya registrator bilan yangi usul</span>
+<span class="n">dp</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+<p>"Sehrli filtr" <strong>F</strong> haqida <a href="../filters-and-middlewares/">boshqa bo'limda</a> gaplashamiz.</p>
+<h3 id="formatting-options">Formatlangan chiqish<a class="headerlink" href="#formatting-options" title="Permanent link">¶</a></h3>
+<p>Xabarlarni yuborishda formatlashni tanlash uchun <code>parse_mode</code> argumenti javob beradi, masalan:
+</p><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParseMode</span>
+
+<span class="c1"># Agar F.text filtrini ko'rsatmasangiz,</span>
+<span class="c1"># handler hatto /test yozuvi bilan rasmga ham ishlaydi</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">Command</span><span class="p">(</span><span class="s2">"test"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">any_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s2">"Hello, &lt;b&gt;world&lt;/b&gt;!"</span><span class="p">,</span> 
+        <span class="n">parse_mode</span><span class="o">=</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">HTML</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s2">"Hello, *world*\!"</span><span class="p">,</span> 
+        <span class="n">parse_mode</span><span class="o">=</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">MARKDOWN_V2</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><img alt="Turli formatlash bilan Hello world:" src="../images/messages/l02_1.png"></p>
+<p>Agar botda doimiy ravishda ma'lum bir formatlash ishlatilsa, har safar <code>parse_mode</code> argumentini ko'rsatish noqulay 
+bo'lishi mumkin. Yaxshiyamki, aiogramda botning standart sozlamalarini belgilash mumkin. Buning uchun <code>DefaultBotProperties</code> 
+obyektini yarating va kerakli sozlamalarni unga o'tkazing:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.client.default</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultBotProperties</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span>
+    <span class="n">token</span><span class="o">=</span><span class="s2">"123:abcxyz"</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="n">DefaultBotProperties</span><span class="p">(</span>
+        <span class="n">parse_mode</span><span class="o">=</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">HTML</span>
+        <span class="c1"># bu yerda yana boshqa qiziqarli sozlamalar ham bor</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"123:abcxyz"</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="s2">"HTML"</span><span class="p">)</span>
+
+<span class="c1"># qandaydir funksiyada...</span>
+<span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"HTML-belgilanishi bilan &lt;u&gt;xabar&lt;/u&gt;"</span><span class="p">)</span>
+<span class="c1"># formatlashni aniq o'chirish uchun,</span>
+<span class="c1"># parse_mode=None ni ko'rsating</span>
+<span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+    <span class="s2">"Hech qanday &lt;s&gt;belgilanishsiz xabar&lt;/s&gt;"</span><span class="p">,</span> 
+    <span class="n">parse_mode</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><img alt="Standart belgilar turini sozlash" src="../images/messages/l02_2.png"></p>
+<h3 id="input-escaping">Kiritishni ekranga chiqarish<a class="headerlink" href="#input-escaping" title="Permanent link">¶</a></h3>
+<p>Ko'pincha botda xabarining yakuniy matni oldindan ma'lum bo'lmaydi va bot uni qandaydir tashqi 
+ma'lumotlar asosida shakllantiriladi: foydalanuvchining ismi, uning kiritgan ma'lumotlari va hokazo. 
+Keling, foydalanuvchini uning to'liq ismi bilan (<code>first_name + last_name</code>) salomlashadigan 
+<code>/hello</code> komandasi uchun handler yozamiz, masalan: «Hello, Ivan Ivanov»:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_hello</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Hello, &lt;b&gt;</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">&lt;/b&gt;"</span><span class="p">,</span>
+        <span class="n">parse_mode</span><span class="o">=</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">HTML</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Hammasi yaxshi ishladi natijani quyidagi tasvirda ko'rish mumkin:</p>
+<p><img alt="/hello buyrug'i" src="../images/messages/cmd_hello_before.png"></p>
+<p>Ammo bu yerda &lt;Cлавик777&gt; ismli foydalanuvchi botga habar yzosa va bot javob qaytarmaydi! Loglarda quyidagilarni ko'rishimiz mumkin: 
+<code>aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: can't parse entities: 
+Unsupported start tag "Славик777" at byte offset 7</code></p>
+<p>Obbo, bizda HTML formatlash rejimi yoqilganku va Telegram &lt;Cлавик777&gt; ni HTML teg sifatida qabul qilishga harakat qilmoqda. 
+Bu muammo. Ammo bu muammoni hal qilishning bir necha yo'li bor. Birinchi usul: uzatiladigan qiymatlarni ekranga chiqarish.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_hello</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Hello, </span><span class="si">{</span><span class="n">html</span><span class="o">.</span><span class="n">bold</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">parse_mode</span><span class="o">=</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">HTML</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Ikkinchi usul biroz murakkabroq, lekin yanada yaxsh usul hisoblanadi: matnni alohida va qaysi qismlar 
+formatlanishi kerakligi haqidagi ma'lumotni alohida yig'adigan maxsus klassdan foydalanish.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Bold</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_hello</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span>
+        <span class="s2">"Hello, "</span><span class="p">,</span>
+        <span class="n">Bold</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">content</span><span class="o">.</span><span class="n">as_kwargs</span><span class="p">()</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Yuqoridagi misolda <code>**content.as_kwargs()</code> konstruktsiyasi <code>text</code>, <code>entities</code>, <code>parse_mode</code> argumentlarini qaytaradi 
+va ularni <code>answer()</code> funksiyasiga lug'at ko'rinishida uzatadi.</p>
+<p><img alt="/hello buyrug'ining tuzatilgandan keyingi ishlashi" src="../images/messages/cmd_hello_after.png"></p>
+<p>Ushbu formatlash vositasi juda keng qamrovli bo'lib, 
+<a href="https://docs.aiogram.dev/en/latest/utils/formatting.html">rasmiy hujjatlar</a>da murakkab tuzilmalarni qanday qulay
+ko'rsatishni mumkinligini ko'rishinggiz mumkin, masalan:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Bold</span><span class="p">,</span> <span class="n">as_list</span><span class="p">,</span> <span class="n">as_marked_section</span><span class="p">,</span> <span class="n">as_key_value</span><span class="p">,</span> <span class="n">HashTag</span>
+<span class="p">)</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"advanced_example"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_advanced_example</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">as_list</span><span class="p">(</span>
+        <span class="n">as_marked_section</span><span class="p">(</span>
+            <span class="n">Bold</span><span class="p">(</span><span class="s2">"Success:"</span><span class="p">),</span>
+            <span class="s2">"Test 1"</span><span class="p">,</span>
+            <span class="s2">"Test 3"</span><span class="p">,</span>
+            <span class="s2">"Test 4"</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">"✅ "</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">as_marked_section</span><span class="p">(</span>
+            <span class="n">Bold</span><span class="p">(</span><span class="s2">"Failed:"</span><span class="p">),</span>
+            <span class="s2">"Test 2"</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">"❌ "</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">as_marked_section</span><span class="p">(</span>
+            <span class="n">Bold</span><span class="p">(</span><span class="s2">"Summary:"</span><span class="p">),</span>
+            <span class="n">as_key_value</span><span class="p">(</span><span class="s2">"Total"</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="n">as_key_value</span><span class="p">(</span><span class="s2">"Success"</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+            <span class="n">as_key_value</span><span class="p">(</span><span class="s2">"Failed"</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">"  "</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">HashTag</span><span class="p">(</span><span class="s2">"#test"</span><span class="p">),</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="o">**</span><span class="n">content</span><span class="o">.</span><span class="n">as_kwargs</span><span class="p">())</span>
+</code></pre></div>
+<p><img alt="Murakkab misol" src="../images/messages/advanced_example.png"></p>
+<div class="admonition info">
+<p>Turli formatlash usullari va qo'llab-quvvatlanadigan teglar haqida batafsil 
+<a href="https://core.telegram.org/bots/api#formatting-options">Bot API hujjatlari</a>da bilib olishingiz mumkin.</p>
+</div>
+<h3 id="keep-formatting">Formatlashni saqlash<a class="headerlink" href="#keep-formatting" title="Permanent link">¶</a></h3>
+<p>Tasavvur qiling, bot foydalanuvchidan formatlangan matn olishi va unga o'zidan biror narsani, masalan, 
+vaqt belgisini qo'shishi holatini ko'rib chiqamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">echo_with_time</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="c1"># Hozirgi vaqtni kompyuterning vaqt zonasida olamiz</span>
+    <span class="n">time_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%H:%M'</span><span class="p">)</span>
+    <span class="c1"># Qo'shimcha matnni qo'shib qo'yamiz</span>
+    <span class="n">added_text</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">underline</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Создано в </span><span class="si">{</span><span class="n">time_now</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="c1"># Qo'shilgan matnni o'z ichiga olgan yangi xabar yuboramiz</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">added_text</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="s2">"HTML"</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Qo'shilgan matn (muvaffaqiyatsiz urinish)" src="../images/messages/keep_formatting_bad.png"></p>
+<p>Hooop, nimadir noto'g'ri ketdi to'g'rimi, nima uchun asl xabar formatlangan qiya va qalin holatda chiqmadi?
+Bu <code>message.text</code> hech qanday formatlashlarsiz shunchaki matnni qaytarishi tufaylidir.
+Kerakli formatda matn olish uchun alternativ xususiyatlardan foydalanishimiz mumkin:
+<code>message.html_text</code> yoki <code>message.md_text</code>. Hozir bizga birinchi variant kerak.
+Yuqoridagi misolda <code>message.text</code> ni <code>message.html_text</code>ga almashtiramiz va to'g'ri natijani olamiz:</p>
+<p><img alt="Qo'shilgan matn (muvaffaqiyatli urinish)" src="../images/messages/keep_formatting_good.png"></p>
+<h3 id="message-entities">Entities bilan ishlash<a class="headerlink" href="#message-entities" title="Permanent link">¶</a></h3>
+<p>Telegram dasturchilarga foydalanuvchi xabarlarini o'zi tarafidan oldindan qayta ishlash orqali dasturchilar ishini ancha yengillashtiradi. 
+Masalan, ba'zi ob'ektlar elektron pochta, telefon raqami, foydalanuvchi nomi va boshqalar.
+Biz bularni <a href="https://en.wikipedia.org/wiki/Regular_expression">Muntazam ifodalar (Regular_expression)</a> bilan olishimiz shart emas, 
+balki to'g'ridan-to'g'ri <a href="https://core.telegram.org/bots/api#message">Message</a> obyekti va <code>entities</code> maydonidan olinishi mumkin, 
+bular esa <a href="https://core.telegram.org/bots/api#messageentity">MessageEntity</a> turidagi ob'ektlarning ro'yxatini o'z ichiga oladi. 
+Misol tariqasida, xabardan havola, elektron pochta va qalin va qiya matnini chiqaradigan handler yozamiz.
+Bu yerda e'tibor qilishimiz kerak bo'lgan bir narsa bor. <strong>Telegram pochta, havola, qiya, qalin matnlarning o'zini emas, balki matndagi boshlanishini va uzunligini qaytaradi.</strong>
+Bundan tashqari, matn <em>UTF-8</em> belgilarida hisoblanadi, lekin <code>entities</code> <em>UTF-16</em> bilan ishlaydi, shuning uchun UTF-16 belgilar 
+(masalan emoji) mavjud bo'lsa, faqat pozitsiya va uzunlikni olish orqali foydalanishinggiz sizning qayta ishlangan matningizda hatoliklarga olib kelishi mumkin.</p>
+<p>Buni eng yaxshi quyidagi misol namoyish etadi. Skrinshotda botning birinchi javobi "to'g'ridan-to'g'ri" tahlil natijasidir, 
+ikkinchi javob esa aiogramning <code>extract_from()</code> metodini entity ustida qo'llash natijasidir. Unga kirish uchun barcha asl matn uzatiladi:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">extract_data</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"&lt;N/A&gt;"</span><span class="p">,</span>
+        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"&lt;N/A&gt;"</span><span class="p">,</span>
+        <span class="s2">"code"</span><span class="p">:</span> <span class="s2">"&lt;N/A&gt;"</span>
+    <span class="p">}</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">entities</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">entities</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Xato</span>
+            <span class="c1"># data[item.type] = message.text[item.offset : item.offset+item.length]</span>
+            <span class="c1"># To'g'ri</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">extract_from</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">reply</span><span class="p">(</span>
+        <span class="s2">"Вот что я нашёл:</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"URL: </span><span class="si">{</span><span class="n">html</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'url'</span><span class="p">])</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"E-mail: </span><span class="si">{</span><span class="n">html</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'email'</span><span class="p">])</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Пароль: </span><span class="si">{</span><span class="n">html</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'code'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><img alt="Parsing entities" src="../images/messages/parse_entities.png"></p>
+<h3 id="commands-args">Buyruqlar va ularning argumentlari<a class="headerlink" href="#commands-args" title="Permanent link">¶</a></h3>
+<p>Telegram foydalanuvchilarga ma'lumot kiritishning ko'plab <a href="https://core.telegram.org/bots/features#inputs">usullarini taqdim etadi</a>. 
+Ulardan biri buyruqlar yani slesh bilan boshlanadigan kalit so'zlar, masalan, <code>/new</code> yoki <code>/ban</code> kabi. 
+Lekin bazan bot shunday dasturlanishi mumkinki, buyruqdan keyin qandaydir argumentlar kutiladi, masalan, 
+<code>/ban 2d</code> yoki <code>/settimer 20h This is delayed message</code>. Aiogram tarkibida dasturchilarning ishini osonlashtiradigan 
+<code>Command()</code> filtri mavjud. So'nggi misolni quydagi kodda amalga oshirib ko'ramiz:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"settimer"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_settimer</span><span class="p">(</span>
+        <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span>
+        <span class="n">command</span><span class="p">:</span> <span class="n">CommandObject</span>
+<span class="p">):</span>
+    <span class="c1"># Agar hech qanday argument kiritilmasa,</span>
+    <span class="c1"># command.args None bo'ladi</span>
+    <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+            <span class="s2">"Ошибка: не переданы аргументы"</span>
+        <span class="p">)</span>
+        <span class="k">return</span>
+    <span class="c1"># Argumentlarni birinchi uchragan bo'sh joy bo'yicha ikki qismga ajratishga harakat qilamiz</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">delay_time</span><span class="p">,</span> <span class="n">text_to_send</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Agar ikki qismdan kam bo'lsa, ValueError yuzaga keladi</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+            <span class="s2">"Ошибка: неправильный формат команды. Пример:</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"/settimer &lt;time&gt; &lt;message&gt;"</span>
+        <span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s2">"Таймер добавлен!</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Время: </span><span class="si">{</span><span class="n">delay_time</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Текст: </span><span class="si">{</span><span class="n">text_to_send</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Buyruqni turli argumentlar bilan (yoki umuman argumentsiz) uzatishga harakat qilib, natijalarini tekshirib ko'ramiz:</p>
+<p><img alt="Buyruq argumentlari" src="../images/messages/command_args.png"></p>
+<p>Guruhlarda buyruqlar bilan kichik muammo yuzaga kelishi mumkin. Telegram avtomatik ravishda slesh bilan boshlanadigan buyruqlarni boshqa rangda yorqin qilib ko'rsatadi, 
+buning natijasida ba'zan guruh a'zolari uni bosib ko'rishi mumkin va shunday holatlar yuzaga keladi (skrinshotni yaratishda yordam bergan aziz obunachilarimga rahmat):</p>
+<p><img alt="Флуд командами" src="../images/messages/commands_flood.png"></p>
+<p>Buni oldini olish uchun <code>Command()</code> klasida <code>prefix</code> nomli maydoni mavjud. Bu bilan siz buyruqlar qanaqa belgi bilan boshlanganda ishlashini belgilab qo'yishinggiz mumkin. 
+Ular oddiy matn bilan bir xil rangda bo'ladi va yozish uchun to'liq qo'lda kiritishni talab qiladi, shuning uchun bunday yondashuvning foydasini o'zingiz baholashingiz mumkin.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"custom1"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"%"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_custom1</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Вижу команду!"</span><span class="p">)</span>
+
+
+<span class="c1"># Bir nechta prefikslarni ko'rsatish mumkin</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"custom2"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/!"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_custom2</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"И эту тоже вижу!"</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Maxsus prefikslar" src="../images/messages/command_custom_prefix.png"></p>
+<p>Maxsus prefikslarning guruhlardagi muammosi shundaki <a href="https://core.telegram.org/bots/features#privacy-mode">Privacy Mode</a> yoqilgan (birlamchi holatda), 
+admin bo'lmagan botlar bunday buyruqlarni <a href="https://core.telegram.org/bots/faq#what-messages-will-my-bot-get">telegram mantig'i</a> tufayli ko'rmasligi mumkin.
+Eng keng tarqalgan foydalanish holati bu guruh moderator botlari bo'lib, ular allaqachon administrator hisoblanadi.</p>
+<h3 id="deeplinks">Diplinklar<a class="headerlink" href="#deeplinks" title="Permanent link">¶</a></h3>
+<p>Telegramda bir oz ko'proq imkoniyatlarga ega bo'lgan bitta buyruq mavjud. Bu <code>/start</code>. Gap shundaki, <code>t.me/bot?start=xxx</code> 
+kabi havolani yasash mumkin va bunday havolaga o'tganda foydalanuvchiga "Boshlash" tugmasi ko'rsatiladi, u bosilganda bot 
+<code>/start xxx</code> xabarini oladi. Ya'ni, havolada qo'shimcha parametr joylashtiriladi, bu qo'lda kiritishni talab qilmaydi. 
+Bu "deep link" deb ataladi va turli narsalar uchun ishlatilishi mumkin: turli buyruqlarni 
+faollashtirish uchun shartliklar, referal tizim, botni tezkor sozlash va h.k. Keling, ikki misol yozamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandObject</span><span class="p">,</span> <span class="n">CommandStart</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"help"</span><span class="p">))</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">CommandStart</span><span class="p">(</span>
+    <span class="n">deep_link</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">args</span> <span class="o">==</span> <span class="s2">"help"</span>
+<span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_start_help</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Bu yordam xabari"</span><span class="p">)</span>
+
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">CommandStart</span><span class="p">(</span>
+    <span class="n">deep_link</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">magic</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">regexp</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'book_(\d+)'</span><span class="p">))</span>
+<span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_start_book</span><span class="p">(</span>
+        <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span>
+        <span class="n">command</span><span class="p">:</span> <span class="n">CommandObject</span>
+<span class="p">):</span>
+    <span class="n">book_number</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sending book №</span><span class="si">{</span><span class="n">book_number</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Diplink namunasi" src="../images/messages/deeplinks.png"></p>
+<p>E'tibor bering, <code>start</code> orqali deep link foydalanuvchini bot bilan shaxsiy suhbatga yuboradi. Agar guruhni tanlash va deep linkni 
+u yerga yuborish kerak bo'lsa, <code>start</code>ni <code>startgroup</code> bilan almashtiring. Shuningdek, aiogramda deep linklarni to'g'ridan-to'g'ri
+koddan yaratish uchun qulay <a href="https://github.com/aiogram/aiogram/blob/228a86afdc3c594dd9db9e82d8d6d445adb5ede1/aiogram/utils/deep_linking.py#L126-L158">funktsiya</a> mavjud.</p>
+<div class="admonition tip">
+<p class="admonition-title">Botlar uchun bo'lmagan ko'proq diplinklar</p>
+<p>Telegram hujjatlarida foydalanuvchi ilovalari uchun barcha turdagi diplinklarning batafsil tavsifi mavjud:
+<a href="https://core.telegram.org/api/links">https://core.telegram.org/api/links</a></p>
+</div>
+<h3 id="link-previews">Havolalar oldindan ko'rish<a class="headerlink" href="#link-previews" title="Permanent link">¶</a></h3>
+<p>Odatda matnli xabarlarni havolalar bilan yuborishda Telegram birinchi havolani topib, uning <strong>oldindan ko‘ruv</strong> (Preview) ko‘rinishini 
+ko‘rsatishga harakat qiladi. Bu xatti-harakatni <code>send_message()</code> metodining <code>link_preview_options</code> argumenti sifatida 
+<code>LinkPreviewOptions</code> obyektini berib o'zingiz xohlagan tarzda sozlashingiz mumkin</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinkPreviewOptions</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"links"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_links</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="n">links_text</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"https://nplus1.ru/news/2024/05/23/voyager-1-science-data"</span>
+        <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"https://t.me/telegram"</span>
+    <span class="p">)</span>
+    <span class="c1"># Havola o'chirilgan</span>
+    <span class="n">options_1</span> <span class="o">=</span> <span class="n">LinkPreviewOptions</span><span class="p">(</span><span class="n">is_disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Нет превью ссылок</span><span class="se">\n</span><span class="si">{</span><span class="n">links_text</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">link_preview_options</span><span class="o">=</span><span class="n">options_1</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -------------------- #</span>
+
+    <span class="c1"># Kichik oldindan ko'ruv uchun prefer_small_media'ni True qilish kerak</span>
+    <span class="n">options_2</span> <span class="o">=</span> <span class="n">LinkPreviewOptions</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">"https://nplus1.ru/news/2024/05/23/voyager-1-science-data"</span><span class="p">,</span>
+        <span class="n">prefer_small_media</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Маленькое превью</span><span class="se">\n</span><span class="si">{</span><span class="n">links_text</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">link_preview_options</span><span class="o">=</span><span class="n">options_2</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -------------------- #</span>
+
+    <span class="c1"># Katta oldindan ko'ruv uchun prefer_large_media'ni True qilish kerak</span>
+    <span class="n">options_3</span> <span class="o">=</span> <span class="n">LinkPreviewOptions</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">"https://nplus1.ru/news/2024/05/23/voyager-1-science-data"</span><span class="p">,</span>
+        <span class="n">prefer_large_media</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Большое превью</span><span class="se">\n</span><span class="si">{</span><span class="n">links_text</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">link_preview_options</span><span class="o">=</span><span class="n">options_3</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -------------------- #</span>
+
+    <span class="c1"># Kichik oldindan ko'ruv va matnning ustiga joylashni bir vaqtda ishlatishimiz mumkin</span>
+    <span class="n">options_4</span> <span class="o">=</span> <span class="n">LinkPreviewOptions</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">"https://nplus1.ru/news/2024/05/23/voyager-1-science-data"</span><span class="p">,</span>
+        <span class="n">prefer_small_media</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">show_above_text</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Маленькое превью над текстом</span><span class="se">\n</span><span class="si">{</span><span class="n">links_text</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">link_preview_options</span><span class="o">=</span><span class="n">options_4</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -------------------- #</span>
+
+    <span class="c1"># Oldindan ko'ruv uchun qaysi havolani ishlatishni tanlashingiz mumkin</span>
+    <span class="n">options_5</span> <span class="o">=</span> <span class="n">LinkPreviewOptions</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">"https://t.me/telegram"</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Предпросмотр не первой ссылки</span><span class="se">\n</span><span class="si">{</span><span class="n">links_text</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">link_preview_options</span><span class="o">=</span><span class="n">options_5</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Natija:
+<img alt="Havolani oldindan ko'ruv namunasi" src="../images/messages/link_preview_options.png"></p>
+<p>Shuningdek, ba'zi oldindan ko'ruv parametrlarini <code>DefaultBotProperties</code>da birlamchi holat sifatida belgilash mumkin, 
+bu haqida bob boshida aytilgan edi.</p>
+<h2 id="media">Mediafayllar<a class="headerlink" href="#media" title="Permanent link">¶</a></h2>
+<h3 id="uploading-media">Fayllarni telegramga yuklash<a class="headerlink" href="#uploading-media" title="Permanent link">¶</a></h3>
+<p>Telegram oddiy matnli xabarlardan tashqari turli xil media fayllarni almashishga imkon beradi: rasm, video, giflar, 
+geolokatsiyalar, stikerlar va h.k. Ko'pchilik media fayllarda <code>file_id</code> va <code>file_unique_id</code> xususiyatlari mavjud.
+Birinchisini bir xil faylni qayta-qayta yuborish uchun ishlatish mumkin, chunki fayl allaqachon Telegram serverlarida 
+saqlanadi. Bu eng afzal usuldir. 
+Masalan, quyidagi kod botni foydalanuvchiga yuborilgan gifni darhol o'ziga qayta yuborishga misol bo'la oladi:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">animation</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">echo_gif</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">reply_animation</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Har doim to'g'ri file_id dan foydalaning!</p>
+<p>Bot yuborish uchun faqat o'zi bevosita olgan <code>file_id</code> dan foydalanishi kerak, 
+masalan foydalanuvchidan shaxsiy xabarlar orqali yoki guruh/kanaldagi media faylni <strong>ko'rgan</strong> holda. 
+Shu bilan birga, agar boshqa botdan olingan <code>file_id</code> dan foydalanishga harakat qilinsa <em>ishlashi mumkin</em>, 
+Ammo bir muncha vaqt o'tgach <strong>wrong url/file_id specified</strong> xatosi olinadi. 
+Shuning uchun faqat o'z botingizning <code>file_id</code> sidan foydalaning!</p>
+</div>
+<p><code>file_id</code> dan farqli ravishda, <code>file_unique_id</code> identifikatoridan media faylni qayta yuborish yoki 
+yuklab olish uchun foydalanish mumkin emas, lekin u muayyan media uchun barcha botlarda bir xil bo'ladi. 
+Odatda <code>file_unique_id</code> bir nechta botlar o'zlarining <code>file_id</code> lari bir xil faylga tegishli ekanligini bilishi kerak bo'lganda kerak bo'ladi.</p>
+<p>Agar fayl hali Telegram serverida mavjud bo'lmasa, bot uni uch xil usulda Telegramga yuklashi mumkin: 
+Oddiy fayl sifatida, havola orqali va to'g'ridan-to'g'ri baytlar to'plami sifatida. 
+Yuborishni tezlashtirish va umuman olganda serverlarga nisbatan ehtiyotkorlik bilan munosabatda bo'lish uchun, 
+Telegram fayllarini yuklashni (upload) bir marta amalga oshirish va keyinchalik birinchi yuklashdan keyin mavjud 
+bo'lgan <code>file_id</code> dan foydalanish to'g'riroq bo'ladi.</p>
+<p>Aiogram 3.x da fayllar va media yuborish uchun 3 ta klass mavjud - <code>FSInputFile</code>, <code>BufferedInputFile</code>, 
+<code>URLInputFile</code>, ular bilan <a href="https://docs.aiogram.dev/en/dev-3.x/api/upload_file.html">aiogram hujjatlarida</a> 
+tanishishingiz mumkin.</p>
+<p>Keling, rasmlarni turli usullar bilan yuborishning oddiy misolini ko'rib chiqaylik:
+</p><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FSInputFile</span><span class="p">,</span> <span class="n">URLInputFile</span><span class="p">,</span> <span class="n">BufferedInputFile</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s1">'images'</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">upload_photo</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="c1"># Bu yerda yuborilgan fayllar file_id sini keyin ulardan foydalanish uchun saqlaymiz</span>
+    <span class="n">file_ids</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># BufferedInputFile ni qo'llash uchun `open()` kabi "odatiy" fayl ochilish usulidan foydalanamiz. </span>
+    <span class="c1"># Ammo ushbu usul masalan Pillow orqali rasm tahrirlash amalga oshirilgandan so'ng, </span>
+    <span class="c1"># RAMdan baytlarni yuborish uchun eng mos usul hisoblanadi</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"buffer_emulation.jpg"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_from_buffer</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer_photo</span><span class="p">(</span>
+            <span class="n">BufferedInputFile</span><span class="p">(</span>
+                <span class="n">image_from_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span>
+                <span class="n">filename</span><span class="o">=</span><span class="s2">"image from buffer.jpg"</span>
+            <span class="p">),</span>
+            <span class="n">caption</span><span class="o">=</span><span class="s2">"Изображение из буфера"</span>
+        <span class="p">)</span>
+        <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">photo</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
+
+    <span class="c1"># Fayl tizimi orqali faylni yuborish</span>
+    <span class="n">image_from_pc</span> <span class="o">=</span> <span class="n">FSInputFile</span><span class="p">(</span><span class="s2">"image_from_pc.jpg"</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer_photo</span><span class="p">(</span>
+        <span class="n">image_from_pc</span><span class="p">,</span>
+        <span class="n">caption</span><span class="o">=</span><span class="s2">"Изображение из файла на компьютере"</span>
+    <span class="p">)</span>
+    <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">photo</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
+
+    <span class="c1"># Havola orqali fayl yuborish</span>
+    <span class="n">image_from_url</span> <span class="o">=</span> <span class="n">URLInputFile</span><span class="p">(</span><span class="s2">"https://picsum.photos/seed/groosha/400/300"</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer_photo</span><span class="p">(</span>
+        <span class="n">image_from_url</span><span class="p">,</span>
+        <span class="n">caption</span><span class="o">=</span><span class="s2">"Изображение по ссылке"</span>
+    <span class="p">)</span>
+    <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">photo</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">file_id</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Отправленные файлы:</span><span class="se">\n</span><span class="s2">"</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_ids</span><span class="p">))</span>
+</code></pre></div>
+<p>Rasmlar, videolar va GIF'lar uchun sarlavhani yuqoriga ko'chirishingiz mumkin:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"gif"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_gif</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer_animation</span><span class="p">(</span>
+        <span class="n">animation</span><span class="o">=</span><span class="s2">"&lt;GIF file_id'si&gt;"</span><span class="p">,</span>
+        <span class="n">caption</span><span class="o">=</span><span class="s2">"Я сегодня:"</span><span class="p">,</span>
+        <span class="n">show_caption_above_media</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><img alt="animatsiya ustidagi sarlavha" src="../images/messages/caption_above_media.jpg"></p>
+<h3 id="downloading-media">Fayllarni telegramdan yuklab olish<a class="headerlink" href="#downloading-media" title="Permanent link">¶</a></h3>
+<p>Faylni foydalanuvchiga qaytarib yuborishdan tashqari bot mediani o'z kompyuteriga/serveriga yuklab olishi mumkin. Buning uchun <code>Bot</code> 
+klasidagi ob'ektda <code>download()</code> usuli mavjud. Quyidagi misollarda fayllar to'g'ridan-to'g'ri fayl tizimiga yuklab olinadi,
+Ammo buning o'rniga, keyinchalik ba'zi kodlar (masalan Pillow) da foydalanish uchun uni BytesIO ob'ektida xotirada saqlashinggiz ham mumkin.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">photo</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download_photo</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="n">Bot</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">bot</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">photo</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">destination</span><span class="o">=</span><span class="sa">f</span><span class="s2">"/tmp/</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">photo</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">file_id</span><span class="si">}</span><span class="s2">.jpg"</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">sticker</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download_sticker</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="n">Bot</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">bot</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">sticker</span><span class="p">,</span>
+        <span class="c1"># Windows uchun path'ni tuzatishimiz kerak</span>
+        <span class="n">destination</span><span class="o">=</span><span class="sa">f</span><span class="s2">"/tmp/</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">sticker</span><span class="o">.</span><span class="n">file_id</span><span class="si">}</span><span class="s2">.webp"</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Nega biz rasmlar uchun <code>message.photo</code> emas, balki <code>message.photo[-1]</code> dan foydalandik ?
+Chunki Telegram'dagi rasmlar bir vaqtning o'zida bir nechta nusxada yuboriladi. Barchasi bir xil ammo
+turli o'lchamda, bunda rasmlar list ko'rinishida sifatsizdan sifatligacha tartiblangan bo'ladi.
+Shunga ko'ra eng sifatli rasmni olish uchun <code>photo[-1]</code> dan foydalanamiz va biz eng sifatli rasm hajmi bilan ishlashimiz mumkin.</p>
+<div class="admonition info">
+<p class="admonition-title">Katta hajmdagi fayllarni yuklab olish</p>
+<p>Telegram Bot API'dan foydalanadigan botlar <a href="https://core.telegram.org/bots/api#getfile">20 megabayt</a>dan 
+oshmaydigan fayllarni yuklashi mumkin. Agar siz katta hajmdagi fayllarni yuklab olishni/yuklashni 
+rejalashtirmoqchi bo'lsangiz, Telegram Bot API bilan emas, Telegram Client API bilan o'zaro aloqada bo'lgan 
+kutubxonalardan foydalanishinggiz yaxshiroq, masalan, <a href="https://docs.telethon.dev/en/latest/index.html">Telethon</a> yoki
+<a href="https://docs.pyrogram.org/">Pyrogram</a>. Ko'pchilik bilishmaydi lekin Telegram Client API dan nafaqat oddiy hisoblar, 
+balki <a href="https://docs.telethon.dev/en/latest/concepts/botapi-vs-mtproto.html">botlar</a> ham foydalanishi mumkin</p>
+<p>Bot API 5.0 versiyasidan boshlab siz katta fayllar bilan ishlash uchun o'zingizning 
+<a href="https://core.telegram.org/bots/api#using-a-local-bot-api-server">Bot API server</a>ingizdan foydalanishingiz mumkin.</p>
+</div>
+<h3 id="albums">Albomlar<a class="headerlink" href="#albums" title="Permanent link">¶</a></h3>
+<p>Biz Telegram'da albomlar (yani media guruh) deb ataydigan narsa, aslida umumiy <code>media_group_id</code> ga ega bo‘lgan va 
+foydalanuvchilariga vizual tarzda "bitta" habar ko'rinishida ko'rinadigan bir nechta habarlardir. 
+Aiogramda 3.1 versiyasidan boshlab  <a href="https://docs.aiogram.dev/en/latest/utils/media_group.html">"jamlagich" albomi</a> mavjud bo'lib, 
+Quyida biz uning ishlashini ko'rib chiqamiz. Ammo avvalo media guruhlarning bir nechta xususiyatlarini sanab o'tishimiz kerak:</p>
+<ul>
+<li>Hech qanday usul bilan ularga inline klaviatura qo'shish yoki repyl klaviaturani birga yuborish mumkin emas.</li>
+<li>Albomdagi har bir media fayl o'ziga xos izohga (caption) ega bo'lishi mumkin. Agar faqat bitta media izohga ega bo'lsa, 
+u butun albom uchun umumiy izoh sifatida chiqariladi.</li>
+<li>Suratlarni bir albomda videolar bilan aralashtirib yuborish mumkin, ammo fayllar (Document) va musiqa (Audio) hech narsaga aralashtirilmaydi, 
+faqat shu turdagi media bilan.</li>
+<li>Albomda 10 tadan ko'p media fayl bo'lishi mumkin emas.</li>
+</ul>
+<p>Keling buni aiogramda qanday qilinishini ko'rib chiqaylik:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FSInputFile</span><span class="p">,</span> <span class="n">Message</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.media_group</span><span class="w"> </span><span class="kn">import</span> <span class="n">MediaGroupBuilder</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"album"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_album</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="n">album_builder</span> <span class="o">=</span> <span class="n">MediaGroupBuilder</span><span class="p">(</span>
+        <span class="n">caption</span><span class="o">=</span><span class="s2">"Общая подпись для будущего альбома"</span>
+    <span class="p">)</span>
+    <span class="n">album_builder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">"photo"</span><span class="p">,</span>
+        <span class="n">media</span><span class="o">=</span><span class="n">FSInputFile</span><span class="p">(</span><span class="s2">"image_from_pc.jpg"</span><span class="p">)</span>
+        <span class="c1"># caption="Подпись к конкретному медиа"</span>
+
+    <span class="p">)</span>
+    <span class="c1"># Agar biz medianing turini bilsak</span>
+    <span class="c1"># add_&lt;media tipi&gt; ko'rinishida foydalanishimiz mumkin</span>
+    <span class="n">album_builder</span><span class="o">.</span><span class="n">add_photo</span><span class="p">(</span>
+        <span class="c1"># Havolalar yoki file_id uchun darhol qiymatni ko'rsatish kifoya</span>
+        <span class="n">media</span><span class="o">=</span><span class="s2">"https://picsum.photos/seed/groosha/400/300"</span>
+    <span class="p">)</span>
+    <span class="n">album_builder</span><span class="o">.</span><span class="n">add_photo</span><span class="p">(</span>
+        <span class="n">media</span><span class="o">=</span><span class="s2">"&lt;sizdagi file_id&gt;"</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer_media_group</span><span class="p">(</span>
+        <span class="c1"># build() metodini chaqirishni unutmang</span>
+        <span class="n">media</span><span class="o">=</span><span class="n">album_builder</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Natija: </p>
+<p><img alt="Builder bilan ishlash natijasi" src="../images/messages/media_group_builder.png"></p>
+<p>Ammo albomlarni yuklab olishda hammasi ancha rasvo... Yuqorida aytilganidek, albomlar - bu shunchaki guruhlangan alohida xabarlardir, 
+demak ular botga ham turli xil yangilanish (Update) larda keladi. Butun albomni bittada qabul qilish uchun 100% ishonchli usul mavjud emas, 
+lekin buni minimal yo'qotishlar bilan amalga oshirishga harakat qilish mumkin. Odatda, bu middleware orqali amalga oshiriladi, 
+media guruhlarni qabul qilish bo'yicha mening shaxsiy yechimimni 
+<a href="https://github.com/MasterGroosha/telegram-feedback-bot-topics/blob/master/bot/middlewares/albums_collector.py">ushbu havola orqali</a> topishingiz mumkin.</p>
+<h2 id="service">Xizmat (servis) xabarlari<a class="headerlink" href="#service" title="Permanent link">¶</a></h2>
+<p>Telegramdagi xabarlar matnli, media fayllar va xizmat (ya'ni, servis) xabarlarga bo'linadi. 
+Keling ularning oxirgisi haqida gaplashishamiz.</p>
+<p><img alt="Xizmat xabarlari" src="../images/messages/service_messages.png"></p>
+<p>Ular g‘alati ko‘rinishga ega va ular bilan o‘zaro aloqalar cheklangan bo‘lishiga qaramay, 
+ular o‘zining ID raqamlari bor va hatto ularning egasi mavjud bo‘lgan xabarlardir. 
+Shuni ta’kidlash kerak-ki, xizmat xabarlarining qo‘llanilish doirasi yillar davomida o‘zgarib bordi va 
+hozirda sizning botingiz ular bilan ishlamasligi yoki faqat o‘chirish bilan shug‘ullanishi mumkin.</p>
+<p>Batafsil ma’lumotga to'xtalmasdan, aniq bir misolni ko‘rib chiqamiz: Guruhga yangi 
+kirgan a'zoga "xush kelibsiz" xabarini yuborib ko'ramiz. Bunday xizmat xabarida content_type "new_chat_members"ga teng 
+bo‘ladi, ammo bu aslida bir xil nomdagi maydonga ega bo‘lgan Message obyekti hisoblanadi."</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">new_chat_members</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">somebody_added</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">new_chat_members</span><span class="p">:</span>
+        <span class="c1"># full_name maydoni ism va familiyani olib beradi</span>
+        <span class="c1"># (screenshotda foydalanuvchilarning familiyasi yo'q)</span>
+        <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">reply</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Привет, </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Bir nechta foydalanuvchilarni qo'shish" src="../images/messages/multiple_add.png"></p>
+<p>Shuni esda tutingki <code>message.new_chat_members</code> ro'yxatdir, chunki bitta foydalanuvchi bir vaqtning o'zida 
+bir nechta ishtirokchilarni qo'shishi mumkin. Shuningdek, <code>message.from_user</code> va <code>message.new_chat_members</code> maydonlarini 
+adashtirmaslik kerak. Birinchisi - bu subyekt, ya'ni harakatni amalga oshirgan shaxs. Ikkinchisi - bu harakat ob'yektlari. 
+Ya'ni agar siz «Anna Boris va Viktorni qo'shdi» ko'rinishidagi xabarni ko'rsangiz, <code>message.from_user</code> - bu Anna haqidagi 
+ma'lumot, va <code>message.new_chat_members</code> ro'yxati Boris va Viktor haqidagi ma'lumotni o'z ichiga oladi.</p>
+<div class="admonition warning">
+<p class="admonition-title">Xizmat xabarlariga to'liq ishonmang!</p>
+<p>Yangi a'zolar qo'shilishi (new_chat_members) va chiqib ketishi (left_chat_member) haqida xizmat xabarlarida 
+bitta noxush holat mavjud: ular ishonchsiz, ya'ni umuman xabar yaratilmasligi mumkin.
+Masalan, new_chat_members haqidagi xabar, bu habar 10k (10 ming) ishtirokchiga yaqin bo'lgan guruhda yaratilmaydi, 
+left_chat_member esa 50 ta ishtirokchida (lekin bu bobni yozishda men 9 ishtirokchili guruhda left_chat_member xabari 
+yaratilmaganiga duch keldim. Yarim soat o'tgach, boshqa odam chiqib ketganda shu guruhda xabar paydo bo'ldi).</p>
+<p>Bot API 5.0 chiqarilishi bilan dasturchilar istalgan o'lchamdagi guruhlarda va <strong>shuningdek kanallarda</strong> 
+a'zolarning kirishi/chiqishini ko'rishning ancha ishonchli usuliga ega bo'ldilar. 
+Ammo bu haqda <a href="../special-updates/">boshqa safar</a> gaplashamiz.</p>
+</div>
+<h2 id="bonus">Bonus: matnda havolani yashirish<a class="headerlink" href="#bonus" title="Permanent link">¶</a></h2>
+<p>Ba'zi holatlarda rasm bilan uzun xabar yuborish kerak bo'lib qolishi mumkin, lekin media fayllarga qo'yiladigan izohlar 
+limiti 1024 ta belgi, oddiy matnli xabarlarda esa bu 4096 ta belgini tashkil etadi. Media havolasini pastda matnga qo'shish
+esa chiroyli ko'rinmaydi. Bu muammoni hal qilish uchun bir necha yil avval HTML-belgilashda "yashirin havolalar" usuli o'ylab topilgan. 
+Asosi shundaki, havolani <a href="http://www.fileformat.info/info/unicode/char/200b/index.htm">nol kenglikdagi bo'shliqqa</a> joylashtirib, 
+butun konstruktsiyani xabar boshiga qo'yish mumkin. Kuzatuvchi uchun xabarda ortiqcha narsa ko'rinmaydi 
+lekin Telegram serveri barchasini ko'radi va <strong>oldindan ko'ruv</strong>(preview)ni qo'shadi. <br>
+Aiogram ishlab chiquvchilari buning uchun hatto <code>hide_link()</code> nomli maxsus yordamchi metodini yaratishgan:
+</p><div class="highlight"><pre><span></span><code><span class="c1"># yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.markdown</span><span class="w"> </span><span class="kn">import</span> <span class="n">hide_link</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"hidden_link"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_hidden_link</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hide_link</span><span class="p">(</span><span class="s1">'https://telegra.ph/file/562a512448876923e28c3.png'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Документация Telegram: *существует*</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Пользователи: *не читают документацию*</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Груша:"</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><img alt="Yashirin havola bilan rasm" src="../images/messages/hidden_link.png"></p>
+<p>Yuqorida ko'rsatilgan LinkPreviewOptions yordamida yuqorida uzun 4096 belgilik izoh bilan media faylni qo'yishingiz mumkin.</p>
+<p>Hozircha shu. Keyingi boblarda ko'rishguncha!
+<s><small>Layk bosing, obuna bo'ling, qo'ng'iroq tugmasini bosishni unutmang!</small></s></p></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2020-2024 Groosha
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://t.me/+DE0_2nCvbXozZjUy" target="_blank" rel="noopener" title="Чат в Telegram" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M248 8C111.033 8 0 119.033 0 256s111.033 248 248 248 248-111.033 248-248S384.967 8 248 8Zm114.952 168.66c-3.732 39.215-19.881 134.378-28.1 178.3-3.476 18.584-10.322 24.816-16.948 25.425-14.4 1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25 5.342-39.5 3.652-3.793 67.107-61.51 68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608 69.142-14.845 10.194-26.894 9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7 18.45-13.7 108.446-47.248 144.628-62.3c68.872-28.647 83.183-33.623 92.511-33.789 2.052-.034 6.639.474 9.61 2.885a10.452 10.452 0 0 1 3.53 6.716 43.765 43.765 0 0 1 .417 9.769Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/MasterGroosha/aiogram-3-guide" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Buferga nusxalandi", "clipboard.copy": "Buferga nusxalash", "search.result.more.one": "Ushbu sahifada yana 1 ta natija", "search.result.more.other": "Bu sahifada yana # ta natija", "search.result.none": "Mos natijalar yo\u0027q", "search.result.one": "1 ta mos natija", "search.result.other": "# ta mos keladigan natijalar", "search.result.placeholder": "Qidiruvni boshlash uchun kiriting", "search.result.term.missing": "To\u0027ldirilmagan", "select.version": "Versiyani tanlang"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  </body>
+</html>

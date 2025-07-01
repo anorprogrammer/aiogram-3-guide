@@ -1,0 +1,1395 @@
+
+<!doctype html>
+<html lang="uz" class="no-js">
+  <head>
+    
+  <script src="https://telegram.org/js/telegram-web-app.js?35"></script>
+    <script type="text/javascript">
+      const webapp = window.Telegram.WebApp;
+      webapp.ready();
+      webapp.expand();
+      const initData = webapp.initDataUnsafe;
+      if (window.location.pathname === "/aiogram-3-guide/" && Object.hasOwn(initData, 'auth_date')) {
+        if (initData.start_param) {
+          let additionalParam = '';
+          switch (initData.start_param) {
+            case 'quickstart':
+            case 'messages':
+            case 'buttons':
+            case 'routers':
+            case 'special-updates':
+            case 'fsm':
+            case 'inline-mode':
+              additionalParam = initData.start_param;
+              break;
+            case 'filters':
+              additionalParam = 'filters-and-middlewares/#filters';
+              break
+            case 'middlewares':
+              additionalParam = 'filters-and-middlewares/#middlewares';
+              break
+            case 'magic-filter':
+            case 'magic':
+              additionalParam = 'filters-and-middlewares/#magic-filters';
+              break
+            case 'entities':
+              additionalParam = 'messages/#message-entities';
+              break;
+            case 'escaping':
+              additionalParam = 'messages/#input-escaping';
+              break;
+            case 'keep-formatting':
+              additionalParam = 'messages/#keep-formatting';
+              break
+            case 'send-files':
+            case 'upload':
+              additionalParam = 'messages/#uploading-media';
+              break;
+            case 'download-files':
+            case 'download':
+              additionalParam = 'messages/#downloading-media';
+              break;
+            case 'hide-image':
+              additionalParam = 'messages/#bonus';
+              break
+            case 'callback-factory':
+              additionalParam = 'buttons/#callback-factory';
+              break
+            case 'my-chat-member':
+              additionalParam = 'special-updates/#my-chat-member';
+              break
+            case 'chat-member':
+              additionalParam = 'special-updates/#chat-member';
+              break
+            default:
+              additionalParam = '/';
+          }
+          window.location.href = (`${window.location.origin}${window.location.pathname}${additionalParam}`);
+        }
+      }
+  </script>
+
+  
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tugmalar">
+      
+      
+        <meta name="author" content="MasterGroosha">
+      
+      
+        <link rel="canonical" href="https://mastergroosha.github.io/aiogram-3-guide/buttons/">
+      
+      
+        <link rel="prev" href="../messages/">
+      
+      
+        <link rel="next" href="../routers/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.25">
+    
+
+    
+      
+        <title>Tugmalar - Telegram botlarini aiogram 3.x bilan yozish</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  
+    
+  
+
+  
+  
+    
+  
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Telegram botlarini aiogram 3.x bilan yozish" />
+  <meta property="og:description" content="Tugmalar" />
+  <meta property="og:url" content="https://mastergroosha.github.io/aiogram-3-guide/buttons/" />
+  <meta property="og:image" content="https://mastergroosha.github.io/aiogram-3-guide/images/social.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://mastergroosha.github.io/aiogram-3-guide/buttons/">
+  <meta name="twitter:title" content="Telegram botlarini aiogram 3.x bilan yozish">
+  <meta name="twitter:description" content="Tugmalar">
+  <meta name="twitter:image" content="https://mastergroosha.github.io/aiogram-3-guide/images/social.png">
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tugmalar" class="md-skip">
+          Tarkibga o'tish
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Sarlavha">
+    <a href=".." title="Telegram botlarini aiogram 3.x bilan yozish" class="md-header__button md-logo" aria-label="Telegram botlarini aiogram 3.x bilan yozish" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Telegram botlarini aiogram 3.x bilan yozish
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tugmalar
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Qidirish" placeholder="Qidirish" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Qidirish">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Tozalash" aria-label="Tozalash" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Qidiruv ishga tushirilmoqda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/MasterGroosha/aiogram-3-guide" title="Repozitoriyga o'tish" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    MasterGroosha/aiogram-3-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<!-- Determine classes -->
+
+
+
+
+<!-- Navigation -->
+<nav
+  class="md-nav md-nav--primary"
+  aria-label="Navigatsiya"
+  data-md-level="0"
+>
+
+  <!-- Site title -->
+  <label class="md-nav__title" for="__drawer">
+    <a
+      href=".."
+      title="Telegram botlarini aiogram 3.x bilan yozish"
+      class="md-nav__button md-logo"
+      aria-label="Telegram botlarini aiogram 3.x bilan yozish"
+      data-md-component="logo"
+    >
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5Z"/></svg>
+
+    </a>
+    Mundarija
+  </label>
+
+  <!-- Repository information -->
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/MasterGroosha/aiogram-3-guide" title="Repozitoriyga o'tish" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    MasterGroosha/aiogram-3-guide
+  </div>
+</a>
+    </div>
+  
+
+  <!-- Navigation list -->
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kirish
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Aiogram bilan tanishish
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Xabarlar bilan ishlash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Tugmalar
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Tugmalar
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mundarija">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mundarija
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reply-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Oddiy tugmalar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Oddiy tugmalar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reply-as-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tugmalar matn shabloni sifatida
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reply-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keyboard Builder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reply-special" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maxsus oddiy tugmalar
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inline-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inline tugmalar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inline tugmalar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#url-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL-tugmalar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callback-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Callback tugmalar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callback-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Callback factory (CallbackData)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callback-autoreply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Callback'larga avtomatik javob
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Routerlar. Tuzilma
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters-and-middlewares/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Filtrlar va middlewarelar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../special-updates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maxsus yangilanishlar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fsm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Holat mashinalari
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inline-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inline-rejim
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    To‘lovlar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-teaser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    🔒 Yuqori daraja
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mundarija">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mundarija
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reply-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Oddiy tugmalar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Oddiy tugmalar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reply-as-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tugmalar matn shabloni sifatida
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reply-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keyboard Builder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reply-special" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maxsus oddiy tugmalar
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inline-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inline tugmalar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inline tugmalar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#url-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL-tugmalar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callback-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Callback tugmalar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callback-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Callback factory (CallbackData)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callback-autoreply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Callback'larga avtomatik javob
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="tugmalar">Tugmalar<a class="headerlink" href="#tugmalar" title="Permanent link">¶</a></h1>
+<div class="admonition info">
+<p>Ushbu bobda ishlatilayotgan aiogram versiyasi: 3.7.0</p>
+</div>
+<p>Bu bobda biz Telegram botlarida keng qo'llaniladigan tugmalar bilan tanishamiz. Avvalo, chalkashliklarning oldini olish uchun tugmalar turlarini ajratib olamiz. Qurilmangiz ekranining pastki qismida, matn kiritish oynasi ostida joylashadigan tugmalarni <strong>oddiy</strong> tugmalar deb ataymiz. Xabarlarga bevosita biriktiriladigan tugmalar esa <strong>inline</strong> tugmalar hisoblanadi. Quyidagi rasmda bu ikki turdagi tugmalarni ko'rishingiz mumkin:</p>
+<p><img alt="Ikki turdagi tugmalar" src="../images/buttons/l03_1.png"></p>
+<h2 id="reply-buttons">Oddiy tugmalar<a class="headerlink" href="#reply-buttons" title="Permanent link">¶</a></h2>
+<h3 id="reply-as-text">Tugmalar matn shabloni sifatida<a class="headerlink" href="#reply-as-text" title="Permanent link">¶</a></h3>
+<p>Ushbu turdagi tugmalar 2015 yilda Bot API bilan birga paydo bo'lgan (Contact, Location va boshqa bir nechta alohida holatlar bundan mustasno 
+ular haqida keyinroq gaplashamiz) va  ular xabar shablonlari hisoblanadi. Ishlash usuli oddiy: tugmada nima yozilgan bo'lsa, 
+aynan o'sha narsa joriy chatga yuboriladi (siz bunday holatda tugma bosish o'rniga aynan tugmadagi matnni chatga yuborish orqali bir xil natija olishinggiz mumkin). 
+Shuning uchun bunday tugma bosilishini qayta ishlash uchun bot kiruvchi matnli xabarlarni oldindan bilishi kerak.</p>
+<p>Keling <code>/start</code> buyrug'ini bosganingizda ikkita tugma bilan xabar yuboradigan handler'ni yozamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"start"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_start</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">kb</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Pyure bilan"</span><span class="p">)],</span>
+        <span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Pyuresiz"</span><span class="p">)]</span>
+    <span class="p">]</span>
+    <span class="n">keyboard</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ReplyKeyboardMarkup</span><span class="p">(</span><span class="n">keyboard</span><span class="o">=</span><span class="n">kb</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Kotletni qanday beramiz?"</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition info">
+<p>Telegram Bot API sizga <code>KeyboardButton</code> ob'ekti o'rniga faqat satrlarni belgilash imkonini <a href="https://core.telegram.org/bots/api#keyboardbutton">berishi</a>ga qaramay, 
+stringdan foydalanmoqchi bo'lganingizda, aiogram 3.x ValidationError xatosini chiqaradi va bu xato emas, balki xususiyatdir.
+Hozircha undan foydalanishga majbursiz 🤷‍♂️</p>
+</div>
+<p>Botni ishga tushiramiz va unda "ulkan" tugmalarni ko'rishimiz mumkin:</p>
+<p><img alt="Juda katta oddiy tugmalar" src="../images/buttons/l03_2.png"></p>
+<p>Qandaydir xunuk ko'rinib qoldi shunday emasmi. Avvalo tugmalarni kichikroq qilishni, ikkinchidan ularni gorizontal 
+joylashtirishni xohlaymiz. Nega ular bunday ko'rinishga ega? Gap shundaki, birlamchi holatda bunday tugmalar ilovaning standard tugmalari o'lchamida bo'ladi. 
+Tugmalarni kichraytirish uchun klaviatura obyektiga qo'shimcha <code>resize_keyboard=True</code> parametrini ko'rsatishimiz kerak.  <br>
+Ammo vertikal tugmalarni gorizontal tugmalarga qanday almashtirish mumkin? 
+Bot API nuqtai nazaridan klaviatura — <a href="https://core.telegram.org/bots/api#replykeyboardmarkup">ichma ich massiv</a> bu esa tugmalarni tashkil qiladi, 
+ya'ni oddiy qilib aytganda, qatorlar massivi. Kodimizni chiroyli bo'lishi uchun uni qayta yozamiz va foydalanuvchiga nima kiritishni ko'rsatish uchun 
+<code>input_field_placeholder</code> parametrini qo'shamiz, bu bizga klaviatura faol bo'lgan paytda matn kiritish maydoni fonida xira ko'rinishda biz belgilagan matnni ko'rsatadi:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"start"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_start</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">kb</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Pyure bilan"</span><span class="p">),</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Pyuresiz"</span><span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">]</span>
+    <span class="n">keyboard</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ReplyKeyboardMarkup</span><span class="p">(</span>
+        <span class="n">keyboard</span><span class="o">=</span><span class="n">kb</span><span class="p">,</span>
+        <span class="n">resize_keyboard</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">input_field_placeholder</span><span class="o">=</span><span class="s2">"Qanday usulda berishni tanlang"</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Kotletni qanday beramiz?"</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard</span><span class="p">)</span>
+</code></pre></div>
+<p>Qarang - haqiqatan ham chiroyli:</p>
+<p><img alt="Bir qatorda tugmalar" src="../images/buttons/l03_3.png"></p>
+<p>Endi bunday tugmalar bosilishini qayta ishlashni botga o'rgatish qoldi. Yuqorida aytib o'tilganidek,
+matnning to'liq mos kelishini tekshirish kerak. Buni <em>magic-filter</em> F yordamida qilamiz, bu haqida esa
+batafsil <a href="../filters-and-middlewares/#magic-filters">boshqa bobda</a> gaplashamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">F</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"pyure bilan"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">with_puree</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">reply</span><span class="p">(</span><span class="s2">"Ajoyib tanlov!"</span><span class="p">)</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"pyuresiz"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">without_puree</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">reply</span><span class="p">(</span><span class="s2">"Bunday mazali emas!"</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Tugmani bosishga javob" src="../images/buttons/l03_4.png"></p>
+<p>Tugmalarni olib tashlash uchun <code>ReplyKeyboardRemove</code> kabi maxsus "o'chirish" klaviaturasi bilan yangi xabar yuborishingiz kerak. 
+Masalan: <code>await message.reply("Ajoyib tanlov!", reply_markup=types.ReplyKeyboardRemove())</code></p>
+<h3 id="reply-builder">Keyboard Builder<a class="headerlink" href="#reply-builder" title="Permanent link">¶</a></h3>
+<p>Tugmalarni dinamikroq yaratish uchun klaviatura yasagich (keyboard builder) dan foydalanish mumkin. 
+Bizga quyidagi metodlar kerak bo'ladi:</p>
+<ul>
+<li><code>add(&lt;KeyboardButton&gt;)</code> — tugmani yasagich (Builder) xotirasiga qo'shadi;</li>
+<li><code>adjust(int1, int2, int3...)</code> — <code>int1, int2, int3...</code> tugmalardan iborat qatorlarni yaratadi;</li>
+<li><code>as_markup()</code> — tayyor klaviatura obyektini qaytaradi;</li>
+<li><code>button(&lt;params&gt;)</code> — berilgan parametrlar bilan tugmani qo'shadi, tugma turi (Reply yoki Inline) avtomatik ravishda aniqlanadi.</li>
+</ul>
+<p>Keling, 4×4 o'lchamdagi raqamlardan iborat klaviatura yaratamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.keyboard</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReplyKeyboardBuilder</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"reply_builder"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">reply_builder</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">ReplyKeyboardBuilder</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">):</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">adjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s2">"Sonni tanlang:"</span><span class="p">,</span>
+        <span class="n">reply_markup</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">(</span><span class="n">resize_keyboard</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><img alt="Tugma yasagichning natijasi" src="../images/buttons/reply_builder.png"></p>
+<div class="admonition info">
+<p><a href="https://core.telegram.org/bots/api#replykeyboardmarkup">Oddiy klaviatura obyektida</a> yana ikki foydali parametr mavjud: 
+biri <code>one_time_keyboard</code> - tugmani bosilgandan keyin avtomatik ravishda yashirish uchun va ikkinchisi <code>selective</code> - klaviaturani 
+faqat guruhning ayrim ishtirokchilariga ko'rsatish uchun. Ularni ishlatishni mustaqil o'rganishingiz mumkin.</p>
+</div>
+<h3 id="reply-special">Maxsus oddiy tugmalar<a class="headerlink" href="#reply-special" title="Permanent link">¶</a></h3>
+<p>Hozirda (Ushbu bobni yozish vaqtida) Telegramda oddiy xabar shablonlari bo'lmagan olti xil maxsus oddiy tugma mavjud. 
+Ular quyidagilar uchun mo'ljallangan:</p>
+<ul>
+<li>joriy joylashuvni yuborish;</li>
+<li>telefon raqami bilan o'z kontaktini yuborish;</li>
+<li>so'rovnoma/viktorina yaratish;</li>
+<li>kerakli mezonlarga ega foydalanuvchi ma'lumotlarini tanlash va botga yuborish;</li>
+<li>kerakli mezonlarga ega (super)guruh yoki kanal ma'lumotlarini tanlash va botga yuborish;</li>
+<li>veb-ilovani (WebApp) ishga tushirish.</li>
+</ul>
+<p>Ular haqida batafsil gaplashamiz.</p>
+<p><strong>Joriy joylashuvni yuborish</strong>. Bu yerda hammasi oddiy: foydalanuvchi qayerda bo'lsa, o'sha koordinatalarni yuboradi. Bu statik manzil bo'ladi, avtomatik yangilanadigan Live Location emas. Albatta ayyor foydalanuvchilar o'z joylashuvini o'zgartirishi mumkin, ba'zida hatto butun (Android) tizim darajasida.</p>
+<p><strong>O'z kontaktini telefon raqamini bilan yuborish</strong>. Tugmani bosganda (avval tasdiqlash bilan) foydalanuvchi o'z kontaktini telefon raqami bilan botga yuboradi. Ba'zi ayyor foydalanuvchilar bu tugmani bosmasdan, istalgan boshqa kontaktni yuborishi mumkin, lekin bu holatda ularga qarshi choralar ko'rish mumkin: handlerda yoki filtrda <code>message.contact.user_id == message.from_user.id</code> tengligini tekshirish kifoya.</p>
+<p><strong>So'rov/viktorina yaratish</strong>. Tugmani bosganda foydalanuvchiga so'rov yoki viktorina yaratish taklif etiladi, ular keyin joriy chatga yuboriladi. Buning uchun <a href="https://core.telegram.org/bots/api#keyboardbuttonpolltype">KeyboardButtonPollType</a> obyektini uzatish kerak, ixtiyoriy <code>type</code> argumenti so'rov turi (so'rov yoki viktorina) uchun xizmat qiladi.</p>
+<p><strong>Kerakli mezonlarga ega foydalanuvchi ma'lumotlarini tanlash va botga yuborish</strong>. Tugmani bosgan foydalanuvchining chatlar ro'yxatidan foydalanuvchini tanlash oynasini ko'rsatadi. Buning uchun <a href="https://core.telegram.org/bots/api#keyboardbuttonrequestuser">KeyboardButtonRequestUser</a> obyektini uzatish kerak, bunda istalgan usul bilan yaratilgan so'rov ID sini va mezonlarni ko'rsatish kerak, masalan, "bot", "Telegram Premium obunasi bor" va h.k. Foydalanuvchi tanlangandan keyin bot <a href="https://core.telegram.org/bots/api#usershared">UserShared</a> turidagi xizmat xabarini oladi.</p>
+<p><strong>Kerakli mezonlarga ega chat ma'lumotlarini tanlash va botga yuborish</strong>. Tugmani bosgan foydalanuvchining chatlar ro'yxatidan chatni tanlash oynasini ko'rsatadi. Buning uchun <a href="https://core.telegram.org/bots/api#keyboardbuttonrequestchat">KeyboardButtonRequestChat</a> obyektini uzatish kerak, bunda istalgan usul bilan yaratilgan so'rov ID sini va mezonlarni ko'rsatish kerak, masalan, "guruh yoki kanal", "foydalanuvchi — chat yaratuvchisi" va h.k. Foydalanuvchi tanlangandan keyin bot <a href="https://core.telegram.org/bots/api#chatshared">ChatShared</a> turidagi xizmat xabarini oladi.</p>
+<p><strong>Veb-ilovani ishga tushirish (WebApp)</strong>. Tugmani bosganda <a href="https://core.telegram.org/bots/webapps">WebApp</a> ni ochadi. Buning uchun <a href="https://core.telegram.org/bots/api#webappinfo">WebAppInfo</a> obyektini uzatish kerak. Ushbu kitobda veb-ilovalar hali ko'rib chiqilmaydi.</p>
+<p>Biroq, buni bir marta kodda ko'rgan afzal:
+</p><div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"special_buttons"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_special_buttons</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">ReplyKeyboardBuilder</span><span class="p">()</span>
+    <span class="c1"># row metodi bir yoki bir nechta tugmadan iborat qatordan aniq foydalanish imkonini beradi. Masalan, birinchi qator ikki tugmadan iborat bo'ladi...</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">row</span><span class="p">(</span>
+        <span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Geolokatsiyani so'rash"</span><span class="p">,</span> <span class="n">request_location</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Kontaktni so'rash"</span><span class="p">,</span> <span class="n">request_contact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># ... ikkinchi qator bitta tugmadan ...</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"Viktorina yaratish"</span><span class="p">,</span>
+        <span class="n">request_poll</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButtonPollType</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"quiz"</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="c1"># ... va uchinchi qator yana ikki tugmadan</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">row</span><span class="p">(</span>
+        <span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">"Premium foydalanuvchini tanlash"</span><span class="p">,</span>
+            <span class="n">request_user</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButtonRequestUser</span><span class="p">(</span>
+                <span class="n">request_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">user_is_premium</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">types</span><span class="o">.</span><span class="n">KeyboardButton</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">"Forumli supergruppani tanlash"</span><span class="p">,</span>
+            <span class="n">request_chat</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">KeyboardButtonRequestChat</span><span class="p">(</span>
+                <span class="n">request_id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">chat_is_channel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">chat_is_forum</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># WebApp tugmalari hozircha yo'q, uzr :(</span>
+
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s2">"Amalni tanlang:"</span><span class="p">,</span>
+        <span class="n">reply_markup</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">(</span><span class="n">resize_keyboard</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><img alt="Maxsus oddiy tugmalar" src="../images/buttons/special_buttons.png"></p>
+<p>Oxirida, pastdagi ikki tugma uchun handlerlar namunasi:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">F</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">user_shared</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_user_shared</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"So'rov </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">user_shared</span><span class="o">.</span><span class="n">request_id</span><span class="si">}</span><span class="s2">. "</span>
+        <span class="sa">f</span><span class="s2">"Foydalanuvchi ID: </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">user_shared</span><span class="o">.</span><span class="n">user_id</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">chat_shared</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_user_shared</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"So'rov </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">chat_shared</span><span class="o">.</span><span class="n">request_id</span><span class="si">}</span><span class="s2">. "</span>
+        <span class="sa">f</span><span class="s2">"Chat ID: </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">chat_shared</span><span class="o">.</span><span class="n">chat_id</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+</code></pre></div>
+<h2 id="inline-buttons">Inline tugmalar<a class="headerlink" href="#inline-buttons" title="Permanent link">¶</a></h2>
+<h3 id="url-buttons">URL-tugmalar<a class="headerlink" href="#url-buttons" title="Permanent link">¶</a></h3>
+<p>Oddiy tugmalardan farqli o'laroq, inline tugmalar ekran pastiga emas, balki yuborilgan xabarga biriktiriladi.
+Ushbu bobda biz bunday tugmalarning ikki turini ko'rib chiqamiz: URL va Callback. Yana biri — Switch — esa
+<a href="../inline-mode/">inline-rejim</a> bobida ko'rib chiqiladi.</p>
+<div class="admonition info">
+<p>Login va Pay tugmalari bu kitobda umuman ko'rib chiqilmaydi. Agar kimdir avtorizatsiya yoki to'lov uchun ishlaydigan kod bilan yordam bermoqchi bo'lsa, iltimos, <a href="https://github.com/MasterGroosha/aiogram-3-guide">GitHub</a> ga Pull Request yarating. Rahmat!</p>
+</div>
+<p>Eng oddiy inline tugmalar URL turiga kiradi, ya'ni "havola". Faqat HTTP(S) va tg:// protokollari qo'llab-quvvatlanadi.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># yangi import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.keyboard</span><span class="w"> </span><span class="kn">import</span> <span class="n">InlineKeyboardBuilder</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"inline_url"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_inline_url</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="n">Bot</span><span class="p">):</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">InlineKeyboardBuilder</span><span class="p">()</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"GitHub"</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">"https://github.com"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"Telegram rasmiy kanali"</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">"tg://resolve?domain=telegram"</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ID-tugmani ko'rsatish uchun,</span>
+    <span class="c1"># foydalanuvchida has_private_forwards flagi False bo'lishi kerak</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="mi">1234567890</span>
+    <span class="n">chat_info</span> <span class="o">=</span> <span class="k">await</span> <span class="n">bot</span><span class="o">.</span><span class="n">get_chat</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">chat_info</span><span class="o">.</span><span class="n">has_private_forwards</span><span class="p">:</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">"Noma'lum foydalanuvchi"</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">"tg://user?id=</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s1">'Havolani tanlang'</span><span class="p">,</span>
+        <span class="n">reply_markup</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">(),</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Kodning o'rta qismiga alohida to'xtalamiz. 2019 yil mart oyida Telegram ishlab chiquvchilari
+<a href="https://telegram.org/blog/unsend-privacy-emoji#anonymous-forwarding">foydalanuvchi profili havolasini o'chirish imkonini</a> joriy qilishdi.
+Agar sizda forward orqali o'tish o'chirilgan foydalanuvchi ID'si bilan URL-tugma yaratsangiz, bot <code>Bad Request: BUTTON_USER_PRIVACY_RESTRICTED</code> xatosini oladi.
+Shuning uchun bunday tugmani ko'rsatishdan oldin, ushbu sozlamaning holatini aniqlash kerak. Buning uchun <a href="https://core.telegram.org/bots/api#getchat">getChat</a> metodini chaqirib, <code>has_private_forwards</code> maydonini tekshirish mumkin. Agar u <code>True</code> bo'lsa, URL-ID tugmasini qo'shishga urinish xatoga olib keladi.</p>
+<h3 id="callback-buttons">Callback tugmalar<a class="headerlink" href="#callback-buttons" title="Permanent link">¶</a></h3>
+<p>URL-tugmalar haqida gaplashib bo'ldik, endi esa asosiy mavzuga — Callback tugmalarga o'tamiz. Bu juda kuchli imkoniyat bo'lib, deyarli har bir botda uchraydi. Masalan, postlarga reaktsiya tugmalari (layklar), @BotFather menyusi va boshqalar. Callback tugmalarning o'ziga xos qiymati (data) bo'ladi, shu qiymat orqali dastur qaysi tugma bosilganini va nima qilish kerakligini aniqlaydi. To'g'ri data tanlash juda muhim! Shuni ham aytish kerakki, oddiy tugmalardan farqli o'laroq, callback tugmasi bosilganda deyarli istalgan amalni bajarish mumkin — pizza buyurtma qilishdan tortib, superkompyuter klasterida hisob-kitoblarni ishga tushirishgacha.</p>
+<p>Keling, <code>/random</code> komandasi bosilganda callback tugmasi bilan xabar yuboradigan handler yozamiz:
+</p><div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"random"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_random</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">InlineKeyboardBuilder</span><span class="p">()</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"Meni bos"</span><span class="p">,</span>
+        <span class="n">callback_data</span><span class="o">=</span><span class="s2">"random_value"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="s2">"Tugmani bosing, bot 1 dan 10 gacha son yuboradi"</span><span class="p">,</span>
+        <span class="n">reply_markup</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">()</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Endi esa tugma bosilishini qanday qayta ishlashni ko'ramiz. Oldin xabarlar uchun <code>message</code> handler ishlatgan bo'lsak, callback tugmalar uchun <code>callback_query</code> handlerdan foydalanamiz. Tugmaning qiymati (data) bo'yicha aniqlaymiz:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="s2">"random_value"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_random_value</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">CallbackQuery</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+</code></pre></div>
+<p><img alt="Callback tugmasi bosilganda javob" src="../images/buttons/l03_5.png"></p>
+<p>E'tibor bering, Telegram serveri callback yetkazib berilganini tasdiqlashimizni kutadi, aks holda 30 soniya davomida maxsus soatcha belgisi ko'rinadi. Soatchani yashirish uchun callback obyektining <code>answer()</code> metodini chaqirish kerak (yoki API'dagi <code>answer_callback_query()</code> metodidan foydalanish mumkin). Odatda <code>answer()</code> ga hech narsa uzatmaslik mumkin, lekin xohlasangiz maxsus oynacha (ekranning yuqorisida yoki ustida) ko'rsatishingiz mumkin:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="s2">"random_value"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_random_value</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">CallbackQuery</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"Botdan foydalanganingiz uchun rahmat!"</span><span class="p">,</span>
+        <span class="n">show_alert</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="c1"># yoki shunchaki await callback.answer()</span>
+</code></pre></div>
+<p><img alt="Callback tugmasi bosilganda pop-up oynacha" src="../images/buttons/l03_6.png"></p>
+<p>Savol tug'ilishi mumkin: callbackni qayta ishlashda <code>answer()</code> metodini qachon chaqirish kerak? Asosiy qoidasi — Telegram'ga callback so'rovi olinganini unutmasdan bildirish. Men esa <code>answer()</code> ni har doim oxirida chaqirishni tavsiya qilaman. Chunki agar callbackni qayta ishlashda xatolik yuz bersa va botda istisno chiqsa, foydalanuvchi soatchani yarim daqiqa ko'radi va nimadir noto'g'ri ketganini tushunadi. Aks holda, soatcha yo'qoladi, lekin foydalanuvchi so'rovi muvaffaqiyatli bajarildimi yoki yo'qmi — bilmaydi.</p>
+<div class="admonition info">
+<p class="admonition-title">Diqqat</p>
+<p><code>send_random_value</code> funksiyasida biz <code>answer()</code> metodini <code>message</code> emas, balki <code>callback.message</code> obyektida chaqirdik. Chunki callback handlerlar xabarlar (Message) bilan emas, callbacklar (CallbackQuery) bilan ishlaydi, ularning maydonlari boshqacha va xabar — faqat bir qismi xolos. Shuningdek, <code>message</code> — bu tugma biriktirilgan xabar (ya'ni, bunday xabarni yuborgan — botning o'zi). Kim tugmani bosganini bilmoqchi bo'lsangiz, <code>from</code> maydoniga qarang (<code>callback.from_user</code> — Python'da <code>from</code> kalit so'z bo'lgani uchun).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Callbackdagi <code>message</code> obyektiga oid</p>
+<p>Agar xabar <a href="../inline-mode/">inline-rejim</a> orqali yuborilgan bo'lsa, callbackda <code>message</code> maydoni bo'sh bo'ladi. Bunday xabar mazmunini olishning iloji bo'lmaydi, faqat oldindan saqlab qo'ymagan bo'lsangiz.</p>
+</div>
+<p>Endi murakkabroq misolga o'tamiz. Foydalanuvchiga 0 soni ko'rsatilgan xabar yuboriladi, pastda esa uchta tugma: +1, -1 va Tasdiqlash. Birinchi ikkitasi sonni o'zgartiradi, oxirgisi esa klaviaturani olib tashlab, natijani tasdiqlaydi. Qiymatlarni xotirada, lug'atda saqlaymiz (avtomatlar haqida keyinroq gaplashamiz).</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Здесь хранятся пользовательские данные.</span>
+<span class="c1"># Т.к. это словарь в памяти, то при перезапуске он очистится</span>
+<span class="n">user_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_keyboard</span><span class="p">():</span>
+    <span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"-1"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="s2">"num_decr"</span><span class="p">),</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"+1"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="s2">"num_incr"</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"Подтвердить"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="s2">"num_finish"</span><span class="p">)]</span>
+    <span class="p">]</span>
+    <span class="n">keyboard</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">InlineKeyboardMarkup</span><span class="p">(</span><span class="n">inline_keyboard</span><span class="o">=</span><span class="n">buttons</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">keyboard</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_num_text</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">new_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">edit_text</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Укажите число: </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">reply_markup</span><span class="o">=</span><span class="n">get_keyboard</span><span class="p">()</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"numbers"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_numbers</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">user_data</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Укажите число: 0"</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">get_keyboard</span><span class="p">())</span>
+
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"num_"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">callbacks_num</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">CallbackQuery</span><span class="p">):</span>
+    <span class="n">user_value</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">callback</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">"incr"</span><span class="p">:</span>
+        <span class="n">user_data</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_value</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">await</span> <span class="n">update_num_text</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">user_value</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">"decr"</span><span class="p">:</span>
+        <span class="n">user_data</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_value</span><span class="o">-</span><span class="mi">1</span>
+        <span class="k">await</span> <span class="n">update_num_text</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">user_value</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">"finish"</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">edit_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Итого: </span><span class="si">{</span><span class="n">user_value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">answer</span><span class="p">()</span>
+</code></pre></div>
+<p>Hammasi ishlayotgandek tuyuladi:</p>
+<p><img alt="Hammasi ishlayaptimi?" src="../images/buttons/l03_7.png"></p>
+<p>Endi tasavvur qiling, ayyor foydalanuvchi quyidagicha harakat qildi: <code>/numbers</code> buyrug'ini chaqirdi (qiymat 0), qiymatni 1 ga oshirdi, yana <code>/numbers</code> buyrug'ini chaqirdi (qiymat 0 ga tushdi) va birinchi xabardagi "+1" tugmasini bosdi. Nima bo'ladi? Bot xabar matnini 1 ga o'zgartirishga harakat qiladi, lekin o'sha xabarda allaqachon 1 turgani uchun Bot API xato qaytaradi: eski va yangi matn bir xil, bot esa istisno oladi: <code>Bad Request: message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message</code></p>
+<p><img alt="Ayrim holatlarda BadRequest xatosi" src="../images/buttons/l03_8.png"></p>
+<p>Bu xatoga siz ham tez-tez duch kelishingiz mumkin, ayniqsa xabarlarni tahrirlashga harakat qilganda. Odatda, bunday xato xabar mazmunini yangilashdagi mantiqiy muammolarni bildiradi, lekin ba'zan, yuqoridagi misolda bo'lgani kabi, bu kutilgan holat bo'lishi mumkin.</p>
+<p>Bu holatda xatoni butunlay e'tiborsiz qoldiramiz, chunki bizga faqat yakuniy natija muhim, u esa aniq to'g'ri bo'ladi. <strong>MessageNotModified</strong> xatosi Bad Request turiga kiradi, shuning uchun butun bu turdagi xatolarni e'tiborsiz qoldirish yoki matn bo'yicha aniq sababini aniqlash mumkin. Misolni murakkablashtirmaslik uchun birinchi usuldan foydalanamiz va <code>update_num_text()</code> funksiyasini quyidagicha yangilaymiz:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Yangi importlar!</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TelegramBadRequest</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_num_text</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">new_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">TelegramBadRequest</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">edit_text</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Sonni kiriting: </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">reply_markup</span><span class="o">=</span><span class="n">get_keyboard</span><span class="p">()</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>Endi yuqoridagi misolni yana takrorlasangiz, bot bu xatoni shunchaki e'tiborsiz qoldiradi.</p>
+<h3 id="callback-factory">Callback factory (CallbackData)<a class="headerlink" href="#callback-factory" title="Permanent link">¶</a></h3>
+<p>Agar sizda umumiy prefiksli oddiy callbacklar bo'lsa, masalan, <code>order_1</code>, <code>order_2</code> va hokazo, <code>split()</code> yordamida satrni ajratish osondek tuyuladi. Endi tasavvur qiling, uchta qiymat saqlash kerak: <code>order_1_1994_2731519</code>. Qaysi biri artikul, qaysi biri narx, qaysi biri miqdor? Yoki bu umuman chiqarilgan yilmi? Satrni ajratish ham chalkash ko'rinadi: <code>.split("_")[2]</code>. Nega aynan 1 yoki 3?</p>
+<p>Bir payt kelib, bunday callback data mazmunini strukturalash zarurati tug'iladi va aiogram'da buning yechimi bor! Siz <code>CallbackData</code> tipidagi obyektlar yaratasiz, prefiks ko'rsatasiz, tuzilmani belgilaysiz, framework esa callback ma'lumotini to'g'ri yig'adi va eng muhimi, kelgan qiymatni to'g'ri ajratadi. Keling, aniq misolda ko'ramiz: <code>fabnum</code> prefiksli, <code>action</code> va <code>value</code> maydonli <code>NumbersCallbackFactory</code> klassini yaratamiz. <code>action</code> — nima qilish kerakligini (o'zgartirish yoki tasdiqlash), <code>value</code> esa o'zgarish miqdorini bildiradi. "finish" uchun value kerak emas, shuning uchun u default bo'lib None bo'ladi. Kod:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Yangi importlar!</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.filters.callback_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackData</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NumbersCallbackFactory</span><span class="p">(</span><span class="n">CallbackData</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"fabnum"</span><span class="p">):</span>
+    <span class="n">action</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Klass albatta <code>CallbackData</code> dan meros olishi va prefiks qabul qilishi kerak. Prefiks — bu callback boshida bo'ladigan umumiy qism, framework shu orqali strukturani aniqlaydi.</p>
+<p>Endi klaviatura generatsiya qiluvchi funksiya yozamiz. Bu yerda <code>button()</code> metodidan foydalanamiz, u tugma turini avtomatik aniqlaydi, bizdan faqat argumentlarni uzatish talab qilinadi. <code>callback_data</code> argumentiga satr o'rniga <code>NumbersCallbackFactory</code> obyektini uzatamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_keyboard_fab</span><span class="p">():</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">InlineKeyboardBuilder</span><span class="p">()</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"-2"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="n">NumbersCallbackFactory</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">"change"</span><span class="p">,</span> <span class="n">value</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"-1"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="n">NumbersCallbackFactory</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">"change"</span><span class="p">,</span> <span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"+1"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="n">NumbersCallbackFactory</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">"change"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"+2"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="n">NumbersCallbackFactory</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">"change"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"Tasdiqlash"</span><span class="p">,</span> <span class="n">callback_data</span><span class="o">=</span><span class="n">NumbersCallbackFactory</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">"finish"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># Tugmalarni 4 tadan bir qatorda joylashtiramiz, natijada 4 + 1 bo'ladi</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">adjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">()</span>
+</code></pre></div>
+<p>Xabar yuborish va tahrirlash metodlarini o'sha holicha qoldiramiz (nom va komandaga <code>_fab</code> qo'shimchasini qo'shamiz):</p>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_num_text_fab</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">new_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">TelegramBadRequest</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">edit_text</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Sonni kiriting: </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">reply_markup</span><span class="o">=</span><span class="n">get_keyboard_fab</span><span class="p">()</span>
+        <span class="p">)</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">"numbers_fab"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cmd_numbers_fab</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="n">user_data</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">"Sonni kiriting: 0"</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">get_keyboard_fab</span><span class="p">())</span>
+</code></pre></div>
+<p>Endi eng asosiysi — callbacklarni qayta ishlash. Dekoratorda klassni va uning <code>filter()</code> metodini uzatamiz. Shuningdek, <code>callback_data</code> nomli qo'shimcha argument paydo bo'ladi, u ham xuddi shu klass tipida bo'ladi:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">(</span><span class="n">NumbersCallbackFactory</span><span class="o">.</span><span class="n">filter</span><span class="p">())</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">callbacks_num_change_fab</span><span class="p">(</span>
+        <span class="n">callback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">CallbackQuery</span><span class="p">,</span> 
+        <span class="n">callback_data</span><span class="p">:</span> <span class="n">NumbersCallbackFactory</span>
+<span class="p">):</span>
+    <span class="c1"># Joriy qiymat</span>
+    <span class="n">user_value</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Agar sonni o'zgartirish kerak bo'lsa</span>
+    <span class="k">if</span> <span class="n">callback_data</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">"change"</span><span class="p">:</span>
+        <span class="n">user_data</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_value</span> <span class="o">+</span> <span class="n">callback_data</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">await</span> <span class="n">update_num_text_fab</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">user_value</span> <span class="o">+</span> <span class="n">callback_data</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># Agar sonni tasdiqlash kerak bo'lsa</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">edit_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Yakuniy natija: </span><span class="si">{</span><span class="n">user_value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">answer</span><span class="p">()</span>
+</code></pre></div>
+<p>Handlerlarni yanada aniqroq ajratamiz va sonli tugmalar hamda "Tasdiqlash" tugmasi uchun alohida handler yozamiz. <code>action</code> qiymati bo'yicha filtrlaymiz, bunda aiogram 3.x ning "Magic Filter" imkoniyatidan foydalanamiz. Bu haqda keyinroq alohida bobda gaplashamiz, hozircha esa shunchaki foydalanamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Yangi import!</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">magic_filter</span><span class="w"> </span><span class="kn">import</span> <span class="n">F</span>
+
+<span class="c1"># -2, -1, +1, +2 tugmalardan birini bosganda</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">(</span><span class="n">NumbersCallbackFactory</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">"change"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">callbacks_num_change_fab</span><span class="p">(</span>
+        <span class="n">callback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">CallbackQuery</span><span class="p">,</span> 
+        <span class="n">callback_data</span><span class="p">:</span> <span class="n">NumbersCallbackFactory</span>
+<span class="p">):</span>
+    <span class="c1"># Joriy qiymat</span>
+    <span class="n">user_value</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">user_data</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_value</span> <span class="o">+</span> <span class="n">callback_data</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">await</span> <span class="n">update_num_text_fab</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">user_value</span> <span class="o">+</span> <span class="n">callback_data</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">answer</span><span class="p">()</span>
+
+<span class="c1"># "Tasdiqlash" tugmasi bosilganda</span>
+<span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">(</span><span class="n">NumbersCallbackFactory</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">"finish"</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">callbacks_num_finish_fab</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">CallbackQuery</span><span class="p">):</span>
+    <span class="c1"># Joriy qiymat</span>
+    <span class="n">user_value</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">edit_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Yakuniy natija: </span><span class="si">{</span><span class="n">user_value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">callback</span><span class="o">.</span><span class="n">answer</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="Callback factory" src="../images/buttons/callback_factory.png"></p>
+<p>Birinchi qarashda bu murakkabdek ko'rinishi mumkin, lekin aslida callback factory yordamida murakkab callback tugmalarni qulay va mantiqan ajratilgan kod bilan yaratish mumkin. Amalda factorydan foydalanishni <a href="https://github.com/MasterGroosha/telegram-bombsweeper-bot">Saper o'yini botida</a> ko'rishingiz mumkin.</p>
+<h3 id="callback-autoreply">Callback'larga avtomatik javob<a class="headerlink" href="#callback-autoreply" title="Permanent link">¶</a></h3>
+<p>Agar sizda callback handlerlari juda ko'p bo'lsa va ularga bir xil yoki oddiy javob qaytarish kerak bo'lsa, hayotingizni yengillashtirish uchun maxsus middleware'dan foydalanishingiz mumkin. Bu haqda batafsil <a href="../filters-and-middlewares/#middlewares">alohida bobda</a> gaplashamiz, hozir esa qisqacha tanishamiz.</p>
+<p>Eng oddiy variant — dispatcher yaratilgandan so'ng quyidagi qatorni qo'shish:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Yangi importni unutmang</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.callback_answer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackAnswerMiddleware</span>
+
+<span class="n">dp</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">()</span>
+<span class="n">dp</span><span class="o">.</span><span class="n">callback_query</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">CallbackAnswerMiddleware</span><span class="p">())</span>
+</code></pre></div>
+<p>Bu holda handler bajarilgandan so'ng aiogram callback'ga avtomatik javob beradi.
+Standart sozlamalarni <a href="https://github.com/aiogram/aiogram/blob/5adaf7a567e976da64e418eee5df31682ad2496c/aiogram/utils/callback_answer.py#L133-L137">manba kodida</a> ko'rishingiz yoki o'zgartirishingiz mumkin, masalan:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dp</span><span class="o">.</span><span class="n">callback_query</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span>
+    <span class="n">CallbackAnswerMiddleware</span><span class="p">(</span>
+        <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">"Tayyor!"</span><span class="p">,</span> <span class="n">show_alert</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Afsuski, barcha callback handlerlar uchun bir xil javob kerak bo'ladigan holatlar kam uchraydi. Yaxshiyamki, middleware xatti-harakatini aniq handlerda oson o'zgartirish mumkin: <code>callback_answer</code> argumentini uzatib, unga yangi qiymatlar berish kifoya:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Yangi import!</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.callback_answer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackAnswer</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_handler</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">callback_answer</span><span class="p">:</span> <span class="n">CallbackAnswer</span><span class="p">):</span>
+    <span class="o">...</span> <span class="c1"># bu yerda kod</span>
+    <span class="k">if</span> <span class="o">&lt;</span><span class="n">hammasi</span> <span class="n">yaxshi</span><span class="o">&gt;</span><span class="p">:</span>
+        <span class="n">callback_answer</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"A'lo!"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">callback_answer</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"Nimadir noto'g'ri ketdi. Keyinroq urinib ko'ring"</span>
+        <span class="n">callback_answer</span><span class="o">.</span><span class="n">cache_time</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="o">...</span> <span class="c1"># bu yerda kod</span>
+</code></pre></div>
+<p><strong>Muhim</strong>: agar middleware'da <code>pre=True</code> flagi o'rnatilgan bo'lsa, bu usul ishlamaydi. Bunday holatda flaglarni to'liq o'zgartirish kerak, bu bilan <a href="../filters-and-middlewares/#flags">keyinroq</a> tanishamiz:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">aiogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">flags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiogram.utils.callback_answer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackAnswer</span>
+
+<span class="nd">@dp</span><span class="o">.</span><span class="n">callback_query</span><span class="p">()</span>
+<span class="nd">@flags</span><span class="o">.</span><span class="n">callback_answer</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># pre flagini o'zgartiramiz</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_handler</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">callback_answer</span><span class="p">:</span> <span class="n">CallbackAnswer</span><span class="p">):</span>
+    <span class="o">...</span> <span class="c1"># bu yerda kod</span>
+    <span class="k">if</span> <span class="o">&lt;</span><span class="n">hammasi</span> <span class="n">yaxshi</span><span class="o">&gt;</span><span class="p">:</span>
+        <span class="n">callback_answer</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"Endi bu matn ko'rinadi!"</span>
+    <span class="o">...</span> <span class="c1"># bu yerda kod</span>
+</code></pre></div>
+<p>Shu bilan tugmalar bilan tanishuvni yakunlaymiz.</p></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2020-2024 Groosha
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://t.me/+DE0_2nCvbXozZjUy" target="_blank" rel="noopener" title="Чат в Telegram" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M248 8C111.033 8 0 119.033 0 256s111.033 248 248 248 248-111.033 248-248S384.967 8 248 8Zm114.952 168.66c-3.732 39.215-19.881 134.378-28.1 178.3-3.476 18.584-10.322 24.816-16.948 25.425-14.4 1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25 5.342-39.5 3.652-3.793 67.107-61.51 68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608 69.142-14.845 10.194-26.894 9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7 18.45-13.7 108.446-47.248 144.628-62.3c68.872-28.647 83.183-33.623 92.511-33.789 2.052-.034 6.639.474 9.61 2.885a10.452 10.452 0 0 1 3.53 6.716 43.765 43.765 0 0 1 .417 9.769Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/MasterGroosha/aiogram-3-guide" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Buferga nusxalandi", "clipboard.copy": "Buferga nusxalash", "search.result.more.one": "Ushbu sahifada yana 1 ta natija", "search.result.more.other": "Bu sahifada yana # ta natija", "search.result.none": "Mos natijalar yo\u0027q", "search.result.one": "1 ta mos natija", "search.result.other": "# ta mos keladigan natijalar", "search.result.placeholder": "Qidiruvni boshlash uchun kiriting", "search.result.term.missing": "To\u0027ldirilmagan", "select.version": "Versiyani tanlang"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  </body>
+</html>
