@@ -6,11 +6,9 @@ description: Tugmalar
 # Tugmalar
 
 !!! info ""
-    Foydalanilayotgan aiogram versiyasi: 3.7.0
+    Ushbu bobda ishlatilayotgan aiogram versiyasi: 3.7.0
 
-Ushbu bobda biz Telegram botlarining ajoyib xususiyati bo'lgan tugmalar bilan tanishamiz. Avvalo chalkashliklarning
-oldini olish uchun ularni farqlab olaylik. Qurilmangiz ekranining pastki qismiga biriktiriladigan, matn kiritish qismining pastida joylashganlarini **oddiy** 
-tugmalar deb ataymiz, xabarlarga bevosita biriktiriladiganlari esa **inline**-tugmalar hisoblanadi. Buni quydagi rasmda ham ko'rishimiz mumkin: 
+Bu bobda biz Telegram botlarida keng qo'llaniladigan tugmalar bilan tanishamiz. Avvalo, chalkashliklarning oldini olish uchun tugmalar turlarini ajratib olamiz. Qurilmangiz ekranining pastki qismida, matn kiritish oynasi ostida joylashadigan tugmalarni **oddiy** tugmalar deb ataymiz. Xabarlarga bevosita biriktiriladigan tugmalar esa **inline** tugmalar hisoblanadi. Quyidagi rasmda bu ikki turdagi tugmalarni ko'rishingiz mumkin:
 
 ![Ikki turdagi tugmalar](images/buttons/l03_1.png)
 
@@ -28,11 +26,11 @@ Keling `/start` buyrug'ini bosganingizda ikkita tugma bilan xabar yuboradigan ha
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     kb = [
-        [types.KeyboardButton(text="С пюрешкой")],
-        [types.KeyboardButton(text="Без пюрешки")]
+        [types.KeyboardButton(text="Pyure bilan")],
+        [types.KeyboardButton(text="Pyuresiz")]
     ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
-    await message.answer("Как подавать котлеты?", reply_markup=keyboard)
+    await message.answer("Kotletni qanday beramiz?", reply_markup=keyboard)
 ```
 
 !!! info ""
@@ -57,16 +55,16 @@ ya'ni oddiy qilib aytganda, qatorlar massivi. Kodimizni chiroyli bo'lishi uchun 
 async def cmd_start(message: types.Message):
     kb = [
         [
-            types.KeyboardButton(text="С пюрешкой"),
-            types.KeyboardButton(text="Без пюрешки")
+            types.KeyboardButton(text="Pyure bilan"),
+            types.KeyboardButton(text="Pyuresiz")
         ],
     ]
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,
         resize_keyboard=True,
-        input_field_placeholder="Выберите способ подачи"
+        input_field_placeholder="Qanday usulda berishni tanlang"
     )
-    await message.answer("Как подавать котлеты?", reply_markup=keyboard)
+    await message.answer("Kotletni qanday beramiz?", reply_markup=keyboard)
 ```
 
 Qarang - haqiqatan ham chiroyli:
@@ -81,13 +79,13 @@ batafsil [boshqa bobda](filters-and-middlewares.md#magic-filters) gaplashamiz:
 # yangi import
 from aiogram import F
 
-@dp.message(F.text.lower() == "с пюрешкой")
+@dp.message(F.text.lower() == "pyure bilan")
 async def with_puree(message: types.Message):
-    await message.reply("Отличный выбор!")
+    await message.reply("Ajoyib tanlov!")
 
-@dp.message(F.text.lower() == "без пюрешки")
+@dp.message(F.text.lower() == "pyuresiz")
 async def without_puree(message: types.Message):
-    await message.reply("Так невкусно!")
+    await message.reply("Bunday mazali emas!")
 ```
 
 ![Tugmani bosishga javob](images/buttons/l03_4.png)
@@ -118,7 +116,7 @@ async def reply_builder(message: types.Message):
         builder.add(types.KeyboardButton(text=str(i)))
     builder.adjust(4)
     await message.answer(
-        "Выберите число:",
+        "Sonni tanlang:",
         reply_markup=builder.as_markup(resize_keyboard=True),
     )
 ```
@@ -144,66 +142,46 @@ Ular quyidagilar uchun mo'ljallangan:
 - kerakli mezonlarga ega (super)guruh yoki kanal ma'lumotlarini tanlash va botga yuborish;
 - veb-ilovani (WebApp) ishga tushirish.
 
-Поговорим про них подробнее.
+Ular haqida batafsil gaplashamiz.
 
-**Отправка текущей геолокации**. Здесь всё просто: где пользователь находится, те координаты и отправляет. 
-Это будет статическое гео, а не Live Location, который обновляется автоматически. Разумеется, хитрые юзеры 
-могут подменить своё местонахождение, иногда даже на уровне всей системы (Android).  
+**Joriy joylashuvni yuborish**. Bu yerda hammasi oddiy: foydalanuvchi qayerda bo'lsa, o'sha koordinatalarni yuboradi. Bu statik manzil bo'ladi, avtomatik yangilanadigan Live Location emas. Albatta ayyor foydalanuvchilar o'z joylashuvini o'zgartirishi mumkin, ba'zida hatto butun (Android) tizim darajasida.
 
-**Отправка своего контакта с номером телефона**. При нажатии на кнопку (с предварительным подтверждением) 
-пользователь отправляет свой контакт с номером телефона боту. Те же хитрые юзеры могут проигнорировать кнопку 
-и отправить любой контакт, но в этом случае на них можно найти управу: достаточно проверить в хэндлере или 
-в фильтре равенство `message.contact.user_id == message.from_user.id`.
+**O'z kontaktini telefon raqamini bilan yuborish**. Tugmani bosganda (avval tasdiqlash bilan) foydalanuvchi o'z kontaktini telefon raqami bilan botga yuboradi. Ba'zi ayyor foydalanuvchilar bu tugmani bosmasdan, istalgan boshqa kontaktni yuborishi mumkin, lekin bu holatda ularga qarshi choralar ko'rish mumkin: handlerda yoki filtrda `message.contact.user_id == message.from_user.id` tengligini tekshirish kifoya.
 
-**Создание опроса/викторины**. По нажатию на кнопку пользователю предлагается создать опрос или викторину, которые 
-потом отправятся в текущий чат. Необходимо передать 
-объект [KeyboardButtonPollType](https://core.telegram.org/bots/api#keyboardbuttonpolltype), 
-необязательный аргумент `type` служит для уточнения типа опроса (опрос или викторина).
+**So'rov/viktorina yaratish**. Tugmani bosganda foydalanuvchiga so'rov yoki viktorina yaratish taklif etiladi, ular keyin joriy chatga yuboriladi. Buning uchun [KeyboardButtonPollType](https://core.telegram.org/bots/api#keyboardbuttonpolltype) obyektini uzatish kerak, ixtiyoriy `type` argumenti so'rov turi (so'rov yoki viktorina) uchun xizmat qiladi.
 
-**Выбор и отправка боту данных пользователя с нужными критериями**. Показывает окно выбора пользователя из списка чатов 
-юзера, нажавшего на кнопку. Необходимо передать объект 
-[KeyboardButtonRequestUser](https://core.telegram.org/bots/api#keyboardbuttonrequestuser), в котором надо указать 
-сгенерированный любым способом айди запроса и критерии, например, "бот", "есть подписка Telegram Premium" и т.д. 
-После выбора юзера бот получит сервисное сообщение с типом [UserShared](https://core.telegram.org/bots/api#usershared).
+**Kerakli mezonlarga ega foydalanuvchi ma'lumotlarini tanlash va botga yuborish**. Tugmani bosgan foydalanuvchining chatlar ro'yxatidan foydalanuvchini tanlash oynasini ko'rsatadi. Buning uchun [KeyboardButtonRequestUser](https://core.telegram.org/bots/api#keyboardbuttonrequestuser) obyektini uzatish kerak, bunda istalgan usul bilan yaratilgan so'rov ID sini va mezonlarni ko'rsatish kerak, masalan, "bot", "Telegram Premium obunasi bor" va h.k. Foydalanuvchi tanlangandan keyin bot [UserShared](https://core.telegram.org/bots/api#usershared) turidagi xizmat xabarini oladi.
 
-**Выбор и отправка боту чата с нужными критериями**. Показывает окно выбора пользователя из списка чатов 
-юзера, нажавшего на кнопку. Необходимо передать объект 
-[KeyboardButtonRequestChat](https://core.telegram.org/bots/api#keyboardbuttonrequestchat), в котором надо указать 
-сгенерированный любым способом айди запроса и критерии, например, "группа или канал", "юзер — создатель чата" и т.д.
-После выбора юзера бот получит сервисное сообщение с типом [ChatShared](https://core.telegram.org/bots/api#chatshared).
+**Kerakli mezonlarga ega chat ma'lumotlarini tanlash va botga yuborish**. Tugmani bosgan foydalanuvchining chatlar ro'yxatidan chatni tanlash oynasini ko'rsatadi. Buning uchun [KeyboardButtonRequestChat](https://core.telegram.org/bots/api#keyboardbuttonrequestchat) obyektini uzatish kerak, bunda istalgan usul bilan yaratilgan so'rov ID sini va mezonlarni ko'rsatish kerak, masalan, "guruh yoki kanal", "foydalanuvchi — chat yaratuvchisi" va h.k. Foydalanuvchi tanlangandan keyin bot [ChatShared](https://core.telegram.org/bots/api#chatshared) turidagi xizmat xabarini oladi.
 
-**Запуск веб-приложения (WebApp)**. При нажатии на кнопку открывает [WebApp](https://core.telegram.org/bots/webapps). 
-Необходимо передать объект [WebAppInfo](https://core.telegram.org/bots/api#webappinfo). 
-В этой книге веб-аппы пока рассматриваться не будут.
+**Veb-ilovani ishga tushirish (WebApp)**. Tugmani bosganda [WebApp](https://core.telegram.org/bots/webapps) ni ochadi. Buning uchun [WebAppInfo](https://core.telegram.org/bots/api#webappinfo) obyektini uzatish kerak. Ushbu kitobda veb-ilovalar hali ko'rib chiqilmaydi.
 
-Впрочем, проще один раз увидеть код:
+Biroq, buni bir marta kodda ko'rgan afzal:
 ```python
 @dp.message(Command("special_buttons"))
 async def cmd_special_buttons(message: types.Message):
     builder = ReplyKeyboardBuilder()
-    # метод row позволяет явным образом сформировать ряд
-    # из одной или нескольких кнопок. Например, первый ряд
-    # будет состоять из двух кнопок...
+    # row metodi bir yoki bir nechta tugmadan iborat qatordan aniq foydalanish imkonini beradi. Masalan, birinchi qator ikki tugmadan iborat bo'ladi...
     builder.row(
-        types.KeyboardButton(text="Запросить геолокацию", request_location=True),
-        types.KeyboardButton(text="Запросить контакт", request_contact=True)
+        types.KeyboardButton(text="Geolokatsiyani so'rash", request_location=True),
+        types.KeyboardButton(text="Kontaktni so'rash", request_contact=True)
     )
-    # ... второй из одной ...
+    # ... ikkinchi qator bitta tugmadan ...
     builder.row(types.KeyboardButton(
-        text="Создать викторину",
+        text="Viktorina yaratish",
         request_poll=types.KeyboardButtonPollType(type="quiz"))
     )
-    # ... а третий снова из двух
+    # ... va uchinchi qator yana ikki tugmadan
     builder.row(
         types.KeyboardButton(
-            text="Выбрать премиум пользователя",
+            text="Premium foydalanuvchini tanlash",
             request_user=types.KeyboardButtonRequestUser(
                 request_id=1,
                 user_is_premium=True
             )
         ),
         types.KeyboardButton(
-            text="Выбрать супергруппу с форумами",
+            text="Forumli supergruppani tanlash",
             request_chat=types.KeyboardButtonRequestChat(
                 request_id=2,
                 chat_is_channel=False,
@@ -211,55 +189,53 @@ async def cmd_special_buttons(message: types.Message):
             )
         )
     )
-    # WebApp-ов пока нет, сорри :(
+    # WebApp tugmalari hozircha yo'q, uzr :(
 
     await message.answer(
-        "Выберите действие:",
+        "Amalni tanlang:",
         reply_markup=builder.as_markup(resize_keyboard=True),
     )
 ```
 
-![Специальные обычные кнопки](images/buttons/special_buttons.png)
+![Maxsus oddiy tugmalar](images/buttons/special_buttons.png)
 
-Напоследок, две заготовки хэндлеров на приём нажатий от нижних двух кнопок:
+Oxirida, pastdagi ikki tugma uchun handlerlar namunasi:
 
 ```python
-# новый импорт
+# yangi import
 from aiogram import F
 
 @dp.message(F.user_shared)
 async def on_user_shared(message: types.Message):
     print(
-        f"Request {message.user_shared.request_id}. "
-        f"User ID: {message.user_shared.user_id}"
+        f"So'rov {message.user_shared.request_id}. "
+        f"Foydalanuvchi ID: {message.user_shared.user_id}"
     )
 
 
 @dp.message(F.chat_shared)
 async def on_user_shared(message: types.Message):
     print(
-        f"Request {message.chat_shared.request_id}. "
-        f"User ID: {message.chat_shared.chat_id}"
+        f"So'rov {message.chat_shared.request_id}. "
+        f"Chat ID: {message.chat_shared.chat_id}"
     )
 ```
 
 
-## Инлайн-кнопки {: id="inline-buttons" }
-### URL-кнопки {: id="url-buttons" }
+## Inline tugmalar {: id="inline-buttons" }
+### URL-tugmalar {: id="url-buttons" }
 
-В отличие от обычных кнопок, инлайновые цепляются не к низу экрана, а к сообщению, с которым были отправлены. 
-В этой главе мы рассмотрим два типа таких кнопок: URL и Callback. Ещё один — Switch — будет рассмотрен 
-в главе про [инлайн-режим](inline-mode.md).
+Oddiy tugmalardan farqli o'laroq, inline tugmalar ekran pastiga emas, balki yuborilgan xabarga biriktiriladi.
+Ushbu bobda biz bunday tugmalarning ikki turini ko'rib chiqamiz: URL va Callback. Yana biri — Switch — esa
+[inline-rejim](inline-mode.md) bobida ko'rib chiqiladi.
 
 !!! info ""
-    Login- и Pay-кнопки в книге рассматриваться не будут вообще. Если у кого-то есть желание помочь хотя бы 
-    с рабочим кодом для авторизации или оплаты, пожалуйста, создайте Pull Request на 
-    [GitHub](https://github.com/MasterGroosha/aiogram-3-guide). Спасибо!
+    Login va Pay tugmalari bu kitobda umuman ko'rib chiqilmaydi. Agar kimdir avtorizatsiya yoki to'lov uchun ishlaydigan kod bilan yordam bermoqchi bo'lsa, iltimos, [GitHub](https://github.com/MasterGroosha/aiogram-3-guide) ga Pull Request yarating. Rahmat!
 
-Самые простые инлайн-кнопки относятся к типу URL, т.е. «ссылка». Поддерживаются только протоколы HTTP(S) и tg://
+Eng oddiy inline tugmalar URL turiga kiradi, ya'ni "havola". Faqat HTTP(S) va tg:// protokollari qo'llab-quvvatlanadi.
 
 ```python
-# новый импорт
+# yangi import
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 @dp.message(Command("inline_url"))
@@ -269,60 +245,51 @@ async def cmd_inline_url(message: types.Message, bot: Bot):
         text="GitHub", url="https://github.com")
     )
     builder.row(types.InlineKeyboardButton(
-        text="Оф. канал Telegram",
+        text="Telegram rasmiy kanali",
         url="tg://resolve?domain=telegram")
     )
 
-    # Чтобы иметь возможность показать ID-кнопку,
-    # У юзера должен быть False флаг has_private_forwards
+    # ID-tugmani ko'rsatish uchun,
+    # foydalanuvchida has_private_forwards flagi False bo'lishi kerak
     user_id = 1234567890
     chat_info = await bot.get_chat(user_id)
     if not chat_info.has_private_forwards:
         builder.row(types.InlineKeyboardButton(
-            text="Какой-то пользователь",
+            text="Noma'lum foydalanuvchi",
             url=f"tg://user?id={user_id}")
         )
 
     await message.answer(
-        'Выберите ссылку',
+        'Havolani tanlang',
         reply_markup=builder.as_markup(),
     )
 ```
 
-Отдельно остановимся на среднем блоке кода. Дело в том, что в марте 2019 года разработчики Telegram 
-[добавили возможность](https://telegram.org/blog/unsend-privacy-emoji#anonymous-forwarding) отключать переход 
-к профилю пользователя у пересланного сообщения. При попытке создать URL-кнопку с ID юзера, у которого отключен 
-переход по форварду, бот получит ошибку `Bad Request: BUTTON_USER_PRIVACY_RESTRICTED`. Соответственно, прежде чем 
-показывать такую кнопку, необходимо выяснить состояние упомянутой настройки. Для этого можно вызвать метод 
-[getChat](https://core.telegram.org/bots/api#getchat) и в ответе проверить состояние поля `has_private_forwards`. 
-Если оно равно `True`, значит, попытка добавить URL-ID кнопку приведёт к ошибке. 
+Kodning o'rta qismiga alohida to'xtalamiz. 2019 yil mart oyida Telegram ishlab chiquvchilari
+[foydalanuvchi profili havolasini o'chirish imkonini](https://telegram.org/blog/unsend-privacy-emoji#anonymous-forwarding) joriy qilishdi.
+Agar sizda forward orqali o'tish o'chirilgan foydalanuvchi ID'si bilan URL-tugma yaratsangiz, bot `Bad Request: BUTTON_USER_PRIVACY_RESTRICTED` xatosini oladi.
+Shuning uchun bunday tugmani ko'rsatishdan oldin, ushbu sozlamaning holatini aniqlash kerak. Buning uchun [getChat](https://core.telegram.org/bots/api#getchat) metodini chaqirib, `has_private_forwards` maydonini tekshirish mumkin. Agar u `True` bo'lsa, URL-ID tugmasini qo'shishga urinish xatoga olib keladi.
 
-### Колбэки {: id="callback-buttons" }
+### Callback tugmalar {: id="callback-buttons" }
 
-С URL-кнопками больше обсуждать, по сути, нечего, поэтому перейдём к гвоздю сегодняшней программы — Callback-кнопкам. 
-Это очень мощная штука, которую вы можете встретить практически везде. Кнопки-реакции у постов (лайки), меню у @BotFather 
-и т.д. Суть в чём: у колбэк-кнопок есть специальное значение (data), по которому ваше приложение опознаёт, что нажато и что надо сделать. 
-И выбор правильного data **очень важен**! Стоит также отметить, что, в отличие от обычных кнопок, нажатие на колбэк-кнопку 
-позволяет сделать практически что угодно, от заказа пиццы до запуска вычислений на кластере суперкомпьютеров.
+URL-tugmalar haqida gaplashib bo'ldik, endi esa asosiy mavzuga — Callback tugmalarga o'tamiz. Bu juda kuchli imkoniyat bo'lib, deyarli har bir botda uchraydi. Masalan, postlarga reaktsiya tugmalari (layklar), @BotFather menyusi va boshqalar. Callback tugmalarning o'ziga xos qiymati (data) bo'ladi, shu qiymat orqali dastur qaysi tugma bosilganini va nima qilish kerakligini aniqlaydi. To'g'ri data tanlash juda muhim! Shuni ham aytish kerakki, oddiy tugmalardan farqli o'laroq, callback tugmasi bosilganda deyarli istalgan amalni bajarish mumkin — pizza buyurtma qilishdan tortib, superkompyuter klasterida hisob-kitoblarni ishga tushirishgacha.
 
-Напишем хэндлер, который по команде `/random` будет отправлять сообщение с колбэк-кнопкой:
+Keling, `/random` komandasi bosilganda callback tugmasi bilan xabar yuboradigan handler yozamiz:
 ```python
 @dp.message(Command("random"))
 async def cmd_random(message: types.Message):
     builder = InlineKeyboardBuilder()
     builder.add(types.InlineKeyboardButton(
-        text="Нажми меня",
+        text="Meni bos",
         callback_data="random_value")
     )
     await message.answer(
-        "Нажмите на кнопку, чтобы бот отправил число от 1 до 10",
+        "Tugmani bosing, bot 1 dan 10 gacha son yuboradi",
         reply_markup=builder.as_markup()
     )
 ```
 
-Но как же обработать нажатие? Если раньше мы использовали хэндлер на `message` для обработки входящих сообщений, то теперь 
-будем использовать хэндлер на `callback_query` для обработки колбэков. Ориентироваться будем на «значение» кнопки, т.е. на 
-её data:
+Endi esa tugma bosilishini qanday qayta ishlashni ko'ramiz. Oldin xabarlar uchun `message` handler ishlatgan bo'lsak, callback tugmalar uchun `callback_query` handlerdan foydalanamiz. Tugmaning qiymati (data) bo'yicha aniqlaymiz:
 
 ```python
 @dp.callback_query(F.data == "random_value")
@@ -330,46 +297,32 @@ async def send_random_value(callback: types.CallbackQuery):
     await callback.message.answer(str(randint(1, 10)))
 ```
 
-![Реакция на нажатие колбэк-кнопки](images/buttons/l03_5.png)
+![Callback tugmasi bosilganda javob](images/buttons/l03_5.png)
 
-Ой, а что это за часики? Оказывается, сервер Telegram ждёт от нас подтверждения о доставке колбэка, иначе в течение 30 
-секунд будет показывать специальную иконку. Чтобы скрыть часики, нужно вызвать метод `answer()` у колбэка (или использовать 
-метод API `answer_callback_query()`). В общем случае, в метод `answer()` можно ничего не передавать, но можно вызвать 
-специальное окошко (всплывающее сверху или поверх экрана):
+E'tibor bering, Telegram serveri callback yetkazib berilganini tasdiqlashimizni kutadi, aks holda 30 soniya davomida maxsus soatcha belgisi ko'rinadi. Soatchani yashirish uchun callback obyektining `answer()` metodini chaqirish kerak (yoki API'dagi `answer_callback_query()` metodidan foydalanish mumkin). Odatda `answer()` ga hech narsa uzatmaslik mumkin, lekin xohlasangiz maxsus oynacha (ekranning yuqorisida yoki ustida) ko'rsatishingiz mumkin:
 
 ```python
 @dp.callback_query(F.data == "random_value")
 async def send_random_value(callback: types.CallbackQuery):
     await callback.message.answer(str(randint(1, 10)))
     await callback.answer(
-        text="Спасибо, что воспользовались ботом!",
+        text="Botdan foydalanganingiz uchun rahmat!",
         show_alert=True
     )
-    # или просто await callback.answer()
+    # yoki shunchaki await callback.answer()
 ```
 
-![Всплывающее окно при нажатии на колбэк-кнопку](images/buttons/l03_6.png)
+![Callback tugmasi bosilganda pop-up oynacha](images/buttons/l03_6.png)
 
-У читателя может возникнуть вопрос: в какой момент обработки отвечать на колбэк методом `answer()`? В общем случае, главное — просто не забыть сообщить Telegram о получении колбэк-запроса, но я рекомендую ставить 
-    вызов `answer()` в самом конце, и вот почему: если вдруг в процессе обработки колбэка случится какая-то ошибка и 
-    бот нарвётся на необработанное исключение, пользователь увидит неубирающиеся полминуты часики и поймёт, что что-то 
-    не так. В противном случае часики исчезнут, а пользователь останется в неведении, выполнился его запрос успешно или нет.
+Savol tug'ilishi mumkin: callbackni qayta ishlashda `answer()` metodini qachon chaqirish kerak? Asosiy qoidasi — Telegram'ga callback so'rovi olinganini unutmasdan bildirish. Men esa `answer()` ni har doim oxirida chaqirishni tavsiya qilaman. Chunki agar callbackni qayta ishlashda xatolik yuz bersa va botda istisno chiqsa, foydalanuvchi soatchani yarim daqiqa ko'radi va nimadir noto'g'ri ketganini tushunadi. Aks holda, soatcha yo'qoladi, lekin foydalanuvchi so'rovi muvaffaqiyatli bajarildimi yoki yo'qmi — bilmaydi.
 
-!!! info "Обратите внимание"
-    В функции `send_random_value` мы вызывали метод `answer()` не у `message`, а у `callback.message`. Это связано с тем, 
-    что колбэк-хэндлеры работают не с сообщениями (тип [Message](https://core.telegram.org/bots/api#message)), 
-    а с колбэками (тип [CallbackQuery](https://core.telegram.org/bots/api#callbackquery)), у которого другие поля, и 
-    само сообщение — всего лишь его часть. Учтите также, что `message` — это сообщение, к которому была прицеплена 
-    кнопка (т.е. отправитель такого сообщения — сам бот). Если хотите узнать, кто нажал на кнопку, смотрите 
-    поле `from` (в вашем коде это будет `callback.from_user`, т.к. слово `from` зарезервировано в Python)
+!!! info "Diqqat"
+    `send_random_value` funksiyasida biz `answer()` metodini `message` emas, balki `callback.message` obyektida chaqirdik. Chunki callback handlerlar xabarlar (Message) bilan emas, callbacklar (CallbackQuery) bilan ishlaydi, ularning maydonlari boshqacha va xabar — faqat bir qismi xolos. Shuningdek, `message` — bu tugma biriktirilgan xabar (ya'ni, bunday xabarni yuborgan — botning o'zi). Kim tugmani bosganini bilmoqchi bo'lsangiz, `from` maydoniga qarang (`callback.from_user` — Python'da `from` kalit so'z bo'lgani uchun).
 
-!!! warning "Про объект `message` в колбэке"
-    Если сообщение отправлено из [инлайн-режима](inline-mode.md), то поле `message` у колбэка будет пустым. 
-    У вас не будет возможности получить содержимое такого сообщения, если только заранее где-то его не сохранить.
+!!! warning "Callbackdagi `message` obyektiga oid"
+    Agar xabar [inline-rejim](inline-mode.md) orqali yuborilgan bo'lsa, callbackda `message` maydoni bo'sh bo'ladi. Bunday xabar mazmunini olishning iloji bo'lmaydi, faqat oldindan saqlab qo'ymagan bo'lsangiz.
 
-Перейдём к примеру посложнее. Пусть пользователю предлагается сообщение с числом 0, а внизу три кнопки: +1, -1 и Подтвердить. 
-Первыми двумя он может редактировать число, а последняя удаляет всю клавиатуру, фиксируя изменения. Хранить значения будем 
-в памяти в словаре (про конечные автоматы поговорим как-нибудь _в другой раз_).
+Endi murakkabroq misolga o'tamiz. Foydalanuvchiga 0 soni ko'rsatilgan xabar yuboriladi, pastda esa uchta tugma: +1, -1 va Tasdiqlash. Birinchi ikkitasi sonni o'zgartiradi, oxirgisi esa klaviaturani olib tashlab, natijani tasdiqlaydi. Qiymatlarni xotirada, lug'atda saqlaymiz (avtomatlar haqida keyinroq gaplashamiz).
 
 ```python
 # Здесь хранятся пользовательские данные.
@@ -418,60 +371,41 @@ async def callbacks_num(callback: types.CallbackQuery):
     await callback.answer()
 ```
 
-И, казалось бы, всё работает: 
+Hammasi ishlayotgandek tuyuladi:
 
-![Всё работает?](images/buttons/l03_7.png)
+![Hammasi ishlayaptimi?](images/buttons/l03_7.png)
 
-Но теперь представим, что ушлый пользователь сделал следующее: вызвал команду `/numbers` (значение 0), увеличил значение 
-до 1, снова вызвал `/numbers` (значение сбросилось до 0) и отредактировал и нажал кнопку "+1" на первом сообщении. 
-Что произойдёт? Бот по-честному отправит запрос на редактирование текста со значением 1, но т.к. на том сообщении 
-уже стоит цифра 1, то Bot API вернёт ошибку, что старый и новый тексты совпадают, а бот словит исключение: 
-`Bad Request: message is not modified: specified new message content and reply markup are exactly the same 
-as a current content and reply markup of the message`
+Endi tasavvur qiling, ayyor foydalanuvchi quyidagicha harakat qildi: `/numbers` buyrug'ini chaqirdi (qiymat 0), qiymatni 1 ga oshirdi, yana `/numbers` buyrug'ini chaqirdi (qiymat 0 ga tushdi) va birinchi xabardagi "+1" tugmasini bosdi. Nima bo'ladi? Bot xabar matnini 1 ga o'zgartirishga harakat qiladi, lekin o'sha xabarda allaqachon 1 turgani uchun Bot API xato qaytaradi: eski va yangi matn bir xil, bot esa istisno oladi: `Bad Request: message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message`
 
-![Ошибка BadRequest при определённых обстоятельствах](images/buttons/l03_8.png)
+![Ayrim holatlarda BadRequest xatosi](images/buttons/l03_8.png)
 
-С этой ошибкой вы, скорее всего, будете поначалу часто сталкиваться, пытаясь редактировать сообщения. 
-Вообще говоря, подобная ошибка часто говорит о проблемах с логикой генерации/обновления данных в сообщении, но иногда, 
-как в примере выше, может быть ожидаемым поведением. 
+Bu xatoga siz ham tez-tez duch kelishingiz mumkin, ayniqsa xabarlarni tahrirlashga harakat qilganda. Odatda, bunday xato xabar mazmunini yangilashdagi mantiqiy muammolarni bildiradi, lekin ba'zan, yuqoridagi misolda bo'lgani kabi, bu kutilgan holat bo'lishi mumkin.
 
-В данном случае проигнорируем ошибку целиком, т.к. нам важен 
-лишь итоговый результат, который точно будет правильным. Ошибка **MessageNotModified** относится к категории Bad Request, 
-поэтому у нас есть выбор: проигнорировать весь подобный класс ошибок, либо отловить весь класс BadRequest 
-и попытаться по тексту ошибки опознать конкретную причину. 
-Чтобы не слишком усложнять пример, обойдёмся первым способом и немного обновим функцию `update_num_text()`:
+Bu holatda xatoni butunlay e'tiborsiz qoldiramiz, chunki bizga faqat yakuniy natija muhim, u esa aniq to'g'ri bo'ladi. **MessageNotModified** xatosi Bad Request turiga kiradi, shuning uchun butun bu turdagi xatolarni e'tiborsiz qoldirish yoki matn bo'yicha aniq sababini aniqlash mumkin. Misolni murakkablashtirmaslik uchun birinchi usuldan foydalanamiz va `update_num_text()` funksiyasini quyidagicha yangilaymiz:
 
 ```python
-# Новые импорты!
+# Yangi importlar!
 from contextlib import suppress
 from aiogram.exceptions import TelegramBadRequest
 
 async def update_num_text(message: types.Message, new_value: int):
     with suppress(TelegramBadRequest):
         await message.edit_text(
-            f"Укажите число: {new_value}",
+            f"Sonni kiriting: {new_value}",
             reply_markup=get_keyboard()
         )
 ```
 
-Если теперь вы попробуете повторить пример выше, то указанное исключение в этом блоке кода бот просто-напросто проигнорирует.
+Endi yuqoridagi misolni yana takrorlasangiz, bot bu xatoni shunchaki e'tiborsiz qoldiradi.
 
-### Фабрика колбэков {: id="callback-factory" }
+### Callback factory (CallbackData) {: id="callback-factory" }
 
-Когда вы оперируете какими-то простыми колбэками с общим префиксом, типа `order_1`, `order_2`... вам может показаться, 
-что довольно легко вызывать `split()` и делить строку по какому-то разделителю. А теперь представьте, что вам нужно 
-хранить не одно значение, а три: `order_1_1994_2731519`. Что здесь артикул, цена, количество? А может быть, тут вообще 
-год выпуска? Да и разбиение строки начинает выглядеть страшно: `.split("_")[2]`. А почему не 1 или 3? 
+Agar sizda umumiy prefiksli oddiy callbacklar bo'lsa, masalan, `order_1`, `order_2` va hokazo, `split()` yordamida satrni ajratish osondek tuyuladi. Endi tasavvur qiling, uchta qiymat saqlash kerak: `order_1_1994_2731519`. Qaysi biri artikul, qaysi biri narx, qaysi biri miqdor? Yoki bu umuman chiqarilgan yilmi? Satrni ajratish ham chalkash ko'rinadi: `.split("_")[2]`. Nega aynan 1 yoki 3?
 
-В какой-то момент возникает необходимость структурировать содержимое таких callback data, и в aiogram есть решение! 
-Вы создаёте объекты типа `CallbackData`, указываете префикс, описываете структуру, а дальше фреймворк самостоятельно собирает 
-строку с данными колбэка и, что важнее, корректно разбирает входящее значение. Снова разберёмся на конкретном примере; 
-создадим класс `NumbersCallbackFactory` с префиксом `fabnum` и двумя полями `action` и `value`. Поле `action` определяет, 
-что делать, менять значение (change) или зафиксировать (finish), а поле `value` показывает, на сколько изменять 
-значение. По умолчанию оно будет None, т.к. для действия "finish" дельта изменения не требуется. Код:
+Bir payt kelib, bunday callback data mazmunini strukturalash zarurati tug'iladi va aiogram'da buning yechimi bor! Siz `CallbackData` tipidagi obyektlar yaratasiz, prefiks ko'rsatasiz, tuzilmani belgilaysiz, framework esa callback ma'lumotini to'g'ri yig'adi va eng muhimi, kelgan qiymatni to'g'ri ajratadi. Keling, aniq misolda ko'ramiz: `fabnum` prefiksli, `action` va `value` maydonli `NumbersCallbackFactory` klassini yaratamiz. `action` — nima qilish kerakligini (o'zgartirish yoki tasdiqlash), `value` esa o'zgarish miqdorini bildiradi. "finish" uchun value kerak emas, shuning uchun u default bo'lib None bo'ladi. Kod:
 
 ```python
-# новые импорты!
+# Yangi importlar!
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 
@@ -480,13 +414,9 @@ class NumbersCallbackFactory(CallbackData, prefix="fabnum"):
     value: Optional[int] = None
 ```
 
-Наш класс обязательно должен наследоваться от `CallbackData` и принимать значение префикса. Префикс — это 
-общая подстрока в начале, по которой фреймворк будет определять, какая структура лежит в колбэке. 
+Klass albatta `CallbackData` dan meros olishi va prefiks qabul qilishi kerak. Prefiks — bu callback boshida bo'ladigan umumiy qism, framework shu orqali strukturani aniqlaydi.
 
-Теперь напишем функцию генерации клавиатуры. Здесь нам пригодится метод `button()`, который автоматически 
-будет создавать кнопку с нужным типом, а от нас требуется только передать аргументы. 
-В качестве аргумента `callback_data` вместо строки будем указывать 
-экземпляр нашего класса `NumbersCallbackFactory`:
+Endi klaviatura generatsiya qiluvchi funksiya yozamiz. Bu yerda `button()` metodidan foydalanamiz, u tugma turini avtomatik aniqlaydi, bizdan faqat argumentlarni uzatish talab qilinadi. `callback_data` argumentiga satr o'rniga `NumbersCallbackFactory` obyektini uzatamiz:
 
 ```python
 def get_keyboard_fab():
@@ -504,32 +434,30 @@ def get_keyboard_fab():
         text="+2", callback_data=NumbersCallbackFactory(action="change", value=2)
     )
     builder.button(
-        text="Подтвердить", callback_data=NumbersCallbackFactory(action="finish")
+        text="Tasdiqlash", callback_data=NumbersCallbackFactory(action="finish")
     )
-    # Выравниваем кнопки по 4 в ряд, чтобы получилось 4 + 1
+    # Tugmalarni 4 tadan bir qatorda joylashtiramiz, natijada 4 + 1 bo'ladi
     builder.adjust(4)
     return builder.as_markup()
 ```
 
-Методы отправки сообщения и его редактирования оставляем теми же (в названиях и командах добавим суффикс `_fab`):
+Xabar yuborish va tahrirlash metodlarini o'sha holicha qoldiramiz (nom va komandaga `_fab` qo'shimchasini qo'shamiz):
 
 ```python
 async def update_num_text_fab(message: types.Message, new_value: int):
     with suppress(TelegramBadRequest):
         await message.edit_text(
-            f"Укажите число: {new_value}",
+            f"Sonni kiriting: {new_value}",
             reply_markup=get_keyboard_fab()
         )
 
 @dp.message(Command("numbers_fab"))
 async def cmd_numbers_fab(message: types.Message):
     user_data[message.from_user.id] = 0
-    await message.answer("Укажите число: 0", reply_markup=get_keyboard_fab())
+    await message.answer("Sonni kiriting: 0", reply_markup=get_keyboard_fab())
 ```
 
-Наконец, переходим к главному — обработке колбэков. Для этого в декоратор надо передать класс, колбэки с которым 
-мы ловим, с вызванным методом `filter()`. Также появляется дополнительный аргумент с названием `callback_data` 
-(имя должно быть именно таким!), и имеющим тот же тип, что и фильтруемый класс:
+Endi eng asosiysi — callbacklarni qayta ishlash. Dekoratorda klassni va uning `filter()` metodini uzatamiz. Shuningdek, `callback_data` nomli qo'shimcha argument paydo bo'ladi, u ham xuddi shu klass tipida bo'ladi:
 
 ```python
 @dp.callback_query(NumbersCallbackFactory.filter())
@@ -537,121 +465,106 @@ async def callbacks_num_change_fab(
         callback: types.CallbackQuery, 
         callback_data: NumbersCallbackFactory
 ):
-    # Текущее значение
+    # Joriy qiymat
     user_value = user_data.get(callback.from_user.id, 0)
-    # Если число нужно изменить
+    # Agar sonni o'zgartirish kerak bo'lsa
     if callback_data.action == "change":
         user_data[callback.from_user.id] = user_value + callback_data.value
         await update_num_text_fab(callback.message, user_value + callback_data.value)
-    # Если число нужно зафиксировать
+    # Agar sonni tasdiqlash kerak bo'lsa
     else:
-        await callback.message.edit_text(f"Итого: {user_value}")
+        await callback.message.edit_text(f"Yakuniy natija: {user_value}")
     await callback.answer()
 ```
 
-Ещё немного конкретизируем наши хэндлеры и сделаем отдельный обработчик 
-для числовых кнопок и для кнопки «Подтвердить». Фильтровать будем по значению `action` и в этом нам помогут 
-«магические фильтры» aiogram 3.x. Серьёзно, они так и называются: Magic Filter. Подробнее сие чародейство рассмотрим 
-в другой главе, а сейчас просто воспользуемся «магией» и примем это на веру:
+Handlerlarni yanada aniqroq ajratamiz va sonli tugmalar hamda "Tasdiqlash" tugmasi uchun alohida handler yozamiz. `action` qiymati bo'yicha filtrlaymiz, bunda aiogram 3.x ning "Magic Filter" imkoniyatidan foydalanamiz. Bu haqda keyinroq alohida bobda gaplashamiz, hozircha esa shunchaki foydalanamiz:
 
 ```python
-# новый импорт!
+# Yangi import!
 from magic_filter import F
 
-# Нажатие на одну из кнопок: -2, -1, +1, +2
+# -2, -1, +1, +2 tugmalardan birini bosganda
 @dp.callback_query(NumbersCallbackFactory.filter(F.action == "change"))
 async def callbacks_num_change_fab(
         callback: types.CallbackQuery, 
         callback_data: NumbersCallbackFactory
 ):
-    # Текущее значение
+    # Joriy qiymat
     user_value = user_data.get(callback.from_user.id, 0)
 
     user_data[callback.from_user.id] = user_value + callback_data.value
     await update_num_text_fab(callback.message, user_value + callback_data.value)
     await callback.answer()
 
-
-# Нажатие на кнопку "подтвердить"
+# "Tasdiqlash" tugmasi bosilganda
 @dp.callback_query(NumbersCallbackFactory.filter(F.action == "finish"))
 async def callbacks_num_finish_fab(callback: types.CallbackQuery):
-    # Текущее значение
+    # Joriy qiymat
     user_value = user_data.get(callback.from_user.id, 0)
 
-    await callback.message.edit_text(f"Итого: {user_value}")
+    await callback.message.edit_text(f"Yakuniy natija: {user_value}")
     await callback.answer()
 ```
 
-![Фабрика колбэков](images/buttons/callback_factory.png)
+![Callback factory](images/buttons/callback_factory.png)
 
-На первый взгляд то, что мы сделали, может показаться сложным, но в действительности фабрика колбэков позволяет 
-создавать продвинутые колбэк-кнопки и удобно дробить код на логические сущности. Увидеть применение фабрики 
-на практике вы можете в [боте для игры в «Сапёра»](https://github.com/MasterGroosha/telegram-bombsweeper-bot), 
-написанным вашим любимым автором :)
+Birinchi qarashda bu murakkabdek ko'rinishi mumkin, lekin aslida callback factory yordamida murakkab callback tugmalarni qulay va mantiqan ajratilgan kod bilan yaratish mumkin. Amalda factorydan foydalanishni [Saper o'yini botida](https://github.com/MasterGroosha/telegram-bombsweeper-bot) ko'rishingiz mumkin.
 
-### Автоответ на колбэки {: id="callback-autoreply" }
+### Callback'larga avtomatik javob {: id="callback-autoreply" }
 
-Если у вас очень много колбэк-хэндлеров, на которые нужно либо просто отвечать, либо отвечать однотипно, можно 
-немного упростить себе жизнь, воспользовавшись специальной мидлварью. В целом про такое мы поговорим 
-[отдельно](filters-and-middlewares.md#middlewares), а сейчас просто познакомимся.
+Agar sizda callback handlerlari juda ko'p bo'lsa va ularga bir xil yoki oddiy javob qaytarish kerak bo'lsa, hayotingizni yengillashtirish uchun maxsus middleware'dan foydalanishingiz mumkin. Bu haqda batafsil [alohida bobda](filters-and-middlewares.md#middlewares) gaplashamiz, hozir esa qisqacha tanishamiz.
 
-Итак, самый простой вариант — это добавить вот такую строчку после создания диспетчера:
+Eng oddiy variant — dispatcher yaratilgandan so'ng quyidagi qatorni qo'shish:
 
 ```python
-# не забываем про новый импорт
+# Yangi importni unutmang
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 
 dp = Dispatcher()
 dp.callback_query.middleware(CallbackAnswerMiddleware())
 ```
 
-В этом случае после выполнения хэндлера aiogram будет автоматически отвечать на колбэк. 
-Можно переопределить 
-[стандартные настройки](https://github.com/aiogram/aiogram/blob/5adaf7a567e976da64e418eee5df31682ad2496c/aiogram/utils/callback_answer.py#L133-L137) 
-и указать свои, например: 
+Bu holda handler bajarilgandan so'ng aiogram callback'ga avtomatik javob beradi.
+Standart sozlamalarni [manba kodida](https://github.com/aiogram/aiogram/blob/5adaf7a567e976da64e418eee5df31682ad2496c/aiogram/utils/callback_answer.py#L133-L137) ko'rishingiz yoki o'zgartirishingiz mumkin, masalan:
 
 ```python
 dp.callback_query.middleware(
     CallbackAnswerMiddleware(
-        pre=True, text="Готово!", show_alert=True
+        pre=True, text="Tayyor!", show_alert=True
     )
 )
 ```
 
-Увы, ситуации, когда на все колбэк-хэндлеры одинаковый ответ, довольно редки. К счастью, переопределить 
-поведение мидлвари в конкретном обработчике довольно просто: достаточно пробросить аргумент `callback_answer` 
-и выставить ему новые значения:
+Afsuski, barcha callback handlerlar uchun bir xil javob kerak bo'ladigan holatlar kam uchraydi. Yaxshiyamki, middleware xatti-harakatini aniq handlerda oson o'zgartirish mumkin: `callback_answer` argumentini uzatib, unga yangi qiymatlar berish kifoya:
 
 ```python
-# новый импорт!
+# Yangi import!
 from aiogram.utils.callback_answer import CallbackAnswer
 
 @dp.callback_query()
 async def my_handler(callback: CallbackQuery, callback_answer: CallbackAnswer):
-    ... # тут какой-то код
-    if <everything is ok>:
-        callback_answer.text = "Отлично!"
+    ... # bu yerda kod
+    if <hammasi yaxshi>:
+        callback_answer.text = "A'lo!"
     else:
-        callback_answer.text = "Что-то пошло не так. Попробуйте позже"
+        callback_answer.text = "Nimadir noto'g'ri ketdi. Keyinroq urinib ko'ring"
         callback_answer.cache_time = 10
-    ... # тут какой-то код
+    ... # bu yerda kod
 ```
 
-**Важно**: этот способ не будет работать, если у мидлвари выставлен флаг `pre=True`. В этом случае надо полностью 
-переопределять набор параметров мидлвари через флаги, с которыми мы подробнее познакомимся 
-[позже](filters-and-middlewares.md#flags):
+**Muhim**: agar middleware'da `pre=True` flagi o'rnatilgan bo'lsa, bu usul ishlamaydi. Bunday holatda flaglarni to'liq o'zgartirish kerak, bu bilan [keyinroq](filters-and-middlewares.md#flags) tanishamiz:
 
 ```python
 from aiogram import flags
 from aiogram.utils.callback_answer import CallbackAnswer
 
 @dp.callback_query()
-@flags.callback_answer(pre=False)  # переопределяем флаг pre
+@flags.callback_answer(pre=False)  # pre flagini o'zgartiramiz
 async def my_handler(callback: CallbackQuery, callback_answer: CallbackAnswer):
-    ... # тут какой-то код
-    if <everything is ok>:
-        callback_answer.text = "Теперь этот текст будет видно!"
-    ... # тут какой-то код
+    ... # bu yerda kod
+    if <hammasi yaxshi>:
+        callback_answer.text = "Endi bu matn ko'rinadi!"
+    ... # bu yerda kod
 ```
 
-На этом мы пока завершим знакомство с кнопками.
+Shu bilan tugmalar bilan tanishuvni yakunlaymiz.
